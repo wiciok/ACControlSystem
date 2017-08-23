@@ -9,6 +9,6 @@ namespace ACControlSystemApi.Model
     {
         private Dictionary<Hours, bool>[] scheduleTab; //todo: rethink if its better to place some struct with settings instead of bool
 
-        
+        //public void SetSchedule(Hours hourFrom, Hours hourTo, )
     }
 }

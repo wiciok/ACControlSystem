@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ACControlSystemApi.Model
+namespace ACControlSystemApi.Services
 {
-    public class ACControl
+    public class UserService
     {
     }
 }
