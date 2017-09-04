@@ -8,10 +8,10 @@ namespace ACControlSystemApi.Services
 {
     public class ACControlService
     {
-        private ACControlState _currentState;
+        private bool _currentState;
 
 
-        private bool ChangeCurrentState(ACControlState newState)
+        private bool ChangeCurrentState(bool newState)
         {
             throw new NotImplementedException();
         }

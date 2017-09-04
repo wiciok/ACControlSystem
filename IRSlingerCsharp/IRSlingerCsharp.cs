@@ -3,7 +3,34 @@ using System.Runtime.InteropServices;
 
 namespace IRSlingerCsharp
 {
-    public class IRSlingerCsharp
+    public interface IIRSlingerCsharp
+    {
+        void SendNecMsg
+        (
+            UInt32 broadcomOutPin,
+            int frequency,
+            double dutyCycle,
+            int leadingPulseDuration,
+            int leadingGapDuration,
+            int onePulse,
+            int zeroPulse,
+            int oneGap,
+            int zeroGap,
+            bool sendTrailingPulse,
+            string codes
+         );
+
+        void SendRawMsg
+        (
+            UInt32 broadcomOutPin,
+            int frequency,
+            double dutyCycle,
+            string codes
+        );
+    }
+
+
+    public class IRSlingerCsharp: IIRSlingerCsharp
     {
         [DllImport("irslinger_start.so", EntryPoint = "SendNec")] //todo: dopasować rozszerzenie pliku, itp.
         private static extern int SendNec
@@ -22,19 +49,20 @@ namespace IRSlingerCsharp
         );
 
 
+
         public void SendNecMsg
         (
-            UInt32 broadcomOutPin, 
-            int frequency, 
-            double dutyCycle, 
-            int leadingPulseDuration, 
-            int leadingGapDuration, 
-            int onePulse, 
-            int zeroPulse, 
-            int oneGap, 
-            int zeroGap, 
-            bool sendTrailingPulse, 
-            string codes 
+            UInt32 broadcomOutPin,
+            int frequency,
+            double dutyCycle,
+            int leadingPulseDuration,
+            int leadingGapDuration,
+            int onePulse,
+            int zeroPulse,
+            int oneGap,
+            int zeroGap,
+            bool sendTrailingPulse,
+            string codes
         )
         {
             int sendTrailingPulseInt = sendTrailingPulse ? 1 : 0;

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace ACControlSystemApi.Services
 {
-    public class ScheduleService
+    public class AdminService
     {
     }
 }
