@@ -1,5 +1,6 @@
 ﻿using ACControlSystemApi.Model;
 using ACControlSystemApi.Repositories;
+using ACControlSystemApi.Services.Interfaces;
 using IRSlingerCsharp;
 using System;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace ACControlSystemApi.Services
 {
-    public class HardwareHostDeviceControlService: IHardwareHostDeviceControlService
+    public class HostDeviceControlService: IHostDeviceControlService
     {
         private IIRSlingerCsharp _irService;
         private IRaspberryPiDeviceRepository _hardwareDevicesRepo;
@@ -22,7 +23,7 @@ namespace ACControlSystemApi.Services
         public ICode TurnOffCode { get; set; }
 
 
-        public HardwareHostDeviceControlService(IIRSlingerCsharp irService, IRaspberryPiDeviceRepository hardwareDevicesRepo, IACDeviceRepository acDeviceRepo)
+        public HostDeviceControlService(IIRSlingerCsharp irService, IRaspberryPiDeviceRepository hardwareDevicesRepo, IACDeviceRepository acDeviceRepo)
         {
             _irService = irService;
             _hardwareDevicesRepo = hardwareDevicesRepo;
@@ -78,12 +79,4 @@ namespace ACControlSystemApi.Services
             SendMessage(TurnOnCode);
         }
     }
-
-    public interface IHardwareHostDeviceControlService
-    {
-        void SendMessage(ICode code);
-        void SendMessageById(int id);
-        void SendTurnOffMessage();
-        void SendTurnOnMessage();
-    }   
 }

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace ACControlSystemApi.Model
 {
-    public class ACControl
+    public class Admin: IUser
     {
     }
 }

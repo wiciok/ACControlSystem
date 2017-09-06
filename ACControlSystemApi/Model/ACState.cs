@@ -5,10 +5,7 @@ using System.Threading.Tasks;
 
 namespace ACControlSystemApi.Model
 {
-    public class ACSchedule
+    public class ACState
     {
-        private Dictionary<Hours, bool>[] scheduleTab;
-
-
     }
 }

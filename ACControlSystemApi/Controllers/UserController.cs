@@ -11,13 +11,6 @@ namespace ACControlSystemApi.Controllers
     [Route("api/User")]
     public class UserController : Controller
     {
-        // GET: api/User
-        [HttpGet]
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
-
         // GET: api/User/5
         [HttpGet("{id}", Name = "Get")]
         public string Get(int id)

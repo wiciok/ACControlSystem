@@ -11,5 +11,6 @@ namespace ACControlSystemApi.Controllers
     [Route("api/Hardware")]
     public class HardwareController : Controller
     {
+
     }
 }
