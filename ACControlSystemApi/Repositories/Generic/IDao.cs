@@ -13,7 +13,7 @@ namespace ACControlSystemApi.Repositories.Generic
         void Delete(T obj);
         T Get(int id);
         IEnumerable<T> GetAll();
-        IEnumerable<T> Find(Expression<Func<T, bool>> expr);
+        IEnumerable<T> Find(Func<T, bool> expr);
 
         void SaveData();
     }

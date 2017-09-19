@@ -1,6 +1,6 @@
-﻿namespace ACControlSystemApi.Model
+﻿namespace ACControlSystemApi.Model.Interfaces
 {
-    public interface IUser
+    public interface IUser: IACControlSystemSerializableClass
     {
     }
 }

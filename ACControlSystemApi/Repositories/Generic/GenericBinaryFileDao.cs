@@ -5,63 +5,127 @@ using System.Threading.Tasks;
 using System.IO;
 using ACControlSystemApi.Utils;
 using System.Linq.Expressions;
+using ACControlSystemApi.Model.Interfaces;
 
 namespace ACControlSystemApi.Repositories.Generic
 {
-    public class GenericBinaryFileDao<T> : IDao<T> where T : class
+    public class GenericBinaryFileDao<T> : IDao<T> where T : class, IACControlSystemSerializableClass
     {
-        private FileStream _filestream;
+        private List<T> _objectsList;
+        private static readonly string pathToFile = GlobalSettings.PathToKeepFilesWithData + nameof(T) + ".bin";
+        private bool isCacheUpToDate = false;
 
         public GenericBinaryFileDao()
         {
-            var pathToFile = GlobalSettings.PathToKeepFilesWithData + nameof(T) + ".bin";
-            _filestream = new FileStream(pathToFile, FileMode.Append);
+            _objectsList = new List<T>();
         }
 
 
         public void Add(T obj)
         {
-            throw new NotImplementedException();
+            _objectsList.Add(obj);
+
+            SaveToFile();
         }
 
         public void Delete(T obj)
         {
-            throw new NotImplementedException();
+            RefreshCacheIfNecessary();
+
+            if (!_objectsList.Remove(obj))
+                throw new InvalidOperationException("Object to delete doesn't exist.");
+
+            SaveToFile();
         }
 
         public T Get(int id)
         {
-            throw new NotImplementedException(); //todo: zwracac null jesli nic nie ma
+            RefreshCacheIfNecessary();
+
+            return _objectsList.Where(x => x.Id.Equals(id)).SingleOrDefault();
         }
 
         public IEnumerable<T> GetAll()
         {
-            throw new NotImplementedException();
+            RefreshCacheIfNecessary();
+
+            return _objectsList;
         }
 
         public void Update(T obj)
         {
-            throw new NotImplementedException();
+            RefreshCacheIfNecessary();
+
+            var updatedObj = _objectsList.Where(x => x.Equals(obj)).FirstOrDefault();
+            updatedObj = updatedObj ?? obj;
+
+            if (updatedObj == null)
+                throw new InvalidOperationException("Updated object doesn't exist.");
+
+            SaveToFile();
         }
 
-        public IEnumerable<T> Find(Expression<Func<T, bool>> expr)
+        public IEnumerable<T> Find(Func<T, bool> expr)
         {
-            throw new NotImplementedException();
+            RefreshCacheIfNecessary();
+            return _objectsList.Where(expr);
         }
+
 
         public void SaveData()
         {
-            throw new NotImplementedException();
+            
         }
 
-        private byte[] Serialize()
+        private void RefreshCacheIfNecessary()
         {
-            throw new NotImplementedException(); //todo: update to .net core 2.0 and do this
+            if (!isCacheUpToDate)
+            {
+                ReadFromFile();
+                isCacheUpToDate = true;
+            }
         }
 
-        private T Deserialize()
+
+
+        private void SaveToFile()
         {
-            throw new NotImplementedException(); //todo: update to .net core 2.0 and do this
+            //todo: check if this gonna work (if dispose closes stream or not)
+
+            byte[] data = Serialize(_objectsList);
+
+            using (var writer = new BinaryWriter(new FileStream(pathToFile, FileMode.Append)))
+            {
+                writer.Write(data);
+            }
+        }
+
+        private void ReadFromFile()
+        {
+            byte[] buffer;
+
+            using (var ms = new MemoryStream())
+            {
+                using (var fs = new FileStream(pathToFile, FileMode.Open))
+                {
+                    fs.CopyTo(ms);
+                }
+                    
+                buffer = ms.ToArray();
+            }
+
+            _objectsList = Deserialize(buffer);
+        }
+
+
+        private byte[] Serialize(List<T> obj)
+        {
+            return MessagePack.MessagePackSerializer.Serialize<List<T>>(obj);
+        }
+
+        private List<T> Deserialize(byte[] rawObj)
+        {
+            return MessagePack.MessagePackSerializer.Deserialize<List<T>>(rawObj);
         }
     }
 }
