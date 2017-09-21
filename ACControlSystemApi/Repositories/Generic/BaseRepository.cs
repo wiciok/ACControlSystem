@@ -22,6 +22,15 @@ namespace ACControlSystemApi.Repositories.Generic
             _dao.SaveData();
         }
 
+        public void Add(IList<T> obj)
+        {
+            foreach(var el in obj)
+            {
+                _dao.Add(el);
+            }
+            _dao.SaveData();
+        }
+
         public void Delete(T obj)
         {
             _dao.Delete(obj);
@@ -38,7 +47,7 @@ namespace ACControlSystemApi.Repositories.Generic
             return _dao.GetAll();
         }
 
-        public IEnumerable<T> Find(Expression<Func<T, bool>> fun)
+        public IEnumerable<T> Find(Func<T, bool> fun)
         {
             return _dao.Find(fun);
         }

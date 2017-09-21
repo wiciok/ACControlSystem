@@ -13,88 +13,67 @@ namespace ACControlSystemApi.Repositories.Generic
     {
         private List<T> _objectsList;
         private static readonly string pathToFile = GlobalSettings.PathToKeepFilesWithData + nameof(T) + ".bin";
-        private bool isCacheUpToDate = false;
 
         public GenericBinaryFileDao()
         {
             _objectsList = new List<T>();
+            Initialize();
+        }
+
+        public void Initialize()
+        {
+            ReadFromFile();
         }
 
 
         public void Add(T obj)
         {
             _objectsList.Add(obj);
-
-            SaveToFile();
         }
 
         public void Delete(T obj)
         {
-            RefreshCacheIfNecessary();
-
             if (!_objectsList.Remove(obj))
                 throw new InvalidOperationException("Object to delete doesn't exist.");
-
-            SaveToFile();
         }
 
         public T Get(int id)
         {
-            RefreshCacheIfNecessary();
-
             return _objectsList.Where(x => x.Id.Equals(id)).SingleOrDefault();
         }
 
         public IEnumerable<T> GetAll()
         {
-            RefreshCacheIfNecessary();
-
             return _objectsList;
         }
 
         public void Update(T obj)
         {
-            RefreshCacheIfNecessary();
-
             var updatedObj = _objectsList.Where(x => x.Equals(obj)).FirstOrDefault();
             updatedObj = updatedObj ?? obj;
 
             if (updatedObj == null)
                 throw new InvalidOperationException("Updated object doesn't exist.");
-
-            SaveToFile();
         }
 
         public IEnumerable<T> Find(Func<T, bool> expr)
         {
-            RefreshCacheIfNecessary();
             return _objectsList.Where(expr);
         }
 
-
         public void SaveData()
         {
-            
+            SaveToFile();   
         }
 
-        private void RefreshCacheIfNecessary()
-        {
-            if (!isCacheUpToDate)
-            {
-                ReadFromFile();
-                isCacheUpToDate = true;
-            }
-        }
-
-
-
+        #region private methods
         private void SaveToFile()
         {
             //todo: check if this gonna work (if dispose closes stream or not)
 
             byte[] data = Serialize(_objectsList);
 
-            using (var writer = new BinaryWriter(new FileStream(pathToFile, FileMode.Append)))
+            using (var writer = new BinaryWriter(new FileStream(pathToFile, FileMode.Create)))
             {
                 writer.Write(data);
             }
@@ -106,11 +85,11 @@ namespace ACControlSystemApi.Repositories.Generic
 
             using (var ms = new MemoryStream())
             {
-                using (var fs = new FileStream(pathToFile, FileMode.Open))
+                using (var fs = new FileStream(pathToFile, FileMode.OpenOrCreate))
                 {
                     fs.CopyTo(ms);
                 }
-                    
+
                 buffer = ms.ToArray();
             }
 
@@ -127,5 +106,7 @@ namespace ACControlSystemApi.Repositories.Generic
         {
             return MessagePack.MessagePackSerializer.Deserialize<List<T>>(rawObj);
         }
+
+        #endregion private methods
     }
 }
