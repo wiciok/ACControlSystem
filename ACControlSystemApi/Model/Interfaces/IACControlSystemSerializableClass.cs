@@ -7,6 +7,6 @@ namespace ACControlSystemApi.Model.Interfaces
 {
     public interface IACControlSystemSerializableClass
     {
-        int Id { get; }
+        int Id { get; set; }
     }
 }

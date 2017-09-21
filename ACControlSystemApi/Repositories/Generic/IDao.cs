@@ -10,7 +10,7 @@ namespace ACControlSystemApi.Repositories.Generic
     {
         void Add(T obj);
         void Update(T obj);
-        void Delete(T obj);
+        void Delete(int id);
         T Get(int id);
         IEnumerable<T> GetAll();
         IEnumerable<T> Find(Func<T, bool> expr);

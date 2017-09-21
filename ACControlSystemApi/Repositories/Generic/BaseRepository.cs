@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ACControlSystemApi.Model.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ACControlSystemApi.Repositories.Generic
 {
-    public class BaseRepository<T>: IRepository<T> where T: class 
+    public class BaseRepository<T>: IRepository<T> where T: class, IACControlSystemSerializableClass
     {
         private IDao<T> _dao;
 
@@ -33,7 +34,13 @@ namespace ACControlSystemApi.Repositories.Generic
 
         public void Delete(T obj)
         {
-            _dao.Delete(obj);
+            _dao.Delete(obj.Id);
+            _dao.SaveData();
+        }
+
+        public void Delete(int id)
+        {
+            _dao.Delete(id);
             _dao.SaveData();
         }
 
@@ -57,5 +64,6 @@ namespace ACControlSystemApi.Repositories.Generic
             _dao.Update(obj);
             _dao.SaveData();
         }
+
     }
 }

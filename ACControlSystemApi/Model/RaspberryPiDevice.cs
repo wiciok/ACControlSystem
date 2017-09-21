@@ -1,44 +1,57 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using ACControlSystemApi.Model;
+using ACControlSystemApi.Model.Interfaces;
 
-public class RaspberryPiDevice
+public class RaspberryPiDevice: IACControlSystemSerializableClass
 {
-    public RaspberryPiDevice(string name, Dictionary<uint, uint> validPins)
+    public RaspberryPiDevice()
     {
-        Name = name;
-        _validBroadcomGpioPins = validPins;
         CodesList = new List<ICode>();
     }
 
-    private Dictionary<uint, uint> _validBroadcomGpioPins; //key - broadcom, value - gpio
-    private uint _outBroadcomPin;
-    private uint _inBroadcomPin;
+    public RaspberryPiDevice(string name, Dictionary<uint, uint> validPins): base()
+    {
+        Name = name;
+        ValidBoardAndBroadcomPins = validPins;        
+    }
 
-    public string Name { get; }
+    private Dictionary<uint, uint> _validBoardAndBroadcomPins;
+    private uint _outBoardPin;
+    private uint _inBoardPin;
 
-    //todo: change it later - if i'm gonna decrypt this codes
-    public List<ICode> CodesList { get; }
+
+    public int Id { get; set; }
+
+    public string Name { get; set; }
+    
+    public List<ICode> CodesList { get; } //todo: change it later - if i'm gonna decrypt this codes
+    
+    public Dictionary<uint, uint> ValidBoardAndBroadcomPins //key: XX - board number, value: GPIOXX - broadcom number
+    {
+        get => _validBoardAndBroadcomPins;
+        set => _validBoardAndBroadcomPins = value;
+    }
+
+    public uint BoardOutPin
+    {
+        get { return _outBoardPin; }
+        set { _outBoardPin = value; }
+    }
+    public uint BoardInPin
+    {
+        get { return _inBoardPin; }
+        set { _inBoardPin = value; }
+    }
 
     public uint BroadcomOutPin
-    {
-        get { return _outBroadcomPin; }
-        set { _outBroadcomPin = value; }
+{
+        get { return _validBoardAndBroadcomPins.FirstOrDefault(x => x.Key == _outBoardPin).Value; }
+        set { _outBoardPin = _validBoardAndBroadcomPins.FirstOrDefault(x => x.Value == value).Key; }
     }
     public uint BroadcomInPin
     {
-        get { return _inBroadcomPin; }
-        set { _inBroadcomPin = value; }
-    }
-
-    public uint GpioOutPin
-    {
-        get { return _validBroadcomGpioPins.FirstOrDefault(x => x.Key == _outBroadcomPin).Value; }
-        set { _outBroadcomPin = _validBroadcomGpioPins.FirstOrDefault(x => x.Value == _outBroadcomPin).Key; }
-    }
-    public uint GpioInPin
-    {
-        get { return _validBroadcomGpioPins.FirstOrDefault(x => x.Value == _inBroadcomPin).Key; }
-        set { _inBroadcomPin = _validBroadcomGpioPins.FirstOrDefault(x => x.Value == _inBroadcomPin).Key; }
-    }
+        get { return _validBoardAndBroadcomPins.FirstOrDefault(x => x.Key == _inBoardPin).Value; }
+        set { _inBoardPin = _validBoardAndBroadcomPins.FirstOrDefault(x => x.Value == value).Key; }
+    }    
 }

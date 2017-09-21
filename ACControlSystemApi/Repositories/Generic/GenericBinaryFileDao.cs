@@ -11,8 +11,9 @@ namespace ACControlSystemApi.Repositories.Generic
 {
     public class GenericBinaryFileDao<T> : IDao<T> where T : class, IACControlSystemSerializableClass
     {
-        private List<T> _objectsList;
+        private IList<T> _objectsList;
         private static readonly string pathToFile = GlobalSettings.PathToKeepFilesWithData + nameof(T) + ".bin";
+        private int _lastClassUniqueId = 1;
 
         public GenericBinaryFileDao()
         {
@@ -28,18 +29,24 @@ namespace ACControlSystemApi.Repositories.Generic
 
         public void Add(T obj)
         {
+            if (obj.Id == 0)
+                obj.Id = _lastClassUniqueId++;
+
             _objectsList.Add(obj);
         }
 
-        public void Delete(T obj)
+        public void Delete(int id)
         {
-            if (!_objectsList.Remove(obj))
+            var obj = _objectsList.SingleOrDefault(x => x.Id == id);
+
+            if (obj == null)
                 throw new InvalidOperationException("Object to delete doesn't exist.");
+            _objectsList.Remove(obj);
         }
 
         public T Get(int id)
         {
-            return _objectsList.Where(x => x.Id.Equals(id)).SingleOrDefault();
+            return _objectsList.Where(x => x.Id == id).SingleOrDefault();
         }
 
         public IEnumerable<T> GetAll()
@@ -49,7 +56,7 @@ namespace ACControlSystemApi.Repositories.Generic
 
         public void Update(T obj)
         {
-            var updatedObj = _objectsList.Where(x => x.Equals(obj)).FirstOrDefault();
+            var updatedObj = _objectsList.Where(x => x.Id == obj.Id).SingleOrDefault();
             updatedObj = updatedObj ?? obj;
 
             if (updatedObj == null)
@@ -63,7 +70,7 @@ namespace ACControlSystemApi.Repositories.Generic
 
         public void SaveData()
         {
-            SaveToFile();   
+            SaveToFile();
         }
 
         #region private methods
@@ -71,42 +78,33 @@ namespace ACControlSystemApi.Repositories.Generic
         {
             //todo: check if this gonna work (if dispose closes stream or not)
 
-            byte[] data = Serialize(_objectsList);
+            byte[] data = MessagePack.MessagePackSerializer.Serialize<List<T>>(_objectsList);
 
             using (var writer = new BinaryWriter(new FileStream(pathToFile, FileMode.Create)))
             {
+                writer.Write(_lastClassUniqueId);
                 writer.Write(data);
             }
         }
 
         private void ReadFromFile()
         {
-            byte[] buffer;
-
-            using (var ms = new MemoryStream())
+            try
             {
-                using (var fs = new FileStream(pathToFile, FileMode.OpenOrCreate))
+                byte[] buffer;
+                using (var reader = new BinaryReader(new FileStream(pathToFile, FileMode.Open)))
                 {
-                    fs.CopyTo(ms);
+                    _lastClassUniqueId = reader.ReadInt32();
+                    buffer = reader.ReadBytes(int.MaxValue); //?? does this work?
                 }
-
-                buffer = ms.ToArray();
+                _objectsList = MessagePack.MessagePackSerializer.Deserialize<List<T>>(buffer);
             }
 
-            _objectsList = Deserialize(buffer);
+            catch (FileNotFoundException) //todo: think about removing control via exeptions
+            {
+                //log info about lack of file
+            }
         }
-
-
-        private byte[] Serialize(List<T> obj)
-        {
-            return MessagePack.MessagePackSerializer.Serialize<List<T>>(obj);
-        }
-
-        private List<T> Deserialize(byte[] rawObj)
-        {
-            return MessagePack.MessagePackSerializer.Deserialize<List<T>>(rawObj);
-        }
-
         #endregion private methods
     }
 }

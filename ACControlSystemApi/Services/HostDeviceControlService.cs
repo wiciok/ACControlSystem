@@ -30,7 +30,7 @@ namespace ACControlSystemApi.Services
             _acDevicesRepo = acDeviceRepo;
 
             _ACDevice = acDeviceRepo.CurrentACDevice;
-            _hostDevice = _hardwareDevicesRepo.GetCurrentDevice();
+            _hostDevice = _hardwareDevicesRepo.CurrentDevice;
         }
 
 
