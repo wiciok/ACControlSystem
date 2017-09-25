@@ -1,4 +1,5 @@
 ﻿using ACControlSystemApi.Model;
+using ACControlSystemApi.Model.Interfaces;
 using ACControlSystemApi.Repositories;
 using ACControlSystemApi.Services.Interfaces;
 using IRSlingerCsharp;
@@ -49,7 +50,7 @@ namespace ACControlSystemApi.Services
                     nc.OneGapDuration,
                     nc.ZeroGapDuration,
                     nc.SendTrailingPulse,
-                    nc.Code.ToString());
+                    nc.Code);
             }
 
             else if (code is RawCode rc)
@@ -58,7 +59,7 @@ namespace ACControlSystemApi.Services
                     (_hostDevice.BroadcomOutPin,
                     _ACDevice.ModulationFrequencyInHz,
                     _ACDevice.DutyCycle,
-                    rc.Code.ToString());
+                    rc.Code);
             }
             else
                 throw new ArgumentException();
@@ -66,7 +67,7 @@ namespace ACControlSystemApi.Services
 
         public void SendMessageById(int id)
         {
-            SendMessage(_ACDevice.AvailableCodes.SingleOrDefault(x => x.Id == id));
+            SendMessage(_ACDevice.AvailableIRCodes.SingleOrDefault(x => x.Id == id).Code);
         }
 
         public void SendTurnOffMessage()

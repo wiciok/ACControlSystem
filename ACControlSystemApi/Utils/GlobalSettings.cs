@@ -15,5 +15,6 @@ namespace ACControlSystemApi.Utils
         //repositories:
 
         public static int currentRaspberryPiDeviceId = 1;
+        public static int currentACDeviceId = 1;
     }
 }

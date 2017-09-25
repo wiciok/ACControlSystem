@@ -57,7 +57,7 @@ namespace ACControlSystemApi.Repositories
 
         public RaspberryPiDevice CurrentDevice
         {
-            get => Get(GlobalSettings.currentRaspberryPiDeviceId);
+            get => this.Get(GlobalSettings.currentRaspberryPiDeviceId);
             set => GlobalSettings.currentRaspberryPiDeviceId = value.Id;
         }
     }
