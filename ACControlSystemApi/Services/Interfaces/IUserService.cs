@@ -9,8 +9,8 @@ namespace ACControlSystemApi.Services.Interfaces
     public interface IUserService
     {
         IUser GetUser(int id);
-        bool RemoveUser(int id);
-        bool UpdateUser(IUser user);
-        bool AddUser(IUser user);
+        void RemoveUser(int id);
+        void UpdateUser(IUser user);
+        IUser AddUser(IUser user);   
     }
 }

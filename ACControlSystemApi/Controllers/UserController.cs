@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using ACControlSystemApi.Services.Interfaces;
 using ACControlSystemApi.Model.Interfaces;
 using System.Net.Http;
+using ACControlSystemApi.Services.Exceptions;
 
 namespace ACControlSystemApi.Controllers
 {
@@ -29,46 +30,127 @@ namespace ACControlSystemApi.Controllers
         [HttpGet("{token}/{id}", Name = "Get")]
         public IActionResult Get(string token, int id)
         {
-            if (_authService.CheckAuthentication())
+            try
             {
-                var user = _userService.GetUser(id);
+                if (_authService.CheckAuthentication())
+                {
+                    IUser user;
+                    try
+                    {
+                        user = _userService.GetUser(id);
+                    }
+                    
+                    catch(ItemNotFoundException ex)
+                    {
+                        return NotFound(ex.Message);
+                    }
 
-                if (user != null)
                     return Ok(user);
+                }
                 else
-                    return NoContent();
+                    return Unauthorized();
             }
-            else
-                return Unauthorized();
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
         }
 
         // POST: api/User
         [HttpPost("{token}")]
         public IActionResult Post(string token, [FromBody]IUser user)
         {
-            if (_authService.CheckAuthentication())
+            try
             {
-                bool result = _userService.AddUser(user);
+                if (_authService.CheckAuthentication())
+                {
+                    IUser retUser;
+                    try
+                    {
+                        retUser = _userService.AddUser(user);
+                    }
 
-                if (result)
-                    return Ok();
+                    catch (ItemAlreadyExistsException ex)
+                    {
+                        return StatusCode(StatusCodes.Status409Conflict, ex.Message);
+                    }
+                    catch(ArgumentException ex)
+                    {
+                        return BadRequest(ex.Message);
+                    }
+                    return Ok(retUser);
+                }
                 else
-                    throw new NotImplementedException(); //todo: finish this
+                    return Unauthorized();
             }
-            else
-                return Unauthorized();
+
+            catch (Exception ex)
+            {
+                //todo: logging
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
         }
 
         // PUT: api/User/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
+        [HttpPut("{token}")]
+        public IActionResult Put(string token, [FromBody]IUser user)
         {
+            try
+            {
+                if (_authService.CheckAuthentication())
+                {
+                    try
+                    {
+                        _userService.UpdateUser(user);
+                    }
+                    catch(ArgumentNullException ex)
+                    {
+                        return BadRequest(ex.Message);
+                    }
+                    catch(ItemNotFoundException ex)
+                    {
+                        return NotFound(ex.Message);
+                    }
+
+                    return Ok(user); //todo: check this
+                }
+                else
+                    return Unauthorized();
+            }
+            catch (Exception ex)
+            {
+                //todo: logging
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
         }
 
         // DELETE: api/ApiWithActions/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        [HttpDelete("{token}/{id}")]
+        public IActionResult Delete(string token, int id)
         {
+            try
+            {
+                if (_authService.CheckAuthentication())
+                {
+                    try
+                    {
+                        _userService.RemoveUser(id);
+                    }
+                    
+                    catch(ItemNotFoundException ex)
+                    {
+                        return NotFound(ex.Message);
+                    }
+                    return Ok();
+                }
+                else
+                    return Unauthorized();
+            }
+            catch (Exception ex)
+            {
+                //todo: logging
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
         }
     }
 }

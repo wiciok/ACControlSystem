@@ -1,4 +1,5 @@
 ﻿using ACControlSystemApi.Model;
+using ACControlSystemApi.Model.Interfaces;
 using ACControlSystemApi.Repositories.Generic;
 using System;
 using System.Collections.Generic;
@@ -7,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace ACControlSystemApi.Repositories
 {
-    public class UserRepository: BaseRepository<User>, IRepository<User>
+    public class UserRepository: BaseRepository<IUser>, IUserRepository
     {
-        public UserRepository(IDao<User> dao): base(dao)
+        public UserRepository(IDao<IUser> dao): base(dao)
         {
 
         }
