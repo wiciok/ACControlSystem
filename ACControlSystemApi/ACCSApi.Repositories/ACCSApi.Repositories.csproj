@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MessagePack" Version="1.6.1.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ACCSApi.Model\ACCSApi.Model.csproj" />
+    <ProjectReference Include="..\ACCSApi.Utils\ACCSApi.Utils.csproj" />
+  </ItemGroup>
+
+</Project>
