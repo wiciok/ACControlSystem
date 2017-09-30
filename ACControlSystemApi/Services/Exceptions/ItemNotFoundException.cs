@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 namespace ACControlSystemApi.Services.Exceptions
 {
-    public class ItemNotFoundException: Exception
+    public class ItemNotFoundException : Exception
     {
-        public ItemNotFoundException() : base("Item not found!")
+        public ItemNotFoundException(string message = "Item not found!") : base(message)
         {
 
         }

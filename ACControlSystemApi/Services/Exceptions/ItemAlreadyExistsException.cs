@@ -7,7 +7,7 @@ namespace ACControlSystemApi.Services.Exceptions
 {
     public class ItemAlreadyExistsException : Exception
     {
-        public ItemAlreadyExistsException(): base("Item already exists!")
+        public ItemAlreadyExistsException(string message = "Item already exists!") : base(message)
         {
 
         }

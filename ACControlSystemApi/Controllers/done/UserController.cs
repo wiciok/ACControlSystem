@@ -8,6 +8,7 @@ using ACControlSystemApi.Services.Interfaces;
 using ACControlSystemApi.Model.Interfaces;
 using System.Net.Http;
 using ACControlSystemApi.Services.Exceptions;
+using ACControlSystemApi.Model;
 
 namespace ACControlSystemApi.Controllers
 {
@@ -32,7 +33,7 @@ namespace ACControlSystemApi.Controllers
         {
             try
             {
-                if (_authService.CheckAuthentication())
+                if (_authService.CheckAuthentication(token))
                 {
                     IUser user;
                     try
@@ -45,7 +46,7 @@ namespace ACControlSystemApi.Controllers
                         return NotFound(ex.Message);
                     }
 
-                    return Ok(user);
+                    return Ok(user.PublicData);
                 }
                 else
                     return Unauthorized();
@@ -58,16 +59,16 @@ namespace ACControlSystemApi.Controllers
 
         // POST: api/User
         [HttpPost("{token}")]
-        public IActionResult Post(string token, [FromBody]IUser user)
+        public IActionResult Post(string token, [FromBody]IUserRegister userData)
         {
             try
             {
-                if (_authService.CheckAuthentication())
+                if (_authService.CheckAuthentication(token))
                 {
-                    IUser retUser;
+                    int userId;
                     try
                     {
-                        retUser = _userService.AddUser(user);
+                        userId = _userService.AddUser(userData);
                     }
 
                     catch (ItemAlreadyExistsException ex)
@@ -78,7 +79,7 @@ namespace ACControlSystemApi.Controllers
                     {
                         return BadRequest(ex.Message);
                     }
-                    return Ok(retUser);
+                    return Ok(userId);
                 }
                 else
                     return Unauthorized();
@@ -92,16 +93,17 @@ namespace ACControlSystemApi.Controllers
         }
 
         // PUT: api/User/5
+        //edit authorization data (email, password)
         [HttpPut("{token}")]
-        public IActionResult Put(string token, [FromBody]IUser user)
+        public IActionResult Put(string token, [FromBody]IUserRegister userData)
         {
             try
             {
-                if (_authService.CheckAuthentication())
+                if (_authService.CheckAuthentication(token))
                 {
                     try
                     {
-                        _userService.UpdateUser(user);
+                        _userService.UpdateUserAuthData(userData);
                     }
                     catch(ArgumentNullException ex)
                     {
@@ -112,7 +114,7 @@ namespace ACControlSystemApi.Controllers
                         return NotFound(ex.Message);
                     }
 
-                    return Ok(user); //todo: check this
+                    return Ok();
                 }
                 else
                     return Unauthorized();
@@ -124,13 +126,21 @@ namespace ACControlSystemApi.Controllers
             }
         }
 
+        // PUT: api/User/5
+        //edit public data
+        [HttpPut("{token}")]
+        public IActionResult Put(string token, [FromBody]IUserPublic userPublicData)
+        {
+            return StatusCode(StatusCodes.Status501NotImplemented);
+        }
+
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{token}/{id}")]
         public IActionResult Delete(string token, int id)
         {
             try
             {
-                if (_authService.CheckAuthentication())
+                if (_authService.CheckAuthentication(token))
                 {
                     try
                     {
