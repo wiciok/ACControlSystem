@@ -1,12 +1,9 @@
-﻿using ACControlSystemApi.Model;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using ACCSApi.Model.Interfaces;
 
 namespace ACCSApi.Repositories.Interfaces
 {
     public interface IACDeviceRepository
     {
-        ACDevice CurrentACDevice { get; set; }
+        IACDevice CurrentACDevice { get; set; }
     }
 }

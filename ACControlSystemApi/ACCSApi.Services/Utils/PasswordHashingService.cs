@@ -5,7 +5,7 @@ using System.Text;
 
 namespace ACControlSystemApi.Services
 {
-    public class PasswordHashingService : IPasswordHashingService
+    internal class PasswordHashingService : IPasswordHashingService
     {
         public string CreateHash(string password)
         {

@@ -1,11 +1,12 @@
 ﻿using ACControlSystemApi.Model;
+using ACControlSystemApi.Services.Interfaces;
+using ACCSApi.Model.Transferable;
 
 namespace ACControlSystemApi.Services
 {
-    public class ACStateControlService
+    public class ACStateControlService: IACStateControlService
     {
         private ACState _currentState;
-
 
         public void SetCurrentState(ACState newState)
         {

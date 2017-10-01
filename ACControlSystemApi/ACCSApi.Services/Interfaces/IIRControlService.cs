@@ -2,7 +2,7 @@
 
 namespace ACControlSystemApi.Services.Interfaces
 {
-    public interface IHostDeviceControlService
+    internal interface IIRControlService
     {
         void SendMessage(ICode code);
         void SendMessageById(int id);

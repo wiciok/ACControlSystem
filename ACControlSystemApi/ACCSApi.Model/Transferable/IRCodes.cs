@@ -3,7 +3,7 @@ using System;
 
 namespace ACControlSystemApi.Model
 {
-    public class IRCode : IACCSSerializable
+    public class IRCode : IIRCode, IACCSSerializable
     {
         private ICode _code;
 

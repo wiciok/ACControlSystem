@@ -1,15 +1,16 @@
 ﻿using ACControlSystemApi.Model;
 using ACControlSystemApi.Repositories.Generic;
 using ACControlSystemApi.Utils;
+using ACCSApi.Model.Interfaces;
 using ACCSApi.Repositories.Interfaces;
 
 namespace ACControlSystemApi.Repositories
 {
-    public class ACDeviceRepository : BaseRepository<ACDevice>, IACDeviceRepository
+    public class ACDeviceRepository : BaseRepository<IACDevice>, IACDeviceRepository
     {
         private ACDevice _currentDevice;
 
-        public ACDeviceRepository(IDao<ACDevice> deviceDao) : base(deviceDao)
+        public ACDeviceRepository(IDao<IACDevice> deviceDao) : base(deviceDao)
         {
             CreateInitialDataTemp();
         }
@@ -55,11 +56,11 @@ namespace ACControlSystemApi.Repositories
                             IsTurnOffCode=false
                         }
                     }
-}
+                }
             });
         }
 
-        public ACDevice CurrentACDevice
+        public IACDevice CurrentACDevice
         {
             get => this.Get(GlobalSettings.currentACDeviceId);
             set => GlobalSettings.currentACDeviceId = value.Id;

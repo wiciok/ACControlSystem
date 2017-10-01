@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace ACControlSystemApi.Model
 {
-    public class ACDevice: IACCSSerializable
+    public class ACDevice: IACDevice, IACCSSerializable
     {
         public int Id { get; set; }
 
@@ -19,6 +19,6 @@ namespace ACControlSystemApi.Model
         // best way to do it is via using some kind of dynamic dictionary (could be passed from frontend as json)
         public object AvailableSettings { get => throw new NotImplementedException(); }
         
-        public IList<IRCode> AvailableIRCodes { get; set; }
+        public IList<IIRCode> AvailableIRCodes { get; set; }
     }
 }

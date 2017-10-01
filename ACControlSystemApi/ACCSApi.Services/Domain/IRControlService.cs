@@ -6,23 +6,22 @@ using IRSlingerCsharp;
 using System;
 using System.Linq;
 
-
 namespace ACControlSystemApi.Services
 {
-    public class HostDeviceControlService: IHostDeviceControlService
+    internal class IRControlService: IIRControlService
     {
         private IIRSlingerCsharp _irService;
         private IRaspberryPiDeviceRepository _hardwareDevicesRepo;
         private IACDeviceRepository _acDevicesRepo;
 
         private IRaspberryPiDevice _hostDevice;
-        private ACDevice _ACDevice;
+        private IACDevice _ACDevice;
 
         public ICode TurnOnCode { get; set; }
         public ICode TurnOffCode { get; set; }
 
 
-        public HostDeviceControlService(IIRSlingerCsharp irService, IRaspberryPiDeviceRepository hardwareDevicesRepo, IACDeviceRepository acDeviceRepo)
+        public IRControlService(IIRSlingerCsharp irService, IRaspberryPiDeviceRepository hardwareDevicesRepo, IACDeviceRepository acDeviceRepo)
         {
             _irService = irService;
             _hardwareDevicesRepo = hardwareDevicesRepo;
