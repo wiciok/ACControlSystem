@@ -10,7 +10,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ACCSApi.Model\ACCSApi.Model.csproj" />
-    <ProjectReference Include="..\ACCSApi.Utils\ACCSApi.Utils.csproj" />
   </ItemGroup>
 
 </Project>

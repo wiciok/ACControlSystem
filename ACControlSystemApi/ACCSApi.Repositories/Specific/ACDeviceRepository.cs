@@ -1,14 +1,10 @@
 ﻿using ACControlSystemApi.Model;
 using ACControlSystemApi.Repositories.Generic;
 using ACControlSystemApi.Utils;
+using ACCSApi.Repositories.Interfaces;
 
 namespace ACControlSystemApi.Repositories
 {
-    public interface IACDeviceRepository
-    {
-        ACDevice CurrentACDevice { get; set; }
-    }
-
     public class ACDeviceRepository : BaseRepository<ACDevice>, IACDeviceRepository
     {
         private ACDevice _currentDevice;

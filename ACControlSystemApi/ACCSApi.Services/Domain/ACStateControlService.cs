@@ -17,6 +17,4 @@ namespace ACControlSystemApi.Services
             return _currentState;
         }
     }
-
-
 }

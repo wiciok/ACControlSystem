@@ -1,5 +1,7 @@
 ﻿using ACControlSystemApi.Services.Interfaces;
 using System;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace ACControlSystemApi.Services
 {
@@ -7,7 +9,9 @@ namespace ACControlSystemApi.Services
     {
         public string CreateHash(string password)
         {
-            throw new NotImplementedException();
+            var hash = SHA256.Create();
+            var tmp = Encoding.Unicode.GetBytes(password.ToCharArray());
+            return hash.ComputeHash(tmp).ToString();
         }
     }
 }

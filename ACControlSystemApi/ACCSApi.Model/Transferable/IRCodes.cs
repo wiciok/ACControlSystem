@@ -1,10 +1,9 @@
-﻿
-using ACControlSystemApi.Model.Interfaces;
+﻿using ACCSApi.Model.Interfaces;
 using System;
 
 namespace ACControlSystemApi.Model
 {
-    public class IRCode : IACControlSystemSerializableClass
+    public class IRCode : IACCSSerializable
     {
         private ICode _code;
 

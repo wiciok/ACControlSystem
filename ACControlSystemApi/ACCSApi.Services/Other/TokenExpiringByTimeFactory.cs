@@ -3,13 +3,13 @@ using System;
 
 namespace ACControlSystemApi.Utils.Tokens
 {
-    public class TokenExpiredByTimeFactory : ITokenFactory
+    public class TokenExpiringByTimeFactory : ITokenFactory
     {
         private int _expirationTime = GlobalSettings.TokenExpirationTimeInSeconds;
 
         public IToken GenerateToken()
         {
-            return new TokenExpirationByTime(DateTime.Now.AddSeconds((int)_expirationTime));
+            return new TokenExpiringByTime(DateTime.Now.AddSeconds((int)_expirationTime));
         }
     }
 }

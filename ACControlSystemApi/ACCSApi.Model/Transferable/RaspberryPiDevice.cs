@@ -1,21 +1,21 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using ACControlSystemApi.Model.Interfaces;
+using ACCSApi.Model.Interfaces;
 
-public class RaspberryPiDevice: IACControlSystemSerializableClass
+public class RaspberryPiDevice: IACCSSerializable, IRaspberryPiDevice
 {
     public RaspberryPiDevice()
     {
         CodesList = new List<ICode>();
     }
 
-    public RaspberryPiDevice(string name, Dictionary<uint, uint> validPins): base()
+    public RaspberryPiDevice(string name, IDictionary<uint, uint> validPins): base()
     {
         Name = name;
         ValidBoardAndBroadcomPins = validPins;        
     }
 
-    private Dictionary<uint, uint> _validBoardAndBroadcomPins;
+    private IDictionary<uint, uint> _validBoardAndBroadcomPins;
     private uint _outBoardPin;
     private uint _inBoardPin;
 
@@ -24,9 +24,9 @@ public class RaspberryPiDevice: IACControlSystemSerializableClass
 
     public string Name { get; set; }
     
-    public List<ICode> CodesList { get; } //todo: change it later - if i'm gonna decrypt this codes
+    public IList<ICode> CodesList { get; } //todo: change it later - if i'm gonna decrypt this codes
     
-    public Dictionary<uint, uint> ValidBoardAndBroadcomPins //key: XX - board number, value: GPIOXX - broadcom number
+    public IDictionary<uint, uint> ValidBoardAndBroadcomPins //key: XX - board number, value: GPIOXX - broadcom number
     {
         get => _validBoardAndBroadcomPins;
         set => _validBoardAndBroadcomPins = value;

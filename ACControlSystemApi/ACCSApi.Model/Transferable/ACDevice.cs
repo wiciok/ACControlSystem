@@ -1,10 +1,10 @@
-﻿using ACControlSystemApi.Model.Interfaces;
+﻿using ACCSApi.Model.Interfaces;
 using System;
 using System.Collections.Generic;
 
 namespace ACControlSystemApi.Model
 {
-    public class ACDevice: IACControlSystemSerializableClass
+    public class ACDevice: IACCSSerializable
     {
         public int Id { get; set; }
 

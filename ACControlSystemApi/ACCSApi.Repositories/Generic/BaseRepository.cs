@@ -1,10 +1,10 @@
-﻿using ACControlSystemApi.Model.Interfaces;
+﻿using ACCSApi.Model.Interfaces;
 using System;
 using System.Collections.Generic;
 
 namespace ACControlSystemApi.Repositories.Generic
 {
-    public class BaseRepository<T>: IRepository<T> where T: class, IACControlSystemSerializableClass
+    public class BaseRepository<T>: IRepository<T> where T: class, IACCSSerializable
     {
         private IDao<T> _dao;
 

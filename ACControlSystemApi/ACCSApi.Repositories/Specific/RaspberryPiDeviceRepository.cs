@@ -1,13 +1,14 @@
 ﻿using ACControlSystemApi.Repositories.Generic;
 using ACControlSystemApi.Utils;
+using ACCSApi.Model.Interfaces;
 using ACCSApi.Repositories.Interfaces;
 using System.Collections.Generic;
 
 namespace ACControlSystemApi.Repositories
 {
-    public class RaspberryPiDeviceRepository : BaseRepository<RaspberryPiDevice>, IRaspberryPiDeviceRepository
+    public class RaspberryPiDeviceRepository : BaseRepository<IRaspberryPiDevice>, IRaspberryPiDeviceRepository
     {
-        public RaspberryPiDeviceRepository(IDao<RaspberryPiDevice> dao) : base(dao)
+        public RaspberryPiDeviceRepository(IDao<IRaspberryPiDevice> dao) : base(dao)
         {
             CreateInitialDataTemp(); // todo: finally remove this, it should only be persisted in file
         }
@@ -46,7 +47,7 @@ namespace ACControlSystemApi.Repositories
             });
         }
 
-        public RaspberryPiDevice CurrentDevice
+        public IRaspberryPiDevice CurrentDevice
         {
             get => this.Get(GlobalSettings.currentRaspberryPiDeviceId);
             set => GlobalSettings.currentRaspberryPiDeviceId = value.Id;

@@ -1,7 +1,6 @@
 ﻿using ACControlSystemApi.Model;
-using ACControlSystemApi.Model.Interfaces;
-using ACControlSystemApi.Repositories;
 using ACControlSystemApi.Services.Interfaces;
+using ACCSApi.Model.Interfaces;
 using ACCSApi.Repositories.Interfaces;
 using IRSlingerCsharp;
 using System;
@@ -16,7 +15,7 @@ namespace ACControlSystemApi.Services
         private IRaspberryPiDeviceRepository _hardwareDevicesRepo;
         private IACDeviceRepository _acDevicesRepo;
 
-        private RaspberryPiDevice _hostDevice;
+        private IRaspberryPiDevice _hostDevice;
         private ACDevice _ACDevice;
 
         public ICode TurnOnCode { get; set; }

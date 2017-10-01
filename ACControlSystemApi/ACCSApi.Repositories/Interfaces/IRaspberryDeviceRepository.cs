@@ -1,9 +1,10 @@
 ﻿using ACControlSystemApi.Repositories.Generic;
+using ACCSApi.Model.Interfaces;
 
 namespace ACCSApi.Repositories.Interfaces
 {
-    public interface IRaspberryPiDeviceRepository : IRepository<RaspberryPiDevice>
+    public interface IRaspberryPiDeviceRepository : IRepository<IRaspberryPiDevice>
     {
-        RaspberryPiDevice CurrentDevice { get; set; }
+        IRaspberryPiDevice CurrentDevice { get; set; }
     }
 }

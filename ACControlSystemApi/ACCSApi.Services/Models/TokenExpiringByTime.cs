@@ -3,9 +3,9 @@ using System;
 
 namespace ACControlSystemApi.Utils.Tokens
 {
-    public class TokenExpirationByTime : IToken
+    public class TokenExpiringByTime : IToken
     {
-        public TokenExpirationByTime(DateTime expirationDateTime)
+        public TokenExpiringByTime(DateTime expirationDateTime)
         {
             TokenString = UniqueStringGenerator.GenerateUniqueToken();
             CreationDate = DateTime.Now;

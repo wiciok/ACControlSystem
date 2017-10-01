@@ -27,7 +27,7 @@ namespace ACControlSystemApi.Controllers
 
                 if (result != null)
                     return Ok(result);
-                return Unauthorized(); //todo: check for better status code
+                return Unauthorized();
             }
 
             catch (ItemNotFoundException ex)

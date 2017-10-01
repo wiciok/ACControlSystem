@@ -3,17 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26730.15
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ACCSApi.Services", "ACCSApi.Services\ACCSApi.Services.csproj", "{2EEF3887-DE7A-4661-BE38-8388D8DD9306}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ACCSApi.Services", "ACCSApi.Services\ACCSApi.Services.csproj", "{2EEF3887-DE7A-4661-BE38-8388D8DD9306}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ACCSApi.Repositories", "ACCSApi.Repositories\ACCSApi.Repositories.csproj", "{04971EE4-C03A-4FB9-BD15-C193827D4459}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ACCSApi.Repositories", "ACCSApi.Repositories\ACCSApi.Repositories.csproj", "{04971EE4-C03A-4FB9-BD15-C193827D4459}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ACCSApi.Model", "ACCSApi.Model\ACCSApi.Model.csproj", "{FD2E98C0-4731-4F7D-A34F-D7337D2CE4C4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ACCSApi.Model", "ACCSApi.Model\ACCSApi.Model.csproj", "{FD2E98C0-4731-4F7D-A34F-D7337D2CE4C4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ACCSApi.Controllers", "ACCSApi.Controllers\ACCSApi.Controllers.csproj", "{8466305F-07B7-4092-BCB4-BC7E5262EE16}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ACCSApi.Controllers", "ACCSApi.Controllers\ACCSApi.Controllers.csproj", "{8466305F-07B7-4092-BCB4-BC7E5262EE16}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IRSlingerCsharp", "IRSlingerCsharp\IRSlingerCsharp.csproj", "{590D8827-857D-4854-BD2A-FB473FDB0C8B}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ACCSApi.Utils", "ACCSApi.Utils\ACCSApi.Utils.csproj", "{19DBD3D3-EEB6-45DF-928A-CC14DCF7BA39}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,10 +39,6 @@ Global
 		{590D8827-857D-4854-BD2A-FB473FDB0C8B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{590D8827-857D-4854-BD2A-FB473FDB0C8B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{590D8827-857D-4854-BD2A-FB473FDB0C8B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{19DBD3D3-EEB6-45DF-928A-CC14DCF7BA39}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{19DBD3D3-EEB6-45DF-928A-CC14DCF7BA39}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{19DBD3D3-EEB6-45DF-928A-CC14DCF7BA39}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{19DBD3D3-EEB6-45DF-928A-CC14DCF7BA39}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -7,7 +7,7 @@ using ACControlSystemApi.Utils;
 
 namespace ACControlSystemApi.Repositories.Generic
 {
-    public class GenericBinaryFileDao<T> : IDao<T> where T : class, IACControlSystemSerializableClass
+    public class GenericBinaryFileDao<T> : IDao<T> where T : class, IACCSSerializable
     {
         private List<T> _objectsList;
         private static readonly string pathToFile = GlobalSettings.PathToKeepFilesWithData + nameof(T) + ".bin";
