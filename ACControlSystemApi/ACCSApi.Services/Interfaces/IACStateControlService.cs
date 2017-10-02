@@ -4,7 +4,7 @@ namespace ACControlSystemApi.Services.Interfaces
 {
     public interface IACStateControlService
     {
-        void SetCurrentState(ACState newState);
-        ACState GetCurrentState();
+        void SetCurrentState(ACSetting newState);
+        ACSetting GetCurrentState();
     }
 }

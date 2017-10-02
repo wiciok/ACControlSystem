@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using ACControlSystemApi.Model;
 using ACControlSystemApi.Services.Interfaces;
 
 namespace ACStateSystemApi.Controllers

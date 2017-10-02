@@ -1,5 +1,4 @@
 ﻿using ACControlSystemApi.Services.Interfaces;
-using System;
 using System.Security.Cryptography;
 using System.Text;
 

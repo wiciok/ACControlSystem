@@ -2,9 +2,9 @@
 
 namespace ACCSApi.Model.Transferable
 {
-    public class ACState : IACState
+    class ACState : IACState
     {
-        public bool? IsOn { get; set; }
-        public object Settings { get; set; }
+        public bool? IsTurnOff { get; set; }
+        public IACSetting ACSetting { get; set; }
     }
 }
