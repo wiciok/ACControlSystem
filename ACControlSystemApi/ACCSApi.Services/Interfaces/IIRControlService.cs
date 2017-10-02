@@ -5,7 +5,6 @@ namespace ACControlSystemApi.Services.Interfaces
     internal interface IIRControlService
     {
         void SendMessage(ICode code);
-        void SendMessageById(int id);
         void SendTurnOffMessage();
         void SendTurnOnMessage();
     }

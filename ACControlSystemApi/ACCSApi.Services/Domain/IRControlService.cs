@@ -62,11 +62,6 @@ namespace ACControlSystemApi.Services
                 throw new ArgumentException();
         }
 
-        public void SendMessageById(int id)
-        {
-            SendMessage(_ACDevice.AvailableIRCodes.SingleOrDefault(x => x.Id == id).Code);
-        }
-
         public void SendTurnOffMessage()
         {
             SendMessage(TurnOffCode);

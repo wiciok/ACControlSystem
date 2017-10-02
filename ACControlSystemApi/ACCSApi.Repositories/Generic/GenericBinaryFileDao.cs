@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.IO;
 using ACControlSystemApi.Utils;
+using ACCSApi.Model.Interfaces;
 
 namespace ACControlSystemApi.Repositories.Generic
 {

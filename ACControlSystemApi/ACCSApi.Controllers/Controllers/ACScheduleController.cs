@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
+using System;
 
 namespace ACControlSystemApi.Controllers
 {
@@ -32,11 +33,11 @@ namespace ACControlSystemApi.Controllers
         public void Put(int id, [FromBody]string value)
         {
         }
-        
-        // DELETE: api/ApiWithActions/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+
+        [HttpDelete("{token/id}")]
+        public IActionResult Delete(string token, int id)
         {
+            throw new NotImplementedException();
         }
     }
 }

@@ -2,7 +2,9 @@
 using ACControlSystemApi.Repositories.Generic;
 using ACControlSystemApi.Utils;
 using ACCSApi.Model.Interfaces;
+using ACCSApi.Model.Transferable;
 using ACCSApi.Repositories.Interfaces;
+using Newtonsoft.Json.Linq;
 
 namespace ACControlSystemApi.Repositories
 {
@@ -21,39 +23,46 @@ namespace ACControlSystemApi.Repositories
             {
                 new ACDevice()
                 {
-                    Id=1,
+
+
+                    Id =1,
                     Brand="Fujitsu",
                     Model="",
                     ModulationFrequencyInHz=38,
                     DutyCycle=0.5,
-                    AvailableIRCodes= new IRCode[]
+                    AvailableSettings= new ACSetting[]
                     {
-                        new IRCode
-                        (
-                            new RawCode()
+                        new ACSetting()
+                        {
+                            Code=new RawCode()
                             {
                                 Code ="00101000 11000110 00000000 00001000 00001000 01000000 00111111"
-                            }
-                        )
-                        {
-                            Id=1,
-                            Name="turn off code",
-                            Description="turn off code",
-                            IsTurnOffCode=true
+                            },
+                            IsTurnOff=true,
+                            Settings=null
                         },
 
-                        new IRCode
-                        (
-                            new RawCode()
+                        new ACSetting()
+                        {
+                            Code=new RawCode()
                             {
                                 Code ="00101000 11000110 00000000 00001000 00001000 01111111 10010000 00001100 10001010 10000000 00001100 00000000 00000000 00000000 00000100 01110100"
-                            }
-                        )
+                            },
+                            IsTurnOff=true,
+                            Settings=null
+                        },
+
+                        new ACSetting()
                         {
-                            Id=1,
-                            Name="wl, cool",
-                            Description="wl, cool",
-                            IsTurnOffCode=false
+                            Code=new RawCode()
+                            {
+                                Code ="00101000 11000110 00000000 00001000 00001000 01111111 10010000 00001100 10001010 10000000 00001100 00000000 00000000 00000000 00000100 01110100"
+                            },
+                            IsTurnOff=false,
+                            Settings=new JObject()
+                            {
+                                { "Mode" , "Cool" }
+                            }
                         }
                     }
                 }

@@ -1,10 +1,10 @@
-﻿using ACCSApi.Model.Transferable;
+﻿using ACCSApi.Model.Interfaces;
 
 namespace ACControlSystemApi.Services.Interfaces
 {
     public interface IACStateControlService
     {
-        void SetCurrentState(ACSetting newState);
-        ACSetting GetCurrentState();
+        void SetCurrentState(IACState newState);
+        IACState GetCurrentState();
     }
 }
