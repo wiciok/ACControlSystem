@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ACControlSystemApi.Services.Interfaces;
 using ACControlSystemApi.Model.Interfaces;
-using ACControlSystemApi.Services.Exceptions;
 
 namespace ACControlSystemApi.Controllers
 {

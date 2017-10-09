@@ -3,7 +3,6 @@ using System;
 using System.Linq;
 using ACControlSystemApi.Model.Interfaces;
 using ACControlSystemApi.Repositories.Interfaces;
-using ACControlSystemApi.Services.Exceptions;
 using ACControlSystemApi.Model;
 
 namespace ACControlSystemApi.Services

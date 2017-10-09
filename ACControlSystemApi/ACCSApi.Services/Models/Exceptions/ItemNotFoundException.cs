@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ACControlSystemApi.Services.Exceptions
+namespace ACControlSystemApi.Services.Models.Exceptions
 {
     public class ItemNotFoundException : Exception
     {

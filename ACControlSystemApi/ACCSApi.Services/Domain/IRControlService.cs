@@ -4,7 +4,6 @@ using ACCSApi.Model.Interfaces;
 using ACCSApi.Repositories.Interfaces;
 using IRSlingerCsharp;
 using System;
-using System.Linq;
 
 namespace ACControlSystemApi.Services
 {
@@ -62,12 +61,14 @@ namespace ACControlSystemApi.Services
                 throw new ArgumentException();
         }
 
-        public void SendTurnOffMessage()
+        //todo: add null checking on turnoffcode and turnoncode properties!
+
+        public void SendDefaultTurnOffMessage()
         {
             SendMessage(TurnOffCode);
         }
 
-        public void SendTurnOnMessage()
+        public void SendDefaultTurnOnMessage()
         {
             SendMessage(TurnOnCode);
         }

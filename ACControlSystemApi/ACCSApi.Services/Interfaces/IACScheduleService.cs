@@ -1,6 +1,13 @@
-﻿namespace ACControlSystemApi.Services.Interfaces
+﻿using ACCSApi.Model.Interfaces;
+using System.Collections.Generic;
+
+namespace ACControlSystemApi.Services.Interfaces
 {
-    interface IACScheduleService
+    public interface IACScheduleService
     {
+        int AddNewSchedule(IACSchedule schedule);
+        void DeleteSchedule(int id);
+        IACSchedule GetSchedule(int id);
+        IEnumerable<IACSchedule> GetAllSchedules();        
     }
 }

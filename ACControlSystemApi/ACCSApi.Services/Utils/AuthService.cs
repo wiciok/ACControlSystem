@@ -1,6 +1,5 @@
 ﻿using ACControlSystemApi.Model;
 using ACControlSystemApi.Model.Interfaces;
-using ACControlSystemApi.Services.Exceptions;
 using ACControlSystemApi.Services.Interfaces;
 using ACControlSystemApi.Utils.Tokens;
 using ACControlSystemApi.Utils.Tokens.Interfaces;
