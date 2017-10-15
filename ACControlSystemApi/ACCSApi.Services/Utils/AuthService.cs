@@ -11,9 +11,9 @@ namespace ACCSApi.Services.Utils
 
     public class AuthService : IAuthService
     {
-        private IUserService _userService;
-        private ITokenFactory _tokenFactory;
-        private IPasswordHashingService _passHashService;
+        private readonly IUserService _userService;
+        private readonly ITokenFactory _tokenFactory;
+        private readonly IPasswordHashingService _passHashService;
         private static IDictionary<IUser, IToken> _tokensDictionary;
 
         public AuthService(IUserService userService, ITokenFactory tokenFactory, IPasswordHashingService passHashService)
@@ -31,12 +31,10 @@ namespace ACCSApi.Services.Utils
             var tokenDictRecord = _tokensDictionary.SingleOrDefault(x => x.Value.TokenString.Equals(tokenString));
             if (tokenDictRecord.Value.TokenString == null)
                 return false;
-            if (tokenDictRecord.Value.IsExpired)
-            {
-                _tokensDictionary.Remove(tokenDictRecord.Key);
-                return false;
-            }
-            return true;
+            if (!tokenDictRecord.Value.IsExpired)
+                return true;
+            _tokensDictionary.Remove(tokenDictRecord.Key);
+            return false;
         }
 
         public string TryAuthenticate(AuthPackage auth)

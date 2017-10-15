@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using ACCSApi.Model.Interfaces;
 using ACCSApi.Services.Interfaces;
 using ACCSApi.Services.Models.Exceptions;
@@ -11,8 +12,8 @@ namespace ACCSApi.Controllers.Controllers.done
     [Route("api/ACSchedule")]
     public class ACScheduleController : Controller
     {
-        private IACScheduleService _scheduleService;
-        private IAuthService _authService;
+        private readonly IACScheduleService _scheduleService;
+        private readonly IAuthService _authService;
 
         public ACScheduleController(IACScheduleService acScheduleService, IAuthService authService)
         {
@@ -28,13 +29,11 @@ namespace ACCSApi.Controllers.Controllers.done
                 if (_authService.CheckAuthentication(token))
                 {
                     var retVal = _scheduleService.GetAllSchedules();
-                    if (retVal == null)
+                    if (retVal == null || !retVal.Any())
                         return NoContent();
-                    else
-                        return Ok(retVal);
+                    return Ok(retVal);
                 }
-                else
-                    return Unauthorized();
+                return Unauthorized();
             }
 
             catch (Exception ex)
@@ -51,14 +50,18 @@ namespace ACCSApi.Controllers.Controllers.done
             {
                 if (_authService.CheckAuthentication(token))
                 {
-                    var retVal = _scheduleService.GetSchedule(id);
-                    if (retVal == null)
-                        return NoContent();
-                    else
-                        return Ok(retVal);
+                    IACSchedule retVal;
+                    try
+                    {
+                        retVal = _scheduleService.GetSchedule(id);
+                    }
+                    catch (ItemNotFoundException e)
+                    {
+                        return NotFound();
+                    }
+                    return Ok(retVal);
                 }
-                else
-                    return Unauthorized();
+                return Unauthorized();
             }
 
             catch (Exception ex)
@@ -91,7 +94,7 @@ namespace ACCSApi.Controllers.Controllers.done
                         return StatusCode(StatusCodes.Status409Conflict, ex.Message);
                     }
 
-                    return Ok();
+                    return Ok(createdScheduleId);
                 }
                 else
                     return Unauthorized();

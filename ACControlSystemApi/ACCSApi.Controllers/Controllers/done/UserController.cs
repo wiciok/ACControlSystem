@@ -13,8 +13,8 @@ namespace ACCSApi.Controllers.Controllers.done
     [Route("api/User")]
     public class UserController : Controller
     {
-        private IUserService _userService;
-        private IAuthService _authService;
+        private readonly IUserService _userService;
+        private readonly IAuthService _authService;
 
         public UserController(IUserService userService, IAuthService authService)
         {

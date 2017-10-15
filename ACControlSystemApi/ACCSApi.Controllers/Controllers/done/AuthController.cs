@@ -11,7 +11,7 @@ namespace ACCSApi.Controllers.Controllers.done
     [Route("api/Auth")]
     public class AuthController : Controller
     {
-        private IAuthService _authService;
+        private readonly IAuthService _authService;
 
         public AuthController(IAuthService authService)
         {

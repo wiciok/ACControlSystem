@@ -10,8 +10,8 @@ namespace ACCSApi.Services.Domain
 {
     public class UserService : IUserService
     {
-        private IUserRepository _userRepository;
-        private IPasswordHashingService _passHashService;
+        private readonly IUserRepository _userRepository;
+        private readonly IPasswordHashingService _passHashService;
 
         public UserService(IUserRepository userRepository, IPasswordHashingService passHashService)
         {

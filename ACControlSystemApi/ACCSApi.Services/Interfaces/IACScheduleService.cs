@@ -8,6 +8,7 @@ namespace ACCSApi.Services.Interfaces
         int AddNewSchedule(IACSchedule schedule);
         void DeleteSchedule(int id);
         IACSchedule GetSchedule(int id);
-        IEnumerable<IACSchedule> GetAllSchedules();        
+        IEnumerable<IACSchedule> GetAllSchedules();
+        void RegisterAllSchedulesFromRepository();
     }
 }

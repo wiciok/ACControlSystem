@@ -11,8 +11,8 @@ namespace ACCSApi.Controllers.Controllers.done
     [Route("api/ACState")]
     public class ACStateController : Controller
     {
-        private IACStateControlService _acStateControlService;
-        private IAuthService _authService;
+        private readonly IACStateControlService _acStateControlService;
+        private readonly IAuthService _authService;
 
         public ACStateController(IACStateControlService acStateControlService, IAuthService authService)
         {
