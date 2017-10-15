@@ -1,4 +1,4 @@
-﻿namespace ACControlSystemApi.Utils.Tokens.Enums
+﻿namespace ACCSApi.Repositories.Models.Settings
 {
     public enum TokenExpirationType
     {

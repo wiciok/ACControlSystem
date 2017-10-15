@@ -1,12 +1,11 @@
-﻿using ACControlSystemApi.Model;
-using ACControlSystemApi.Repositories.Generic;
-using ACControlSystemApi.Utils;
-using ACCSApi.Model.Interfaces;
+﻿using ACCSApi.Model.Interfaces;
 using ACCSApi.Model.Transferable;
+using ACCSApi.Repositories.Generic;
 using ACCSApi.Repositories.Interfaces;
+using ACCSApi.Repositories.Models.Settings;
 using Newtonsoft.Json.Linq;
 
-namespace ACControlSystemApi.Repositories
+namespace ACCSApi.Repositories.Specific
 {
     public class ACDeviceRepository : BaseRepository<IACDevice>, IACDeviceRepository
     {

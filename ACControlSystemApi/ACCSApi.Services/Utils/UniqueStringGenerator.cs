@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ACControlSystemApi.Utils.Tokens
+namespace ACCSApi.Services.Utils
 {
     internal static class UniqueStringGenerator
     {

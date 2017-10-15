@@ -1,7 +1,7 @@
-﻿using ACCSApi.Model.Interfaces;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using ACCSApi.Model.Interfaces;
 
-namespace ACControlSystemApi.Services.Interfaces
+namespace ACCSApi.Services.Interfaces
 {
     public interface IACScheduleService
     {

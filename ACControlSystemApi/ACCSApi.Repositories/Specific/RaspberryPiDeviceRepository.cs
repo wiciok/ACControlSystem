@@ -1,10 +1,11 @@
-﻿using ACControlSystemApi.Repositories.Generic;
-using ACControlSystemApi.Utils;
+﻿using System.Collections.Generic;
 using ACCSApi.Model.Interfaces;
+using ACCSApi.Model.Transferable;
+using ACCSApi.Repositories.Generic;
 using ACCSApi.Repositories.Interfaces;
-using System.Collections.Generic;
+using ACCSApi.Repositories.Models.Settings;
 
-namespace ACControlSystemApi.Repositories
+namespace ACCSApi.Repositories.Specific
 {
     public class RaspberryPiDeviceRepository : BaseRepository<IRaspberryPiDevice>, IRaspberryPiDeviceRepository
     {

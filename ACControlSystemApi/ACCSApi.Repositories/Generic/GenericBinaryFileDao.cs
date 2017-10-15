@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.IO;
-using ACControlSystemApi.Utils;
+using System.Linq;
 using ACCSApi.Model.Interfaces;
+using ACCSApi.Repositories.Models.Settings;
 
-namespace ACControlSystemApi.Repositories.Generic
+namespace ACCSApi.Repositories.Generic
 {
     public class GenericBinaryFileDao<T> : IDao<T> where T : class, IACCSSerializable
     {
@@ -25,12 +25,13 @@ namespace ACControlSystemApi.Repositories.Generic
         }
 
 
-        public void Add(T obj)
+        public int Add(T obj)
         {
             if (obj.Id == 0)
                 obj.Id = _lastClassUniqueId++;
 
             _objectsList.Add(obj);
+            return obj.Id;
         }
 
         public void Delete(int id)

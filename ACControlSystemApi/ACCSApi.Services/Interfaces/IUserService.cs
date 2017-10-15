@@ -1,6 +1,6 @@
-﻿using ACControlSystemApi.Model.Interfaces;
+﻿using ACCSApi.Model.Interfaces;
 
-namespace ACControlSystemApi.Services.Interfaces
+namespace ACCSApi.Services.Interfaces
 {
     public interface IUserService
     {

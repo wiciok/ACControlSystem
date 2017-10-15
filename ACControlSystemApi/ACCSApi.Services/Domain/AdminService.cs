@@ -1,6 +1,6 @@
-﻿using ACControlSystemApi.Services.Interfaces;
+﻿using ACCSApi.Services.Interfaces;
 
-namespace ACControlSystemApi.Services
+namespace ACCSApi.Services.Domain
 {
     public class AdminService: IAdminService
     {

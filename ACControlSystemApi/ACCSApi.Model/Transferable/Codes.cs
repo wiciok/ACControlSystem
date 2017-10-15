@@ -1,6 +1,6 @@
 ﻿using ACCSApi.Model.Interfaces;
 
-namespace ACControlSystemApi.Model
+namespace ACCSApi.Model.Transferable
 {
     public class NecCode : ICode
     {

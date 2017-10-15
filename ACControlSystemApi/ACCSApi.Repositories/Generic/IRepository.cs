@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace ACControlSystemApi.Repositories.Generic
+namespace ACCSApi.Repositories.Generic
 {
     public interface IRepository<T> where T: class
     {
-        void Add(T obj);
+        int Add(T obj);
         void Add(IList<T> obj);
         void Update(T obj);
         void Delete(T obj);

@@ -1,8 +1,8 @@
-﻿using ACCSApi.Model.Interfaces;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using ACCSApi.Model.Interfaces;
 
-namespace ACControlSystemApi.Repositories.Generic
+namespace ACCSApi.Repositories.Generic
 {
     public class BaseRepository<T>: IRepository<T> where T: class, IACCSSerializable
     {
@@ -14,10 +14,11 @@ namespace ACControlSystemApi.Repositories.Generic
         }
 
 
-        public void Add(T obj)
+        public int Add(T obj)
         {
-            _dao.Add(obj);
+            var retId = _dao.Add(obj);
             _dao.SaveData();
+            return retId;
         }
 
         public void Add(IList<T> obj)

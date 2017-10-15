@@ -1,6 +1,4 @@
-﻿using ACControlSystemApi.Utils.Tokens.Enums;
-
-namespace ACControlSystemApi.Utils
+﻿namespace ACCSApi.Repositories.Models.Settings
 {
     public static class GlobalSettings
     {

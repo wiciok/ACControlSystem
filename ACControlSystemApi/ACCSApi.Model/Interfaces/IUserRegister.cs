@@ -1,4 +1,6 @@
-﻿namespace ACControlSystemApi.Model.Interfaces
+﻿using ACCSApi.Model.Transferable;
+
+namespace ACCSApi.Model.Interfaces
 {
     public interface IUserRegister
     {

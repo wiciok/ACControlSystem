@@ -1,12 +1,11 @@
-﻿using ACControlSystemApi.Model;
-using ACControlSystemApi.Model.Interfaces;
-using ACControlSystemApi.Services.Interfaces;
-using ACControlSystemApi.Utils.Tokens;
-using ACControlSystemApi.Utils.Tokens.Interfaces;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using ACCSApi.Model.Interfaces;
+using ACCSApi.Model.Transferable;
+using ACCSApi.Services.Interfaces;
+using ACCSApi.Services.Models.Exceptions;
 
-namespace ACControlSystemApi.Services
+namespace ACCSApi.Services.Utils
 {
     //todo: mark as singleton in DI configuration!
 

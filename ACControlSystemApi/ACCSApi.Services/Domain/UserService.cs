@@ -1,11 +1,12 @@
-﻿using ACControlSystemApi.Services.Interfaces;
-using System;
+﻿using System;
 using System.Linq;
-using ACControlSystemApi.Model.Interfaces;
-using ACControlSystemApi.Repositories.Interfaces;
-using ACControlSystemApi.Model;
+using ACCSApi.Model;
+using ACCSApi.Model.Interfaces;
+using ACCSApi.Repositories.Interfaces;
+using ACCSApi.Services.Interfaces;
+using ACCSApi.Services.Models.Exceptions;
 
-namespace ACControlSystemApi.Services
+namespace ACCSApi.Services.Domain
 {
     public class UserService : IUserService
     {

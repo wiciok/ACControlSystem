@@ -1,7 +1,7 @@
-﻿using ACControlSystemApi.Model.Interfaces;
-using System;
+﻿using System;
+using ACCSApi.Model.Interfaces;
 
-namespace ACControlSystemApi.Model
+namespace ACCSApi.Model.Transferable
 {
     public class UserPublic : IUserPublic
     {

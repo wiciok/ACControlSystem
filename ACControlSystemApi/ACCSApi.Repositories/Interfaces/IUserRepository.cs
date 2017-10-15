@@ -1,7 +1,7 @@
-﻿using ACControlSystemApi.Model.Interfaces;
-using ACControlSystemApi.Repositories.Generic;
+﻿using ACCSApi.Model.Interfaces;
+using ACCSApi.Repositories.Generic;
 
-namespace ACControlSystemApi.Repositories.Interfaces
+namespace ACCSApi.Repositories.Interfaces
 {
     public interface IUserRepository: IRepository<IUser>
     {

@@ -1,6 +1,6 @@
 ﻿using ACCSApi.Model.Interfaces;
 
-namespace ACControlSystemApi.Services.Interfaces
+namespace ACCSApi.Services.Interfaces
 {
     internal interface IIRControlService
     {

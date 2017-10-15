@@ -1,4 +1,4 @@
-﻿namespace ACControlSystemApi.Services.Interfaces
+﻿namespace ACCSApi.Services.Interfaces
 {
     interface IAdminService
     {

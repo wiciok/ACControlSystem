@@ -1,7 +1,9 @@
-﻿using ACControlSystemApi.Utils.Tokens.Interfaces;
-using System;
+﻿using System;
+using ACCSApi.Repositories.Models.Settings;
+using ACCSApi.Services.Interfaces;
+using ACCSApi.Services.Models;
 
-namespace ACControlSystemApi.Utils.Tokens
+namespace ACCSApi.Services.Other
 {
     public class TokenExpiringByTimeFactory : ITokenFactory
     {

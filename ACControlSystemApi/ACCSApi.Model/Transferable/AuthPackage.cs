@@ -1,4 +1,4 @@
-﻿namespace ACControlSystemApi.Model
+﻿namespace ACCSApi.Model.Transferable
 {
     public class AuthPackage
     {

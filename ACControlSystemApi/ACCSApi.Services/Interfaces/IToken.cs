@@ -1,4 +1,4 @@
-﻿namespace ACControlSystemApi.Utils.Tokens.Interfaces
+﻿namespace ACCSApi.Services.Interfaces
 {
     public interface IToken
     {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ACControlSystemApi.Model.Interfaces
+namespace ACCSApi.Model.Interfaces
 {
     public interface IUserPublic
     {

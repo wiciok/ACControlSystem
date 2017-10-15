@@ -1,8 +1,8 @@
-﻿using ACControlSystemApi.Services.Interfaces;
+﻿using System;
 using ACCSApi.Model.Interfaces;
-using System;
+using ACCSApi.Services.Interfaces;
 
-namespace ACControlSystemApi.Services
+namespace ACCSApi.Services.Domain
 {
     public class ACStateControlService : IACStateControlService
     {
@@ -20,9 +20,15 @@ namespace ACControlSystemApi.Services
             _currentState = newState;            
         }
 
+
         public IACState GetCurrentState()
         {
             return _currentState;
+        }
+
+        public void ChangeACSetting(IACSetting setting)
+        {
+            _irControlService.SendMessage(setting.Code);
         }
 
         private void ChangeACState(IACState newState)
@@ -39,7 +45,7 @@ namespace ACControlSystemApi.Services
                     if (newState.ACSetting == null)
                         throw new ArgumentNullException("ACState have both its members null!"); //todo: change this message to be more specific
                     else
-                        _irControlService.SendMessage(newState.ACSetting.Code);
+                        ChangeACSetting(newState.ACSetting);
                     break;
 
                 case false:
@@ -48,7 +54,7 @@ namespace ACControlSystemApi.Services
                     else
                     {
                         if (newState.ACSetting.IsTurnOff == false)
-                            _irControlService.SendMessage(newState.ACSetting.Code);
+                            ChangeACSetting(newState.ACSetting);
                         else
                             throw new ArgumentException("IACState members inconsistency: IACState.IsTurnOff==false while IACState.ACSetting.IsTurnOff=true!");
                     }
@@ -62,7 +68,7 @@ namespace ACControlSystemApi.Services
                     else
                     {
                         if (newState.ACSetting.IsTurnOff == true)
-                            _irControlService.SendMessage(newState.ACSetting.Code);
+                            ChangeACSetting(newState.ACSetting);
                         else
                             throw new ArgumentException("IACState members inconsistency: IACState.IsTurnOff==true while IACState.ACSetting.IsTurnOff=false!");
                     }

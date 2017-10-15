@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 
-namespace ACControlSystemApi.Controllers
+namespace ACCSApi.Controllers.Controllers
 {
     [Produces("application/json")]
     [Route("api/Admin")]

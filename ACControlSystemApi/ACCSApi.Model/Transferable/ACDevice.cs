@@ -1,8 +1,8 @@
-﻿using ACCSApi.Model.Interfaces;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using ACCSApi.Model.Interfaces;
 
-namespace ACControlSystemApi.Model
+namespace ACCSApi.Model.Transferable
 {
     public class ACDevice : IACDevice, IACCSSerializable
     {

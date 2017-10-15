@@ -1,7 +1,7 @@
 ﻿using System;
-using ACControlSystemApi.Model.Interfaces;
+using ACCSApi.Model.Interfaces;
 
-namespace ACControlSystemApi.Model
+namespace ACCSApi.Model
 {
     public class Admin : IUser
     {

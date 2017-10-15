@@ -1,5 +1,5 @@
-﻿using ACControlSystemApi.Repositories.Generic;
-using ACCSApi.Model.Interfaces;
+﻿using ACCSApi.Model.Interfaces;
+using ACCSApi.Repositories.Generic;
 
 namespace ACCSApi.Repositories.Interfaces
 {

@@ -1,11 +1,11 @@
-﻿using ACControlSystemApi.Model;
-using ACControlSystemApi.Services.Interfaces;
+﻿using System;
 using ACCSApi.Model.Interfaces;
+using ACCSApi.Model.Transferable;
 using ACCSApi.Repositories.Interfaces;
+using ACCSApi.Services.Interfaces;
 using IRSlingerCsharp;
-using System;
 
-namespace ACControlSystemApi.Services
+namespace ACCSApi.Services.Domain
 {
     internal class IRControlService: IIRControlService
     {

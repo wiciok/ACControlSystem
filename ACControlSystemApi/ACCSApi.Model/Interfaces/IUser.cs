@@ -1,7 +1,6 @@
-﻿using ACCSApi.Model.Interfaces;
-using System;
+﻿using System;
 
-namespace ACControlSystemApi.Model.Interfaces
+namespace ACCSApi.Model.Interfaces
 {
     public interface IUser: IACCSSerializable
     {

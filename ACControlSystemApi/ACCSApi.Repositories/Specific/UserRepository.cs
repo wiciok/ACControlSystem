@@ -1,8 +1,8 @@
-﻿using ACControlSystemApi.Model.Interfaces;
-using ACControlSystemApi.Repositories.Generic;
-using ACControlSystemApi.Repositories.Interfaces;
+﻿using ACCSApi.Model.Interfaces;
+using ACCSApi.Repositories.Generic;
+using ACCSApi.Repositories.Interfaces;
 
-namespace ACControlSystemApi.Repositories
+namespace ACCSApi.Repositories.Specific
 {
     public class UserRepository: BaseRepository<IUser>, IUserRepository
     {

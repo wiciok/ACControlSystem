@@ -1,6 +1,4 @@
-﻿using ACControlSystemApi.Utils.Tokens.Interfaces;
-
-namespace ACControlSystemApi.Utils.Tokens
+﻿namespace ACCSApi.Services.Interfaces
 {
     public interface ITokenFactory
     {

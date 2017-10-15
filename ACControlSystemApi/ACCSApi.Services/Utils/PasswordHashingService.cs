@@ -1,8 +1,8 @@
-﻿using ACControlSystemApi.Services.Interfaces;
-using System.Security.Cryptography;
+﻿using System.Security.Cryptography;
 using System.Text;
+using ACCSApi.Services.Interfaces;
 
-namespace ACControlSystemApi.Services
+namespace ACCSApi.Services.Utils
 {
     internal class PasswordHashingService : IPasswordHashingService
     {
