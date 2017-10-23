@@ -14,6 +14,8 @@ namespace ACCSApi.Services.Domain
     //todo: przemyslec usuwanie scheduli ktore nie sa juz aktualne
     //todo: przy starcie aplikacji powinno sie dodawac wszystkie schedule do wykonania
 
+        //todo: check why isntanceperrequest is not working!
+
     public class ACScheduleService : IACScheduleService
     {
         private readonly IACScheduleRepository _scheduleRepository;
@@ -22,7 +24,7 @@ namespace ACCSApi.Services.Domain
         private static readonly IDictionary<IACSchedule, Tuple<Timer, Timer>> SchedulesTimersDict = new Dictionary<IACSchedule, Tuple<Timer, Timer>>();
         private static bool _isFirstInstance = true;
 
-        internal ACScheduleService(IACScheduleRepository scheduleRepository, IACStateControlService stateControlService)
+        public ACScheduleService(IACScheduleRepository scheduleRepository, IACStateControlService stateControlService)
         {
             _acStateControlService = stateControlService;
             _scheduleRepository = scheduleRepository;

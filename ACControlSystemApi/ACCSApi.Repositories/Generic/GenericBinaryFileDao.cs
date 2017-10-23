@@ -10,7 +10,8 @@ namespace ACCSApi.Repositories.Generic
     public class GenericBinaryFileDao<T> : IDao<T> where T : class, IACCSSerializable
     {
         private List<T> _objectsList;
-        private static readonly string pathToFile = GlobalSettings.PathToKeepFilesWithData + nameof(T) + ".bin";
+        //private static readonly string pathToFile = GlobalSettings.PathToKeepFilesWithData + nameof(T) + ".bin";
+        private static readonly string pathToFile = GlobalSettings.PathToKeepFilesWithData;
         private int _lastClassUniqueId = 1;
 
         public GenericBinaryFileDao()

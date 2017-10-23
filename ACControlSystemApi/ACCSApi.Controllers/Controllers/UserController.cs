@@ -5,7 +5,7 @@ using ACCSApi.Services.Models.Exceptions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace ACCSApi.Controllers.Controllers.done
+namespace ACCSApi.Controllers.Controllers
 {
     //todo: check routing if its working!
 
@@ -23,7 +23,7 @@ namespace ACCSApi.Controllers.Controllers.done
         }
 
         // GET: api/User/5
-        [HttpGet("{token}/{id}", Name = "Get")]
+        [HttpGet("{token}/{id}")]
         public IActionResult Get(string token, int id)
         {
             try

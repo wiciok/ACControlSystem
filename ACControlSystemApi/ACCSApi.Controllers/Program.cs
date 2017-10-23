@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore;
+﻿using Autofac.Extensions.DependencyInjection;
+using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 
 namespace ACCSApi.Controllers
@@ -12,6 +13,7 @@ namespace ACCSApi.Controllers
 
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
+                .ConfigureServices(x=>x.AddAutofac())
                 .UseStartup<Startup>()
                 .Build();
     }

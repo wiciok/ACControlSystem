@@ -2,7 +2,7 @@
 
 namespace ACCSApi.Services.Interfaces
 {
-    internal interface IIRControlService
+    public interface IIRControlService
     {
         void SendMessage(ICode code);
         void SendDefaultTurnOffMessage();

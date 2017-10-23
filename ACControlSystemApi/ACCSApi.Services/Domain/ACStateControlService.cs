@@ -7,9 +7,9 @@ namespace ACCSApi.Services.Domain
     public class ACStateControlService : IACStateControlService
     {
         private IACState _currentState;
-        private IIRControlService _irControlService;
+        private readonly IIRControlService _irControlService;
 
-        internal ACStateControlService(IIRControlService irControlService) //todo: check if it can be internal or must be public
+        public ACStateControlService(IIRControlService irControlService)
         {
             _irControlService = irControlService;
         }

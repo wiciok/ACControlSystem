@@ -5,7 +5,7 @@ using ACCSApi.Services.Models.Exceptions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace ACCSApi.Controllers.Controllers.done
+namespace ACCSApi.Controllers.Controllers
 {
     [Produces("application/json")]
     [Route("api/Auth")]
