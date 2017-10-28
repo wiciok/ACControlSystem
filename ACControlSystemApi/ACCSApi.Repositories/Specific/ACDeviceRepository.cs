@@ -13,7 +13,7 @@ namespace ACCSApi.Repositories.Specific
 
         public ACDeviceRepository(IDao<IACDevice> deviceDao) : base(deviceDao)
         {
-            CreateInitialDataTemp();
+            //CreateInitialDataTemp();
         }
 
         public void CreateInitialDataTemp()

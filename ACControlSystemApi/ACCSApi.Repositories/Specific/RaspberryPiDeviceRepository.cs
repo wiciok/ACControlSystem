@@ -11,7 +11,7 @@ namespace ACCSApi.Repositories.Specific
     {
         public RaspberryPiDeviceRepository(IDao<IRaspberryPiDevice> dao) : base(dao)
         {
-            CreateInitialDataTemp(); // todo: finally remove this, it should only be persisted in file
+            //CreateInitialDataTemp(); // todo: finally remove this, it should only be persisted in file
         }
 
         public void CreateInitialDataTemp()

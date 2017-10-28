@@ -21,7 +21,7 @@ namespace ACCSApi.Controllers.Controllers
         }
     
         //no authorization required, device state can be accesed by anyone
-        [HttpGet()]
+        [HttpGet]
         public IActionResult Get()   //gets current state of ACDevice
         {
             try

@@ -10,6 +10,8 @@ using ACCSApi.Repositories.Models.Settings;
 using ACCSApi.Repositories.Specific;
 using ACCSApi.Services.Domain;
 using ACCSApi.Services.Interfaces;
+using ACCSApi.Services.Models;
+using ACCSApi.Services.Other;
 using ACCSApi.Services.Utils;
 using Autofac;
 using Autofac.Core;
@@ -57,16 +59,14 @@ namespace ACCSApi.Controllers
             builder.RegisterType<RaspberryPiDevice>()
                 .AsImplementedInterfaces();
 
-            var asd = AppDomain.CurrentDomain.GetAssemblies().Single(x => x.FullName.StartsWith("ACCSApi.Model"));
+            var modelAssembly = AppDomain.CurrentDomain.GetAssemblies().Single(x => x.FullName.StartsWith("ACCSApi.Model"));
 
-            /*builder.RegisterAssemblyTypes(AppDomain.CurrentDomain.GetAssemblies())
-                .Where(t => t.BaseType == typeof(IACCSSerializable))
-                .AsImplementedInterfaces()
-                .AsSelf();*/
-
-            builder.RegisterAssemblyTypes(asd)
+            builder.RegisterAssemblyTypes(modelAssembly)
                 .AsImplementedInterfaces()
                 .InstancePerDependency();
+
+            builder.RegisterTypes(typeof(TokenExpiringByTimeFactory), typeof(TokenExpiringByTime))
+                .AsImplementedInterfaces();
 
             builder.RegisterType<ACScheduleService>()
                 .AsImplementedInterfaces()

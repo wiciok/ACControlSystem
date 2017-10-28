@@ -83,7 +83,7 @@ namespace ACCSApi.Repositories.Generic
         {
             using (StreamWriter file = File.CreateText(pathToFile))
             {
-                var serializer = new JsonSerializer();
+                var serializer = JsonSerializer.Create(new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.Objects });
                 serializer.Serialize(file, _objectsList);
             }
         }
@@ -99,7 +99,7 @@ namespace ACCSApi.Repositories.Generic
             {
                 using (JsonReader file = new JsonTextReader(File.OpenText(pathToFile)))
                 {
-                    var serializer = new JsonSerializer();
+                    var serializer = JsonSerializer.Create(new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.Objects });
                     var d = (IList)serializer.Deserialize(file, list.GetType());
                     _objectsList = d.Cast<T>().ToList();
                 }
@@ -107,7 +107,7 @@ namespace ACCSApi.Repositories.Generic
             catch (FileNotFoundException e)
             {
                 //todo: logging
-            }           
+            }
         }
         #endregion private methods
     }
