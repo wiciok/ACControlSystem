@@ -24,12 +24,9 @@ namespace ACCSApi.Model.Transferable
         private uint _outBoardPin;
         private uint _inBoardPin;
 
-
         public int Id { get; set; }
-
-        public string Name { get; set; }
-    
-        public IList<ICode> CodesList { get; } //todo: change it later - if i'm gonna decrypt this codes
+        public string Name { get; set; }  
+        public IList<ICode> CodesList { get; }
     
         public IDictionary<uint, uint> ValidBoardAndBroadcomPins //key: XX - board number, value: GPIOXX - broadcom number
         {
@@ -39,13 +36,13 @@ namespace ACCSApi.Model.Transferable
 
         public uint BoardOutPin
         {
-            get { return _outBoardPin; }
-            set { _outBoardPin = value; }
+            get => _outBoardPin;
+            set => _outBoardPin = value;
         }
         public uint BoardInPin
         {
-            get { return _inBoardPin; }
-            set { _inBoardPin = value; }
+            get => _inBoardPin;
+            set => _inBoardPin = value;
         }
 
         public uint BroadcomOutPin

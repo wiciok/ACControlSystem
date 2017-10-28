@@ -15,7 +15,6 @@ namespace ACCSApi.Model.Transferable
         }
 
         public int Id { get; set; }
-
         public string Model { get; set; }
         public string Brand { get; set; }
 
@@ -29,8 +28,8 @@ namespace ACCSApi.Model.Transferable
             get => _turnOffSetting;
             set
             {
-                //if (!value.IsTurnOff && value!=null)
-                //    throw new ArgumentException("TurnOffSetting must have IACSetting object with property IsOff=true!");
+                if (value != null && !value.IsTurnOff)
+                    throw new ArgumentException("TurnOffSetting must have IACSetting object with property IsOff=true!");
                 _turnOffSetting = value;
             }
         }

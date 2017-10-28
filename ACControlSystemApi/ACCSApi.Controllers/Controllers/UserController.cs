@@ -121,13 +121,6 @@ namespace ACCSApi.Controllers.Controllers
             }
         }
 
-        // PUT: api/User/5
-        //edit public data
-        [HttpPut("{token}")]
-        public IActionResult Put(string token, [FromBody]IUserPublic userPublicData)
-        {
-            return StatusCode(StatusCodes.Status501NotImplemented);
-        }
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{token}/{id}")]

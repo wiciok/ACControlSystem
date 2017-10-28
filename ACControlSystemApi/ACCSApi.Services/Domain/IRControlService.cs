@@ -3,11 +3,12 @@ using ACCSApi.Model.Interfaces;
 using ACCSApi.Model.Transferable;
 using ACCSApi.Repositories.Interfaces;
 using ACCSApi.Services.Interfaces;
+using ACCSApi.Services.Models.Exceptions;
 using IRSlingerCsharp;
 
 namespace ACCSApi.Services.Domain
 {
-    internal class IRControlService: IIRControlService
+    internal class IRControlService : IIRControlService
     {
         private IIRSlingerCsharp _irService;
         private IRaspberryPiDeviceRepository _hardwareDevicesRepo;
@@ -33,43 +34,46 @@ namespace ACCSApi.Services.Domain
 
         public void SendMessage(ICode code)
         {
-            if (code is NecCode nc)
+            switch (code)
             {
-                _irService.SendNecMsg
+                case NecCode nc:
+                    _irService.SendNecMsg
                     (_hostDevice.BroadcomOutPin,
-                    _ACDevice.ModulationFrequencyInHz,
-                    _ACDevice.DutyCycle,
-                    nc.LeadingPulseDuration,
-                    nc.LeadingGapDuration,
-                    nc.OnePulseDuration,
-                    nc.ZeroPulseDuration,
-                    nc.OneGapDuration,
-                    nc.ZeroGapDuration,
-                    nc.SendTrailingPulse,
-                    nc.Code);
-            }
-
-            else if (code is RawCode rc)
-            {
-                _irService.SendRawMsg
+                        _ACDevice.ModulationFrequencyInHz,
+                        _ACDevice.DutyCycle,
+                        nc.LeadingPulseDuration,
+                        nc.LeadingGapDuration,
+                        nc.OnePulseDuration,
+                        nc.ZeroPulseDuration,
+                        nc.OneGapDuration,
+                        nc.ZeroGapDuration,
+                        nc.SendTrailingPulse,
+                        nc.Code);
+                    break;
+                case RawCode rc:
+                    _irService.SendRawMsg
                     (_hostDevice.BroadcomOutPin,
-                    _ACDevice.ModulationFrequencyInHz,
-                    _ACDevice.DutyCycle,
-                    rc.Code);
+                        _ACDevice.ModulationFrequencyInHz,
+                        _ACDevice.DutyCycle,
+                        rc.Code);
+                    break;
+                default:
+                    throw new ArgumentException();
             }
-            else
-                throw new ArgumentException();
         }
 
-        //todo: add null checking on turnoffcode and turnoncode properties!
 
         public void SendDefaultTurnOffMessage()
         {
+            if (TurnOffCode == null)
+                throw new ItemNotFoundException("Default Turn Off Code not specified!");
             SendMessage(TurnOffCode);
         }
 
         public void SendDefaultTurnOnMessage()
         {
+            if (TurnOnCode == null)
+                throw new ItemNotFoundException("Default Turn On Code not specified!");
             SendMessage(TurnOnCode);
         }
     }

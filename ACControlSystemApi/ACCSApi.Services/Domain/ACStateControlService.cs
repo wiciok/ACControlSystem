@@ -1,6 +1,7 @@
 ﻿using System;
 using ACCSApi.Model.Interfaces;
 using ACCSApi.Services.Interfaces;
+using ACCSApi.Services.Models.Exceptions;
 
 namespace ACCSApi.Services.Domain
 {
@@ -23,7 +24,9 @@ namespace ACCSApi.Services.Domain
 
         public IACState GetCurrentState()
         {
-            return _currentState;
+            if(_currentState!=null)
+                return _currentState;
+            throw new ACStateUndefinedException();
         }
 
         public void ChangeACSetting(IACSetting setting)

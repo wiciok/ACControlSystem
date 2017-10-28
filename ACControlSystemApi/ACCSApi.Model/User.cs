@@ -11,14 +11,11 @@ namespace ACCSApi.Model
         public string PasswordHash { get; set; }
         public DateTime RegistrationTimestamp { get; set; }
 
-        public IUserPublic PublicData
+        public IUserPublic PublicData => new UserPublic
         {
-            get => new UserPublic()
-            {
-                EmailAddress = EmailAddress,
-                RegistrationTimestamp = RegistrationTimestamp
-            };
-        }
+            EmailAddress = EmailAddress,
+            RegistrationTimestamp = RegistrationTimestamp
+        };
     }
 }
 

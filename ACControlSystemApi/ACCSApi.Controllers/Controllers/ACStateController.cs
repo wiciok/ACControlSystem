@@ -1,5 +1,6 @@
 using System;
 using ACCSApi.Model.Interfaces;
+using ACCSApi.Model.Transferable;
 using ACCSApi.Services.Interfaces;
 using ACCSApi.Services.Models.Exceptions;
 using Microsoft.AspNetCore.Http;
@@ -32,7 +33,7 @@ namespace ACCSApi.Controllers.Controllers
 
             catch (ACStateUndefinedException ex)
             {
-                return Forbid(ex.Message);
+                return NoContent();
             }
 
             catch (Exception ex)
@@ -41,7 +42,26 @@ namespace ACCSApi.Controllers.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
-        
+
+        // POST: api/ACControl
+        [HttpGet("{token}")]
+        public IActionResult Get(string token) //manually on/off ACDevice
+        {
+            try
+            {
+                var state = new ACState() {IsTurnOff = true};
+                _acStateControlService.SetCurrentState(state);
+
+                return Ok();
+            }
+
+            catch (Exception ex)
+            {
+                //todo: logging
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+        }
+
         // POST: api/ACControl
         [HttpPost("{token}")]
         public IActionResult Post(string token, [FromBody]IACState state) //manually on/off ACDevice
