@@ -1,9 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using ACCSApi.Model.Interfaces;
+using MessagePack;
 
 namespace ACCSApi.Model.Transferable
 {
+    [Serializable]
     public class RaspberryPiDevice: IACCSSerializable, IRaspberryPiDevice
     {
         public RaspberryPiDevice()

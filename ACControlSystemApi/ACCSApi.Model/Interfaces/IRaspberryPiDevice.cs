@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using MessagePack;
 
 namespace ACCSApi.Model.Interfaces
 {

@@ -13,7 +13,6 @@ namespace ACCSApi.Controllers
 
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-                .ConfigureServices(x=>x.AddAutofac())
                 .UseStartup<Startup>()
                 .Build();
     }

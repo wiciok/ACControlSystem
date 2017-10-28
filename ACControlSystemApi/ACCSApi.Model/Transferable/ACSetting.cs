@@ -1,8 +1,10 @@
-﻿using ACCSApi.Model.Interfaces;
+﻿using System;
+using ACCSApi.Model.Interfaces;
 using Newtonsoft.Json.Linq;
 
 namespace ACCSApi.Model.Transferable
 {
+    [Serializable]
     public class ACSetting : IACSetting
     {
         public bool IsTurnOff { get; set; } = false;

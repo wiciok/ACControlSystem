@@ -8,6 +8,12 @@ namespace ACCSApi.Model.Transferable
     {
         private IACSetting _turnOffSetting;
 
+        public ACDevice()
+        {
+            TurnOffSetting = null;
+            DefaulTurnOnSetting = null;
+        }
+
         public int Id { get; set; }
 
         public string Model { get; set; }
@@ -23,8 +29,8 @@ namespace ACCSApi.Model.Transferable
             get => _turnOffSetting;
             set
             {
-                if (!value.IsTurnOff)
-                    throw new ArgumentException("TurnOffSetting must have IACSetting object with property IsOff=true!");
+                //if (!value.IsTurnOff && value!=null)
+                //    throw new ArgumentException("TurnOffSetting must have IACSetting object with property IsOff=true!");
                 _turnOffSetting = value;
             }
         }
