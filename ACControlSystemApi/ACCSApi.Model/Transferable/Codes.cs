@@ -17,7 +17,7 @@ namespace ACCSApi.Model.Transferable
 
     public class RawCode : ICode
     {
-        public string Code { get; set; }
+        public int[] Code { get; set; }
     }
 }
 

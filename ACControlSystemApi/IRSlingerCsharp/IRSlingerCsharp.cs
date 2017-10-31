@@ -25,14 +25,14 @@ namespace IRSlingerCsharp
             UInt32 broadcomOutPin,
             int frequency,
             double dutyCycle,
-            string codes
+            int[] codes
         );
     }
 
 
     public class IRSlingerCsharp: IIRSlingerCsharp
     {
-        [DllImport("irslinger_start.so", EntryPoint = "SendNec")] //todo: dopasować rozszerzenie pliku, itp.
+        [DllImport("irslinger_start.so", CharSet = CharSet.Auto, EntryPoint = "SendNec")] //todo: dopasować rozszerzenie pliku, itp.
         private static extern int SendNec
         (
             UInt32 outPin,
@@ -45,7 +45,7 @@ namespace IRSlingerCsharp
             int oneGap,
             int zeroGap,
             int sendTrailingPulse,
-            string codes
+            [MarshalAs(UnmanagedType.LPStr)]string codes
         );
 
 
@@ -80,7 +80,7 @@ namespace IRSlingerCsharp
             UInt32 outPin,
             int frequency,
             double dutyCycle,
-            string codes
+            int[] codes
         );
 
 
@@ -89,7 +89,7 @@ namespace IRSlingerCsharp
             UInt32 broadcomOutPin,
             int frequency,
             double dutyCycle,
-            string codes
+            int[] codes
         )
         {
             int retCode = SendRaw(broadcomOutPin, frequency, dutyCycle, codes);

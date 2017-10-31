@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection.Metadata.Ecma335;
 using ACCSApi.Model.Interfaces;
 
 namespace ACCSApi.Model.Transferable
@@ -20,7 +21,35 @@ namespace ACCSApi.Model.Transferable
 
         // ir transmission related properties:
         public int ModulationFrequencyInHz { get; set; }
-        public double DutyCycle { get; set; }
+        public double DutyCycle { get; set; } = 0.5;
+
+        public int? LeadingPulseDuration { get; set; }
+        public int? LeadingGapDuration { get; set; }
+        public int? OnePulseDuration { get; set; }
+        public int? ZeroPulseDuration { get; set; }
+        public int? OneGapDuration { get; set; }
+        public int? ZeroGapDuration { get; set; }
+        public bool? SendTrailingPulse { get; set; }
+
+        public bool NecPulseDurationSettingsSaved => LeadingPulseDuration != null
+                                                     && LeadingGapDuration != null
+                                                     && OneGapDuration != null
+                                                     && OnePulseDuration != null
+                                                     && ZeroGapDuration != null
+                                                     && ZeroPulseDuration != null
+                                                     && SendTrailingPulse != null;
+
+        public void ResetSavedNecPulseDurationSettings()
+        {
+            LeadingPulseDuration = null;
+            LeadingGapDuration = null;
+            OneGapDuration = null;
+            OnePulseDuration = null;
+            ZeroGapDuration = null;
+            ZeroPulseDuration = null;
+            SendTrailingPulse = null;
+        }
+        
 
         public IList<IACSetting> AvailableSettings { get; set; }
         public IACSetting TurnOffSetting
