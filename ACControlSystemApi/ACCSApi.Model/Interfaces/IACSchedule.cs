@@ -7,7 +7,7 @@ namespace ACCSApi.Model.Interfaces
     {
         DateTime StartTime { get; }
         DateTime EndTime { get; }
-        IACSetting ACSetting { get; }
+        Guid? ACSettingGuid { get; }
         ScheduleType ScheduleType { get; }
     }
 }

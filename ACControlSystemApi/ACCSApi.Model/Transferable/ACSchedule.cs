@@ -1,7 +1,5 @@
 ﻿using ACCSApi.Model.Interfaces;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using ACCSApi.Model.Enums;
 
 namespace ACCSApi.Model.Transferable
@@ -11,7 +9,7 @@ namespace ACCSApi.Model.Transferable
         public int Id { get; set; }
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
-        public IACSetting ACSetting { get; set; }
+        public Guid? ACSettingGuid { get; set; }
         public ScheduleType ScheduleType { get; set; }
     }
 }

@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Linq;
 using ACCSApi.Model.Interfaces;
+using ACCSApi.Repositories.Interfaces;
 using ACCSApi.Services.Interfaces;
 using ACCSApi.Services.Models.Exceptions;
 
@@ -9,10 +11,14 @@ namespace ACCSApi.Services.Domain
     {
         private IACState _currentState;
         private readonly IIRControlService _irControlService;
+        private readonly IACDeviceRepository _acDeviceRepository;
+        private readonly IACDevice _currentAcDevice;
 
-        public ACStateControlService(IIRControlService irControlService)
+        public ACStateControlService(IIRControlService irControlService, IACDeviceRepository acDeviceRepository)
         {
             _irControlService = irControlService;
+            _acDeviceRepository = acDeviceRepository;
+            _currentAcDevice = _acDeviceRepository.CurrentACDevice;
         }
 
         public void SetCurrentState(IACState newState)
@@ -36,6 +42,13 @@ namespace ACCSApi.Services.Domain
 
         private void ChangeACState(IACState newState)
         {
+            IACSetting acSetting = null;
+
+            if (newState.ACSettingGuid != null)
+            {
+                acSetting = _currentAcDevice.AvailableSettings.SingleOrDefault(x =>x.UniqueId.Equals(newState.ACSettingGuid));
+            }
+            
             //business logic:
             //if isoff=false and state null ->default on
             //isoff true - if state notnull and isoff - state code, if its not isoff - exception. if state null - default off
@@ -45,33 +58,33 @@ namespace ACCSApi.Services.Domain
             switch (newState.IsTurnOff)
             {
                 case null:
-                    if (newState.ACSetting == null)
+                    if (acSetting == null)
                         throw new ArgumentNullException("ACState have both its members null!"); //todo: change this message to be more specific
                     else
-                        ChangeACSetting(newState.ACSetting);
+                        ChangeACSetting(acSetting);
                     break;
 
                 case false:
-                    if (newState.ACSetting == null)
+                    if (acSetting == null)
                         _irControlService.SendDefaultTurnOnMessage();
                     else
                     {
-                        if (newState.ACSetting.IsTurnOff == false)
-                            ChangeACSetting(newState.ACSetting);
+                        if (acSetting.IsTurnOff == false)
+                            ChangeACSetting(acSetting);
                         else
                             throw new ArgumentException("IACState members inconsistency: IACState.IsTurnOff==false while IACState.ACSetting.IsTurnOff=true!");
                     }
                     break;
 
                 case true:
-                    if (newState.ACSetting == null)
+                    if (acSetting == null)
                     {
                         _irControlService.SendDefaultTurnOffMessage();
                     }
                     else
                     {
-                        if (newState.ACSetting.IsTurnOff == true)
-                            ChangeACSetting(newState.ACSetting);
+                        if (acSetting.IsTurnOff == true)
+                            ChangeACSetting(acSetting);
                         else
                             throw new ArgumentException("IACState members inconsistency: IACState.IsTurnOff==true while IACState.ACSetting.IsTurnOff=false!");
                     }

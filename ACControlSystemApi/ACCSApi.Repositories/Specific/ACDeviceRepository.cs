@@ -9,8 +9,6 @@ namespace ACCSApi.Repositories.Specific
 {
     public class ACDeviceRepository : BaseRepository<IACDevice>, IACDeviceRepository
     {
-        private IACDevice _currentDevice; //todo: check if interface here is not causing any problems
-
         public ACDeviceRepository(IDao<IACDevice> deviceDao) : base(deviceDao)
         {
             //CreateInitialDataTemp();
@@ -27,15 +25,16 @@ namespace ACCSApi.Repositories.Specific
                     Model="",
                     ModulationFrequencyInHz=38,
                     DutyCycle=0.5,
-
-                    LeadingPulseDuration = 3200,
-                    LeadingGapDuration = 1600,
-                    OneGapDuration = 1200,
-                    OnePulseDuration = 410,
-                    ZeroPulseDuration = 410,
-                    ZeroGapDuration = 410,
-                    SendTrailingPulse = true,
-
+                    NecCodeSettings = new NecCodeSettings()
+                    {
+                        LeadingPulseDuration = 3200,
+                        LeadingGapDuration = 1600,
+                        OneGapDuration = 1200,
+                        OnePulseDuration = 410,
+                        ZeroPulseDuration = 410,
+                        ZeroGapDuration = 410,
+                        SendTrailingPulse = true
+                    },                   
                     AvailableSettings= new ACSetting[]
                     {
                         new ACSetting()
@@ -75,6 +74,7 @@ namespace ACCSApi.Repositories.Specific
             });
         }
 
+        //todo: check if interface here is not causing any problems
         public IACDevice CurrentACDevice
         {
             get => this.Get(GlobalSettings.currentACDeviceId);

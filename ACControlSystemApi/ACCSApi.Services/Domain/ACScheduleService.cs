@@ -20,14 +20,18 @@ namespace ACCSApi.Services.Domain
     {
         private readonly IACScheduleRepository _scheduleRepository;
         private readonly IACStateControlService _acStateControlService;
+        private readonly IACDeviceRepository _acDeviceRepository;
+        private readonly IACDevice _currentDevice;
         private readonly IACState _turnOffState;
         private static readonly IDictionary<IACSchedule, Tuple<Timer, Timer>> SchedulesTimersDict = new Dictionary<IACSchedule, Tuple<Timer, Timer>>();
         private static bool _isFirstInstance = true;
 
-        public ACScheduleService(IACScheduleRepository scheduleRepository, IACStateControlService stateControlService)
+        public ACScheduleService(IACScheduleRepository scheduleRepository, IACStateControlService stateControlService, IACDeviceRepository acDeviceRepository)
         {
             _acStateControlService = stateControlService;
             _scheduleRepository = scheduleRepository;
+            _acDeviceRepository = acDeviceRepository;
+            _currentDevice = _acDeviceRepository.CurrentACDevice;
 
             _turnOffState = new ACState { IsTurnOff = true };
             if(_isFirstInstance)
@@ -85,9 +89,11 @@ namespace ACCSApi.Services.Domain
         {
             VerifySchedule(schedule);
 
+            var acSetting =_currentDevice.AvailableSettings.Single(x => x.UniqueId.Equals(schedule.ACSettingGuid));
+
             var timerCallback = new TimerCallback(ChangeACSettings);
             TimeSpan period;
-            object timerStartCallbackArg = schedule.ACSetting;
+            object timerStartCallbackArg = acSetting;
             object timerStopCallbackArg = true;
 
             switch (schedule.ScheduleType)
@@ -188,7 +194,11 @@ namespace ACCSApi.Services.Domain
                     }
 
                     if (startTimeDayOfWeek.Equals(DateTime.Now.DayOfWeek))
-                        _acStateControlService.ChangeACSetting(schedule.ACSetting);
+                    {
+                        var acSetting = _currentDevice.AvailableSettings.Single(x => x.UniqueId.Equals(schedule.ACSettingGuid));
+                        _acStateControlService.ChangeACSetting(acSetting);
+                    }
+                       
                     break;
                 default:
                     throw new ArgumentException("ChangeACSettings: argument is not of IACSetting type");

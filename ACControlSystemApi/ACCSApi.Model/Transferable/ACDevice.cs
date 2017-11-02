@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Reflection.Metadata.Ecma335;
 using ACCSApi.Model.Interfaces;
 
 namespace ACCSApi.Model.Transferable
@@ -12,7 +11,7 @@ namespace ACCSApi.Model.Transferable
         public ACDevice()
         {
             TurnOffSetting = null;
-            DefaulTurnOnSetting = null;
+            DefaultTurnOnSetting = null;
         }
 
         public int Id { get; set; }
@@ -37,6 +36,6 @@ namespace ACCSApi.Model.Transferable
                 _turnOffSetting = value;
             }
         }
-        public IACSetting DefaulTurnOnSetting { get; set; }
+        public IACSetting DefaultTurnOnSetting { get; set; }
     }
 }
