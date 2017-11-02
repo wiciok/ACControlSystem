@@ -76,7 +76,7 @@ namespace ACCSApi.Repositories.Specific
         }
 
         //todo: check if interface here is not causing any problems
-        public IACDevice CurrentACDevice
+        public IACDevice CurrentDevice
         {
             get => this.Get(GlobalConfig.currentACDeviceId);
             set => GlobalConfig.currentACDeviceId = value.Id;

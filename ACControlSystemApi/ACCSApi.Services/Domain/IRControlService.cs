@@ -27,7 +27,7 @@ namespace ACCSApi.Services.Domain
             _hardwareDevicesRepo = hardwareDevicesRepo;
             _acDevicesRepo = acDeviceRepo;
 
-            _ACDevice = _acDevicesRepo.CurrentACDevice;
+            _ACDevice = _acDevicesRepo.CurrentDevice;
             _hostDevice = _hardwareDevicesRepo.CurrentDevice;
         }
 

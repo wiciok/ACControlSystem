@@ -31,7 +31,7 @@ namespace ACCSApi.Services.Domain
 
         private void Init()
         {
-            _currentAcDevice = _acDeviceRepository.CurrentACDevice;
+            _currentAcDevice = _acDeviceRepository.CurrentDevice;
             _currentRaspberryPiDevice = _raspberryPiDeviceRepository.CurrentDevice;
 
             _inputPin = Pi.Gpio.Pins.Single(x => x.HeaderPinNumber == _currentRaspberryPiDevice.BoardInPin);

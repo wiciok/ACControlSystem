@@ -18,7 +18,7 @@ namespace ACCSApi.Services.Domain
         {
             _irControlService = irControlService;
             _acDeviceRepository = acDeviceRepository;
-            _currentAcDevice = _acDeviceRepository.CurrentACDevice;
+            _currentAcDevice = _acDeviceRepository.CurrentDevice;
         }
 
         public void SetCurrentState(IACState newState)

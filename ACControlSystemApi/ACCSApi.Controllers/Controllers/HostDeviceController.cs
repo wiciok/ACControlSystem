@@ -120,7 +120,7 @@ namespace ACCSApi.Controllers.Controllers
             }
         }
 
-        [HttpPost("{token}")]
+        [HttpPut("{token}")]
         public IActionResult Put(string token, [FromBody]IRaspberryPiDevice device)
         {
             try
@@ -173,7 +173,7 @@ namespace ACCSApi.Controllers.Controllers
             }
         }
 
-        [HttpPost("{token}/{id}")]
+        [HttpDelete("{token}/{id}")]
         public IActionResult Delete(string token, int id)
         {
             try

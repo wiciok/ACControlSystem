@@ -31,7 +31,7 @@ namespace ACCSApi.Services.Domain
             _acStateControlService = stateControlService;
             _scheduleRepository = scheduleRepository;
             _acDeviceRepository = acDeviceRepository;
-            _currentDevice = _acDeviceRepository.CurrentACDevice;
+            _currentDevice = _acDeviceRepository.CurrentDevice;
 
             _turnOffState = new ACState { IsTurnOff = true };
             if(_isFirstInstance)
