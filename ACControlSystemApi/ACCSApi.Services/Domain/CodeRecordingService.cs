@@ -17,24 +17,17 @@ namespace ACCSApi.Services.Domain
         private const int ShortAndLongPulseBoundary = 1000;
         private const int MaxAcCommandLength = 10000;
         private readonly IACDeviceRepository _acDeviceRepository;
-        private readonly IRaspberryPiDeviceRepository _raspberryPiDeviceRepository;
-        private IACDevice _currentAcDevice;
-        private IRaspberryPiDevice _currentRaspberryPiDevice;
-        private GpioPin _inputPin;
+        private readonly IACDevice _currentAcDevice;
+        private readonly GpioPin _inputPin;
 
         public CodeRecordingService(IACDeviceRepository acDeviceRepository, IRaspberryPiDeviceRepository raspberryPiDeviceRepository)
         {
             _acDeviceRepository = acDeviceRepository;
-            _raspberryPiDeviceRepository = raspberryPiDeviceRepository;
-            Init();
-        }
 
-        private void Init()
-        {
             _currentAcDevice = _acDeviceRepository.CurrentDevice;
-            _currentRaspberryPiDevice = _raspberryPiDeviceRepository.CurrentDevice;
+            var currentRaspberryPiDevice = raspberryPiDeviceRepository.CurrentDevice;
 
-            _inputPin = Pi.Gpio.Pins.Single(x => x.HeaderPinNumber == _currentRaspberryPiDevice.BoardInPin);
+            _inputPin = Pi.Gpio.Pins.Single(x => x.HeaderPinNumber == currentRaspberryPiDevice.BoardInPin);
             _inputPin.PinMode = GpioPinDriveMode.Input;
         }
 
@@ -68,6 +61,11 @@ namespace ACCSApi.Services.Domain
             stopwatch.Stop();
 
             return pulseList;
+        }       
+
+        public void ResetCurrentAcDeviceNecCodeSettings()
+        {
+            _currentAcDevice.NecCodeSettings = null;
         }
 
         public RawCode RecordRawCode()

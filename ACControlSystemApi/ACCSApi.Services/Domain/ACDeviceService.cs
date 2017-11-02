@@ -11,12 +11,10 @@ namespace ACCSApi.Services.Domain
     public class ACDeviceService: IACDeviceService
     {
         private readonly IACDeviceRepository _acDeviceRepository;
-        private readonly ICodeRecordingService _codeRecordingService;
 
-        public ACDeviceService(IACDeviceRepository acDeviceRepository, ICodeRecordingService codeRecordingService)
+        public ACDeviceService(IACDeviceRepository acDeviceRepository)
         {
             _acDeviceRepository = acDeviceRepository;
-            _codeRecordingService = codeRecordingService;
         }
 
         public int AddDevice(IACDevice device)
@@ -79,6 +77,11 @@ namespace ACCSApi.Services.Domain
             var device = _acDeviceRepository.Find(x => x.Id.Equals(id)).SingleOrDefault();
             _acDeviceRepository.CurrentDevice = device ?? throw new ItemNotFoundException($"AcDevice with id {id} not found!");
             return device;
+        }
+
+        public void SaveChangesInCurrentDevice()
+        {
+            _acDeviceRepository.Update(_acDeviceRepository.CurrentDevice);
         }
     }
 }

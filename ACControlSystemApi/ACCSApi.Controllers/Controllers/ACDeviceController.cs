@@ -197,12 +197,5 @@ namespace ACCSApi.Controllers.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
-
-
-        #region code-related methods
-
-
-
-        #endregion
     }
 }

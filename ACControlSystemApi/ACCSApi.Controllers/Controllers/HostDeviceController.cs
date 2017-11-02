@@ -94,7 +94,7 @@ namespace ACCSApi.Controllers.Controllers
             }
         }
 
-        [HttpPost("{token}/{id}")]
+        [HttpPost("{token}")]
         public IActionResult Post(string token, [FromBody]IRaspberryPiDevice device)
         {
             try
