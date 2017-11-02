@@ -11,7 +11,6 @@ namespace ACCSApi.Model.Transferable
     {
         public RaspberryPiDevice()
         {
-            CodesList = new List<ICode>();
         }
 
         public RaspberryPiDevice(string name, IDictionary<uint, uint> validPins): base()
