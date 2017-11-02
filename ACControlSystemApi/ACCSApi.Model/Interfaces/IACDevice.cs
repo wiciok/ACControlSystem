@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using ACCSApi.Model.Transferable;
 
 namespace ACCSApi.Model.Interfaces
 {
@@ -7,20 +8,12 @@ namespace ACCSApi.Model.Interfaces
         string Model { get; set; }
         string Brand { get; set; }
 
-        // ir transmission related properties:
+        //ir control related properties
         int ModulationFrequencyInHz { get; set; }
         double DutyCycle { get; set; }
 
-        int? LeadingPulseDuration { get; set; }
-        int? LeadingGapDuration { get; set; }
-        int? OnePulseDuration { get; set; }
-        int? ZeroPulseDuration { get; set; }
-        int? OneGapDuration { get; set; }
-        int? ZeroGapDuration { get; set; }
-        bool? SendTrailingPulse { get; set; }
-
-        bool NecPulseDurationSettingsSaved { get; }
-        void ResetSavedNecPulseDurationSettings();
+        NecCodeSettings NecCodeSettings { get; set; }
+        bool NecCodeSettingsSaved { get; }
 
         IList<IACSetting> AvailableSettings { get; }
         IACSetting TurnOffSetting { get; set; }

@@ -10,12 +10,12 @@ namespace ACCSApi.Services.Domain
 {
     internal class IRControlService : IIRControlService
     {
-        private IIRSlingerCsharp _irService;
-        private IRaspberryPiDeviceRepository _hardwareDevicesRepo;
-        private IACDeviceRepository _acDevicesRepo;
+        private readonly IIRSlingerCsharp _irService;
+        private readonly IRaspberryPiDeviceRepository _hardwareDevicesRepo;
+        private readonly IACDeviceRepository _acDevicesRepo;
 
-        private IRaspberryPiDevice _hostDevice;
-        private IACDevice _ACDevice;
+        private readonly IRaspberryPiDevice _hostDevice;
+        private readonly IACDevice _ACDevice;
 
         public ICode TurnOnCode { get; set; }
         public ICode TurnOffCode { get; set; }
@@ -27,7 +27,7 @@ namespace ACCSApi.Services.Domain
             _hardwareDevicesRepo = hardwareDevicesRepo;
             _acDevicesRepo = acDeviceRepo;
 
-            _ACDevice = acDeviceRepo.CurrentACDevice;
+            _ACDevice = _acDevicesRepo.CurrentACDevice;
             _hostDevice = _hardwareDevicesRepo.CurrentDevice;
         }
 
@@ -37,18 +37,25 @@ namespace ACCSApi.Services.Domain
             switch (code)
             {
                 case NecCode nc:
-                    _irService.SendNecMsg
-                    (_hostDevice.BroadcomOutPin,
-                        _ACDevice.ModulationFrequencyInHz,
-                        _ACDevice.DutyCycle,
-                        nc.LeadingPulseDuration,
-                        nc.LeadingGapDuration,
-                        nc.OnePulseDuration,
-                        nc.ZeroPulseDuration,
-                        nc.OneGapDuration,
-                        nc.ZeroGapDuration,
-                        nc.SendTrailingPulse,
-                        nc.Code);
+                    if (_ACDevice.NecCodeSettingsSaved)
+                    {
+                        _irService.SendNecMsg
+                        (_hostDevice.BroadcomOutPin,
+                            _ACDevice.ModulationFrequencyInHz,
+                            _ACDevice.DutyCycle,
+                            _ACDevice.NecCodeSettings.LeadingPulseDuration,
+                            _ACDevice.NecCodeSettings.LeadingGapDuration,
+                            _ACDevice.NecCodeSettings.OnePulseDuration,
+                            _ACDevice.NecCodeSettings.ZeroPulseDuration,
+                            _ACDevice.NecCodeSettings.OneGapDuration,
+                            _ACDevice.NecCodeSettings.ZeroGapDuration,
+                            _ACDevice.NecCodeSettings.SendTrailingPulse,
+                            nc.Code);
+                    }
+                    else
+                    {
+                        throw new InvalidOperationException("ACDevice does not contain Nec code details");
+                    }
                     break;
                 case RawCode rc:
                     _irService.SendRawMsg

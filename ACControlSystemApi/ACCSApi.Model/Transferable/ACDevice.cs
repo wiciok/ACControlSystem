@@ -19,37 +19,12 @@ namespace ACCSApi.Model.Transferable
         public string Model { get; set; }
         public string Brand { get; set; }
 
-        // ir transmission related properties:
+        //ir control related properties
         public int ModulationFrequencyInHz { get; set; }
-        public double DutyCycle { get; set; } = 0.5;
+        public double DutyCycle { get; set; }
 
-        public int? LeadingPulseDuration { get; set; }
-        public int? LeadingGapDuration { get; set; }
-        public int? OnePulseDuration { get; set; }
-        public int? ZeroPulseDuration { get; set; }
-        public int? OneGapDuration { get; set; }
-        public int? ZeroGapDuration { get; set; }
-        public bool? SendTrailingPulse { get; set; }
-
-        public bool NecPulseDurationSettingsSaved => LeadingPulseDuration != null
-                                                     && LeadingGapDuration != null
-                                                     && OneGapDuration != null
-                                                     && OnePulseDuration != null
-                                                     && ZeroGapDuration != null
-                                                     && ZeroPulseDuration != null
-                                                     && SendTrailingPulse != null;
-
-        public void ResetSavedNecPulseDurationSettings()
-        {
-            LeadingPulseDuration = null;
-            LeadingGapDuration = null;
-            OneGapDuration = null;
-            OnePulseDuration = null;
-            ZeroGapDuration = null;
-            ZeroPulseDuration = null;
-            SendTrailingPulse = null;
-        }
-        
+        public NecCodeSettings NecCodeSettings { get; set; }     
+        public bool NecCodeSettingsSaved => NecCodeSettings!=null;        
 
         public IList<IACSetting> AvailableSettings { get; set; }
         public IACSetting TurnOffSetting
