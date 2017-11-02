@@ -11,7 +11,8 @@ namespace ACCSApi.Repositories.Specific
     {
         public RaspberryPiDeviceRepository(IDao<IRaspberryPiDevice> dao) : base(dao)
         {
-            //CreateInitialDataTemp(); // todo: finally remove this, it should only be persisted in file
+            if(GlobalConfig.GenerateInitialData)
+                CreateInitialDataTemp();
         }
 
         public void CreateInitialDataTemp()
@@ -50,8 +51,8 @@ namespace ACCSApi.Repositories.Specific
 
         public IRaspberryPiDevice CurrentDevice
         {
-            get => this.Get(GlobalSettings.currentRaspberryPiDeviceId);
-            set => GlobalSettings.currentRaspberryPiDeviceId = value.Id;
+            get => this.Get(GlobalConfig.currentRaspberryPiDeviceId);
+            set => GlobalConfig.currentRaspberryPiDeviceId = value.Id;
         }
     }
 }

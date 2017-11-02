@@ -5,12 +5,14 @@ using Autofac.Core;
 
 namespace ACCSApi.Repositories.Models.Settings
 {
-    public static class GlobalSettings
+    public static class GlobalConfig
     {
         //todo: repo for persisting this class
+
+        public static bool GenerateInitialData = false;
         
         //DAOs:
-        public static readonly string PathToKeepFilesWithData = @"./";
+        public static string PathToKeepFilesWithData = @"./";
 
         //repositories:
 
@@ -24,6 +26,5 @@ namespace ACCSApi.Repositories.Models.Settings
 
         //Other, shouldnt be serializable
         public static IContainer container;
-
     }
 }

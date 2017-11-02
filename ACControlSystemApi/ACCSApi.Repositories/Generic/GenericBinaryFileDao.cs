@@ -11,7 +11,7 @@ namespace ACCSApi.Repositories.Generic
     {
         private List<T> _objectsList;
         //private static readonly string pathToFile = GlobalSettings.PathToKeepFilesWithData + nameof(T) + ".bin";
-        private static readonly string pathToFile = GlobalSettings.PathToKeepFilesWithData;
+        private static readonly string pathToFile = GlobalConfig.PathToKeepFilesWithData;
         private int _lastClassUniqueId = 1;
 
         public GenericBinaryFileDao()

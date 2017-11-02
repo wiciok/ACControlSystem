@@ -7,7 +7,7 @@ namespace ACCSApi.Services.Other
 {
     public class TokenExpiringByTimeFactory : ITokenFactory
     {
-        private int _expirationTime = GlobalSettings.TokenExpirationTimeInSeconds;
+        private readonly int _expirationTime = Repositories.Models.Settings.GlobalConfig.TokenExpirationTimeInSeconds;
 
         public IToken GenerateToken()
         {

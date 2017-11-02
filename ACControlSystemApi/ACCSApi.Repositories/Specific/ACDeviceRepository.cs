@@ -11,7 +11,8 @@ namespace ACCSApi.Repositories.Specific
     {
         public ACDeviceRepository(IDao<IACDevice> deviceDao) : base(deviceDao)
         {
-            //CreateInitialDataTemp();
+            if(GlobalConfig.GenerateInitialData)
+                CreateInitialDataTemp();
         }
 
         public void CreateInitialDataTemp()
@@ -77,8 +78,8 @@ namespace ACCSApi.Repositories.Specific
         //todo: check if interface here is not causing any problems
         public IACDevice CurrentACDevice
         {
-            get => this.Get(GlobalSettings.currentACDeviceId);
-            set => GlobalSettings.currentACDeviceId = value.Id;
+            get => this.Get(GlobalConfig.currentACDeviceId);
+            set => GlobalConfig.currentACDeviceId = value.Id;
         }
     }
 }
