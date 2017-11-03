@@ -1,7 +1,7 @@
 ﻿using System;
 using ACCSApi.Model.Interfaces;
 
-namespace ACCSApi.Model.Transferable
+namespace ACCSApi.Model.Dto
 {
     public class UserPublic : IUserPublic
     {

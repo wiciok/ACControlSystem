@@ -1,13 +1,12 @@
 ﻿using System;
-using ACCSApi.Repositories.Models.Settings;
 using ACCSApi.Services.Interfaces;
 using ACCSApi.Services.Models;
 
-namespace ACCSApi.Services.Other
+namespace ACCSApi.Services.Utils
 {
     public class TokenExpiringByTimeFactory : ITokenFactory
     {
-        private readonly int _expirationTime = Repositories.Models.Settings.GlobalConfig.TokenExpirationTimeInSeconds;
+        private readonly int _expirationTime = Repositories.Models.GlobalConfig.TokenExpirationTimeInSeconds;
 
         public IToken GenerateToken()
         {

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using ACCSApi.Model.Interfaces;
-using ACCSApi.Repositories.Models.Settings;
+using ACCSApi.Repositories.Models;
 using Autofac;
 using Newtonsoft.Json;
 
@@ -87,7 +87,7 @@ namespace ACCSApi.Repositories.Generic
 
         private void ReadFromFile()
         {
-            var t = GlobalConfig.container.Resolve(typeof(T)).GetType();
+            var t = GlobalConfig.Container.Resolve(typeof(T)).GetType();
 
             Type genericListType = typeof(List<>).MakeGenericType(t);
             var list = (IList)Activator.CreateInstance(genericListType);

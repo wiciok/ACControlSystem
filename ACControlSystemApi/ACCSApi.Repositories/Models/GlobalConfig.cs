@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
 using Autofac;
-using Autofac.Core;
 
-namespace ACCSApi.Repositories.Models.Settings
+namespace ACCSApi.Repositories.Models
 {
     public static class GlobalConfig
     {
-        //todo: repo for persisting this class
-
         public static bool GenerateInitialData = false;
         
         //DAOs:
@@ -16,8 +11,8 @@ namespace ACCSApi.Repositories.Models.Settings
 
         //repositories:
 
-        public static int currentRaspberryPiDeviceId = 1;
-        public static int currentACDeviceId = 1;
+        public static int CurrentRaspberryPiDeviceId = 1;
+        public static int CurrentAcDeviceId = 1;
 
         //Utils:
         //todo: configure DI to use this!
@@ -25,6 +20,6 @@ namespace ACCSApi.Repositories.Models.Settings
         public static int TokenExpirationTimeInSeconds = 10;
 
         //Other, shouldnt be serializable
-        public static IContainer container;
+        public static IContainer Container;
     }
 }

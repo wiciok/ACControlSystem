@@ -1,6 +1,6 @@
 ﻿using System;
+using ACCSApi.Model;
 using ACCSApi.Model.Interfaces;
-using ACCSApi.Model.Transferable;
 using ACCSApi.Services.Interfaces;
 using IRSlingerCsharp;
 

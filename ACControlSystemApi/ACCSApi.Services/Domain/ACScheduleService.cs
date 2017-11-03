@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using ACCSApi.Model;
 using ACCSApi.Model.Enums;
 using ACCSApi.Model.Interfaces;
-using ACCSApi.Model.Transferable;
 using ACCSApi.Repositories.Interfaces;
 using ACCSApi.Services.Interfaces;
 using ACCSApi.Services.Models.Exceptions;

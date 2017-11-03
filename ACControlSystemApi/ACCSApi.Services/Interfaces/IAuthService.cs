@@ -1,4 +1,4 @@
-﻿using ACCSApi.Model.Transferable;
+﻿using ACCSApi.Model.Dto;
 
 namespace ACCSApi.Services.Interfaces
 {

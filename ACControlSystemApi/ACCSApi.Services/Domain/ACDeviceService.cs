@@ -67,14 +67,18 @@ namespace ACCSApi.Services.Domain
 
         public IACDevice GetCurrentDevice()
         {
-            if (_currentDevice == null)
-            {
-                _currentDevice = _acDeviceRepository.CurrentDevice;
-                _currentDevice.OnChanged += _currentDevice_OnChanged;
-            }              
+            if (_currentDevice != null)
+                return _currentDevice;
+
+            _currentDevice = _acDeviceRepository.CurrentDevice;
 
             if (_currentDevice == null)
-                throw new ItemNotFoundException("Current device not set!");
+            {
+                //throw new ItemNotFoundException("Current device not set!");
+                return _currentDevice;
+            }
+               
+            _currentDevice.OnChanged += _currentDevice_OnChanged;
             return _currentDevice;
         }
 

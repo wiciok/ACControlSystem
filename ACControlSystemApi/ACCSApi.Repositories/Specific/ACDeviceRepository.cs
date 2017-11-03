@@ -1,8 +1,8 @@
-﻿using ACCSApi.Model.Interfaces;
-using ACCSApi.Model.Transferable;
+﻿using ACCSApi.Model;
+using ACCSApi.Model.Interfaces;
 using ACCSApi.Repositories.Generic;
 using ACCSApi.Repositories.Interfaces;
-using ACCSApi.Repositories.Models.Settings;
+using ACCSApi.Repositories.Models;
 using Newtonsoft.Json.Linq;
 
 namespace ACCSApi.Repositories.Specific
@@ -69,8 +69,8 @@ namespace ACCSApi.Repositories.Specific
         //todo: check if interface here is not causing any problems
         public IACDevice CurrentDevice
         {
-            get => this.Get(GlobalConfig.currentACDeviceId);
-            set => GlobalConfig.currentACDeviceId = value.Id;
+            get => this.Get(GlobalConfig.CurrentAcDeviceId);
+            set => GlobalConfig.CurrentAcDeviceId = value.Id;
         }
     }
 }

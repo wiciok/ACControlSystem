@@ -1,4 +1,4 @@
-﻿namespace ACCSApi.Model.Transferable
+namespace ACCSApi.Model.Dto
 {
     public class UserRegister
     {

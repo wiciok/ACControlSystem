@@ -1,5 +1,5 @@
 using System;
-using ACCSApi.Model.Transferable;
+using ACCSApi.Model.Dto;
 using ACCSApi.Services.Interfaces;
 using ACCSApi.Services.Models.Exceptions;
 using Microsoft.AspNetCore.Http;

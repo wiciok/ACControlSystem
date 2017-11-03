@@ -1,6 +1,6 @@
-﻿using ACCSApi.Repositories.Models.Settings;
+﻿using ACCSApi.Repositories.Models;
 
-namespace ACCSApi.Services.Models
+namespace ACCSApi.Services.GlobalConfig
 {
     internal class GlobalConfigSerializable
     {

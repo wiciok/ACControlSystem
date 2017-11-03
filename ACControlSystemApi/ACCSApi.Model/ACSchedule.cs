@@ -1,8 +1,8 @@
-﻿using ACCSApi.Model.Interfaces;
-using System;
+﻿using System;
 using ACCSApi.Model.Enums;
+using ACCSApi.Model.Interfaces;
 
-namespace ACCSApi.Model.Transferable
+namespace ACCSApi.Model
 {
     public class ACSchedule : IACSchedule
     {

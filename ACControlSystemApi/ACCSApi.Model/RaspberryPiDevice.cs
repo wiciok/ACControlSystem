@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using ACCSApi.Model.Interfaces;
 
-namespace ACCSApi.Model.Transferable
+namespace ACCSApi.Model
 {
     [Serializable]
     public class RaspberryPiDevice : IRaspberryPiDevice

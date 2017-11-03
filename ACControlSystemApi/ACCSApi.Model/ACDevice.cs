@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using ACCSApi.Model.Interfaces;
 
-namespace ACCSApi.Model.Transferable
+namespace ACCSApi.Model
 {
     public class ACDevice : IACDevice
     {
@@ -20,8 +20,7 @@ namespace ACCSApi.Model.Transferable
         public ACDevice()
         {
             TurnOffSetting = null;
-            DefaultTurnOnSetting = null;
-            _settingsList.CollectionChanged += _settingsList_CollectionChanged;
+            DefaultTurnOnSetting = null;           
         }
 
         private void _settingsList_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
@@ -96,7 +95,9 @@ namespace ACCSApi.Model.Transferable
             get => _settingsList;
             set
             {
+                _settingsList.CollectionChanged-= _settingsList_CollectionChanged;
                 _settingsList = new ObservableCollection<IACSetting>(value);
+                _settingsList.CollectionChanged += _settingsList_CollectionChanged;
                 OnChanged?.Invoke();
             }
         }

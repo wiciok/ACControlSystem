@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using ACCSApi.Model.Transferable;
 
 namespace ACCSApi.Model.Interfaces
 {

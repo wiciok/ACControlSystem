@@ -1,6 +1,6 @@
 ﻿using System;
+using ACCSApi.Model.Dto;
 using ACCSApi.Model.Interfaces;
-using ACCSApi.Model.Transferable;
 
 namespace ACCSApi.Model
 {

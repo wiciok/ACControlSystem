@@ -19,12 +19,12 @@ namespace ACCSApi.Services.GlobalConfig
                     conf = serializer.Deserialize<GlobalConfigSerializable>(file);
                 }
 
-                Repositories.Models.Settings.GlobalConfig.TokenExpirationType = conf.TokenExpirationType;
-                Repositories.Models.Settings.GlobalConfig.PathToKeepFilesWithData = conf.PathToKeepFilesWithData;
-                Repositories.Models.Settings.GlobalConfig.GenerateInitialData = conf.GenerateInitialData;
-                Repositories.Models.Settings.GlobalConfig.TokenExpirationTimeInSeconds = conf.TokenExpirationTimeInSeconds;
-                Repositories.Models.Settings.GlobalConfig.currentACDeviceId = conf.CurrentAcDeviceId;
-                Repositories.Models.Settings.GlobalConfig.currentRaspberryPiDeviceId = conf.CurrentRaspberryPiDeviceId;
+                Repositories.Models.GlobalConfig.TokenExpirationType = conf.TokenExpirationType;
+                Repositories.Models.GlobalConfig.PathToKeepFilesWithData = conf.PathToKeepFilesWithData;
+                Repositories.Models.GlobalConfig.GenerateInitialData = conf.GenerateInitialData;
+                Repositories.Models.GlobalConfig.TokenExpirationTimeInSeconds = conf.TokenExpirationTimeInSeconds;
+                Repositories.Models.GlobalConfig.CurrentAcDeviceId = conf.CurrentAcDeviceId;
+                Repositories.Models.GlobalConfig.CurrentRaspberryPiDeviceId = conf.CurrentRaspberryPiDeviceId;
             }
             catch (FileNotFoundException e)
             {
@@ -36,12 +36,12 @@ namespace ACCSApi.Services.GlobalConfig
         {
             var conf = new GlobalConfigSerializable
             {
-                TokenExpirationType = Repositories.Models.Settings.GlobalConfig.TokenExpirationType,
-                PathToKeepFilesWithData = Repositories.Models.Settings.GlobalConfig.PathToKeepFilesWithData,
-                GenerateInitialData = Repositories.Models.Settings.GlobalConfig.GenerateInitialData,
-                TokenExpirationTimeInSeconds = Repositories.Models.Settings.GlobalConfig.TokenExpirationTimeInSeconds,
-                CurrentRaspberryPiDeviceId = Repositories.Models.Settings.GlobalConfig.currentRaspberryPiDeviceId,
-                CurrentAcDeviceId = Repositories.Models.Settings.GlobalConfig.currentACDeviceId
+                TokenExpirationType = Repositories.Models.GlobalConfig.TokenExpirationType,
+                PathToKeepFilesWithData = Repositories.Models.GlobalConfig.PathToKeepFilesWithData,
+                GenerateInitialData = Repositories.Models.GlobalConfig.GenerateInitialData,
+                TokenExpirationTimeInSeconds = Repositories.Models.GlobalConfig.TokenExpirationTimeInSeconds,
+                CurrentRaspberryPiDeviceId = Repositories.Models.GlobalConfig.CurrentRaspberryPiDeviceId,
+                CurrentAcDeviceId = Repositories.Models.GlobalConfig.CurrentAcDeviceId
             };
 
             using (StreamWriter file = File.CreateText(ConfigFilePath))

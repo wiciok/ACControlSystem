@@ -1,4 +1,4 @@
-﻿namespace ACCSApi.Repositories.Models.Settings
+﻿namespace ACCSApi.Repositories.Models
 {
     public enum TokenExpirationType
     {

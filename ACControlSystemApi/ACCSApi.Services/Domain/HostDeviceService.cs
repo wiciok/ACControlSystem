@@ -68,14 +68,16 @@ namespace ACCSApi.Services.Domain
 
         public IRaspberryPiDevice GetCurrentDevice()
         {
-            if (_currentDevice == null)
-            {
-                _currentDevice = _raspberryPiDeviceRepository.CurrentDevice;
-                _currentDevice.OnChanged += _currentDevice_OnChanged;
-            }                
+            if (_currentDevice != null)
+                return _currentDevice;
 
             if (_currentDevice == null)
-                throw new ItemNotFoundException("Current device not set!");          
+            {
+                //throw new ItemNotFoundException("Current device not set!");
+                return _currentDevice;
+            }               
+            _currentDevice = _raspberryPiDeviceRepository.CurrentDevice;
+            _currentDevice.OnChanged += _currentDevice_OnChanged;
 
             return _currentDevice;
         }

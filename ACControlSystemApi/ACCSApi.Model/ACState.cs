@@ -1,7 +1,7 @@
 ﻿using System;
 using ACCSApi.Model.Interfaces;
 
-namespace ACCSApi.Model.Transferable
+namespace ACCSApi.Model
 {
     public class ACState : IACState
     {

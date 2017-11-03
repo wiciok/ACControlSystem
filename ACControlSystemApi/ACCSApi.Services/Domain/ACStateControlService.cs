@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using ACCSApi.Model.Interfaces;
-using ACCSApi.Repositories.Interfaces;
 using ACCSApi.Services.Interfaces;
 using ACCSApi.Services.Models.Exceptions;
 

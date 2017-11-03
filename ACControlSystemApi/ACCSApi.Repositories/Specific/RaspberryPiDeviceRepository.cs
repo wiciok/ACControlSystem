@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
+using ACCSApi.Model;
 using ACCSApi.Model.Interfaces;
-using ACCSApi.Model.Transferable;
 using ACCSApi.Repositories.Generic;
 using ACCSApi.Repositories.Interfaces;
-using ACCSApi.Repositories.Models.Settings;
+using ACCSApi.Repositories.Models;
 
 namespace ACCSApi.Repositories.Specific
 {
@@ -51,8 +51,8 @@ namespace ACCSApi.Repositories.Specific
 
         public IRaspberryPiDevice CurrentDevice
         {
-            get => this.Get(GlobalConfig.currentRaspberryPiDeviceId);
-            set => GlobalConfig.currentRaspberryPiDeviceId = value.Id;
+            get => this.Get(GlobalConfig.CurrentRaspberryPiDeviceId);
+            set => GlobalConfig.CurrentRaspberryPiDeviceId = value.Id;
         }
     }
 }

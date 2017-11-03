@@ -2,7 +2,7 @@
 using ACCSApi.Model.Interfaces;
 using Newtonsoft.Json.Linq;
 
-namespace ACCSApi.Model.Transferable
+namespace ACCSApi.Model
 {
     public class ACSetting : IACSetting
     {

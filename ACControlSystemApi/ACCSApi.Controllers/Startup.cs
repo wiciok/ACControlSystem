@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Linq;
-using ACCSApi.Model.Transferable;
+using ACCSApi.Model;
 using ACCSApi.Repositories.Generic;
-using ACCSApi.Repositories.Models.Settings;
+using ACCSApi.Repositories.Models;
 using ACCSApi.Services.Domain;
 using ACCSApi.Services.Models;
-using ACCSApi.Services.Other;
+using ACCSApi.Services.Utils;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Builder;
@@ -86,7 +86,7 @@ namespace ACCSApi.Controllers
             
             ApplicationContainer = builder.Build();
 
-            GlobalConfig.container = ApplicationContainer; //todo: do something with this shitty workaround
+            GlobalConfig.Container = ApplicationContainer; //todo: do something with this shitty workaround
 
             return new AutofacServiceProvider(ApplicationContainer);
         }

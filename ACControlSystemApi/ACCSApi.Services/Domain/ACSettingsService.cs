@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using ACCSApi.Model;
+using ACCSApi.Model.Dto;
 using ACCSApi.Model.Interfaces;
-using ACCSApi.Model.Transferable;
 using ACCSApi.Services.Interfaces;
 using ACCSApi.Services.Models.Exceptions;
 

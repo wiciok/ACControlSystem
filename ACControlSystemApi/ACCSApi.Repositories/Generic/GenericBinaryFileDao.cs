@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using ACCSApi.Model.Interfaces;
-using ACCSApi.Repositories.Models.Settings;
+using ACCSApi.Repositories.Models;
 
 namespace ACCSApi.Repositories.Generic
 {
