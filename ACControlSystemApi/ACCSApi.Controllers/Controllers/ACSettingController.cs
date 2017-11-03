@@ -269,6 +269,10 @@ namespace ACCSApi.Controllers.Controllers
                     {
                         return NotFound(e.Message);
                     }
+                    catch (ArgumentException e)
+                    {
+                        return BadRequest(e.Message);
+                    }
 
                     return Ok(result);
                 }

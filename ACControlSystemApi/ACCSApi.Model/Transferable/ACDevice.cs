@@ -22,8 +22,8 @@ namespace ACCSApi.Model.Transferable
         public int ModulationFrequencyInHz { get; set; }
         public double DutyCycle { get; set; }
 
-        public NecCodeSettings NecCodeSettings { get; set; }     
-        public bool NecCodeSettingsSaved => NecCodeSettings!=null;        
+        public NecCodeSettings NecCodeSettings { get; set; }
+        public bool NecCodeSettingsSaved => NecCodeSettings != null;
 
         public IList<IACSetting> AvailableSettings { get; set; }
         public IACSetting TurnOffSetting

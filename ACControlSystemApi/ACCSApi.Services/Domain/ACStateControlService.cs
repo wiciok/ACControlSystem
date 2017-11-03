@@ -11,26 +11,24 @@ namespace ACCSApi.Services.Domain
     {
         private IACState _currentState;
         private readonly IIRControlService _irControlService;
-        private readonly IACDeviceRepository _acDeviceRepository;
         private readonly IACDevice _currentAcDevice;
 
         public ACStateControlService(IIRControlService irControlService, IACDeviceRepository acDeviceRepository)
         {
             _irControlService = irControlService;
-            _acDeviceRepository = acDeviceRepository;
-            _currentAcDevice = _acDeviceRepository.CurrentDevice;
+            _currentAcDevice = acDeviceRepository.CurrentDevice;
         }
 
         public void SetCurrentState(IACState newState)
         {
             ChangeACState(newState);
-            _currentState = newState;            
+            _currentState = newState;
         }
 
 
         public IACState GetCurrentState()
         {
-            if(_currentState!=null)
+            if (_currentState != null)
                 return _currentState;
             throw new ACStateUndefinedException();
         }
@@ -46,9 +44,9 @@ namespace ACCSApi.Services.Domain
 
             if (newState.ACSettingGuid != null)
             {
-                acSetting = _currentAcDevice.AvailableSettings.SingleOrDefault(x =>x.UniqueId.Equals(newState.ACSettingGuid));
+                acSetting = _currentAcDevice.AvailableSettings.SingleOrDefault(x => x.UniqueId.Equals(newState.ACSettingGuid));
             }
-            
+
             //business logic:
             //if isoff=false and state null ->default on
             //isoff true - if state notnull and isoff - state code, if its not isoff - exception. if state null - default off
@@ -59,14 +57,20 @@ namespace ACCSApi.Services.Domain
             {
                 case null:
                     if (acSetting == null)
-                        throw new ArgumentNullException("ACState have both its members null!"); //todo: change this message to be more specific
+                        throw new ArgumentException("ACState is empty");
                     else
                         ChangeACSetting(acSetting);
                     break;
 
                 case false:
                     if (acSetting == null)
-                        _irControlService.SendDefaultTurnOnMessage();
+                    {
+                        if (_currentAcDevice.DefaultTurnOnSetting != null)
+                            ChangeACSetting(_currentAcDevice.DefaultTurnOnSetting);
+                        else
+                            throw new InvalidOperationException("Default TurnOnSetting in ACDevice not specified!");
+                    }
+
                     else
                     {
                         if (acSetting.IsTurnOff == false)
@@ -79,7 +83,10 @@ namespace ACCSApi.Services.Domain
                 case true:
                     if (acSetting == null)
                     {
-                        _irControlService.SendDefaultTurnOffMessage();
+                        if (_currentAcDevice.TurnOffSetting != null)
+                            ChangeACSetting(_currentAcDevice.TurnOffSetting);
+                        else
+                            throw new InvalidOperationException("Default TurnOffSetting in ACDevice not specified!");
                     }
                     else
                     {
