@@ -1,19 +1,36 @@
-﻿using ACCSApi.Model.Interfaces;
+﻿using System.ComponentModel;
+using ACCSApi.Model.Interfaces;
 
 namespace ACCSApi.Model.Transferable
 {
     public class NecCodeSettings
     {
-        public int ModulationFrequencyInHz { get; set; }
-        public double DutyCycle { get; set; } = 0.5;
+        public NecCodeSettings
+        (           
+            int leadingPulseDuration,
+            int leadingGapDuration,
+            int onePulseDuration,
+            int zeroPulseDuration,
+            int oneGapDuration,
+            int zeroGapDuration,
+            bool sendTrailingPulse)
+        {
+            LeadingPulseDuration = leadingPulseDuration;
+            LeadingGapDuration = leadingGapDuration;
+            OnePulseDuration = onePulseDuration;
+            ZeroPulseDuration = zeroPulseDuration;
+            OneGapDuration = oneGapDuration;
+            ZeroGapDuration = zeroGapDuration;
+            SendTrailingPulse = sendTrailingPulse;
+        }
 
-        public int LeadingPulseDuration { get; set; }
-        public int LeadingGapDuration { get; set; }
-        public int OnePulseDuration { get; set; }
-        public int ZeroPulseDuration { get; set; }
-        public int OneGapDuration { get; set; }
-        public int ZeroGapDuration { get; set; }
-        public bool SendTrailingPulse { get; set; }
+        public int LeadingPulseDuration { get; }
+        public int LeadingGapDuration { get; }
+        public int OnePulseDuration { get; }
+        public int ZeroPulseDuration { get; }
+        public int OneGapDuration { get; }
+        public int ZeroGapDuration { get;}
+        public bool SendTrailingPulse { get; }
     }
 
     public class NecCode : ICode

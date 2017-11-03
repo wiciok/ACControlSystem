@@ -1,17 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using ACCSApi.Model.Interfaces;
 using ACCSApi.Repositories.Interfaces;
 using ACCSApi.Services.Interfaces;
 using ACCSApi.Services.Models.Exceptions;
 
-namespace ACCSApi.Services
+namespace ACCSApi.Services.Domain
 {
-    public class HostDeviceService: IHostDeviceService
+    public class HostDeviceService : IHostDeviceService
     {
         private readonly IRaspberryPiDeviceRepository _raspberryPiDeviceRepository;
+        private IRaspberryPiDevice _currentDevice;
+
 
         public HostDeviceService(IRaspberryPiDeviceRepository raspberryPiDeviceRepository)
         {
@@ -23,8 +24,8 @@ namespace ACCSApi.Services
             if (device == null)
                 throw new ArgumentNullException(nameof(device));
 
-            var currentDevices =_raspberryPiDeviceRepository.Find(x => x.Id.Equals(device.Id) || x.Name.Equals(device.Name));
-            if(currentDevices.Any())
+            var currentDevices = _raspberryPiDeviceRepository.Find(x => x.Id.Equals(device.Id) || x.Name.Equals(device.Name));
+            if (currentDevices.Any())
                 throw new ItemAlreadyExistsException();
             return _raspberryPiDeviceRepository.Add(device);
         }
@@ -32,23 +33,15 @@ namespace ACCSApi.Services
         public IRaspberryPiDevice GetDevice(int id)
         {
             var device = _raspberryPiDeviceRepository.Find(x => x.Id.Equals(id)).SingleOrDefault();
-            if(device==null)
+            if (device == null)
                 throw new ItemNotFoundException($"RaspberryPiDevice with id {id} not found!");
             return device;
-        }
-
-        public IRaspberryPiDevice GetCurrentDevice()
-        {
-            var currentDevice = _raspberryPiDeviceRepository.CurrentDevice;
-            if(currentDevice==null)
-                throw new ItemNotFoundException("Current device not set!");
-            return currentDevice;
         }
 
         public IEnumerable<IRaspberryPiDevice> GetAllDevices()
         {
             var devices = _raspberryPiDeviceRepository.GetAll();
-            if(devices==null)
+            if (devices == null)
                 throw new ItemNotFoundException();
 
             return devices;
@@ -57,7 +50,7 @@ namespace ACCSApi.Services
         public void DeleteDevice(int id)
         {
             var device = _raspberryPiDeviceRepository.Find(x => x.Id.Equals(id)).SingleOrDefault();
-            if(device==null)
+            if (device == null)
                 throw new ItemNotFoundException($"RasbperryPiDevice with id {id} not found - cannot delete!");
             _raspberryPiDeviceRepository.Delete(device);
         }
@@ -73,14 +66,37 @@ namespace ACCSApi.Services
             return device;
         }
 
+        public IRaspberryPiDevice GetCurrentDevice()
+        {
+            if (_currentDevice == null)
+            {
+                _currentDevice = _raspberryPiDeviceRepository.CurrentDevice;
+                _currentDevice.OnChanged += _currentDevice_OnChanged;
+            }                
+
+            if (_currentDevice == null)
+                throw new ItemNotFoundException("Current device not set!");          
+
+            return _currentDevice;
+        }
+
         public IRaspberryPiDevice SetCurrentDevice(int id)
         {
-            var device = _raspberryPiDeviceRepository.Find(x => x.Id.Equals(id)).SingleOrDefault();
-            if (device == null)
-                throw new ItemNotFoundException($"RaspberryPiDevice with id {id} not found!");
+            var newDevice = _raspberryPiDeviceRepository.Find(x => x.Id.Equals(id)).SingleOrDefault();
+            _raspberryPiDeviceRepository.CurrentDevice = newDevice ?? throw new ItemNotFoundException($"RaspberryPiDevice with id {id} not found!");
+           
+            _currentDevice = newDevice;
+            return _currentDevice;
+        }
 
-            _raspberryPiDeviceRepository.CurrentDevice = device;
-            return device;
+        private void _currentDevice_OnChanged()
+        {
+            SaveCurrentDeviceChanges();
+        }
+
+        private void SaveCurrentDeviceChanges()
+        {
+            _raspberryPiDeviceRepository.Update(_currentDevice);
         }
     }
 }

@@ -11,6 +11,7 @@ namespace ACCSApi.Services.Domain
     public class ACDeviceService: IACDeviceService
     {
         private readonly IACDeviceRepository _acDeviceRepository;
+        private IACDevice _currentDevice;
 
         public ACDeviceService(IACDeviceRepository acDeviceRepository)
         {
@@ -34,14 +35,6 @@ namespace ACCSApi.Services.Domain
             if (device == null)
                 throw new ItemNotFoundException($"AcDevice with id {id} not found!");
             return device;
-        }
-
-        public IACDevice GetCurrentDevice()
-        {
-            var currentDevice = _acDeviceRepository.CurrentDevice;
-            if (currentDevice == null)
-                throw new ItemNotFoundException("Current device not set!");
-            return currentDevice;
         }
 
         public IEnumerable<IACDevice> GetAllDevices()
@@ -72,16 +65,36 @@ namespace ACCSApi.Services.Domain
             return device;
         }
 
-        public IACDevice SetCurrentDevice(int id)
+        public IACDevice GetCurrentDevice()
         {
-            var device = _acDeviceRepository.Find(x => x.Id.Equals(id)).SingleOrDefault();
-            _acDeviceRepository.CurrentDevice = device ?? throw new ItemNotFoundException($"AcDevice with id {id} not found!");
-            return device;
+            if (_currentDevice == null)
+            {
+                _currentDevice = _acDeviceRepository.CurrentDevice;
+                _currentDevice.OnChanged += _currentDevice_OnChanged;
+            }              
+
+            if (_currentDevice == null)
+                throw new ItemNotFoundException("Current device not set!");
+            return _currentDevice;
         }
 
-        public void SaveChangesInCurrentDevice()
+        public IACDevice SetCurrentDevice(int id)
         {
-            _acDeviceRepository.Update(_acDeviceRepository.CurrentDevice);
+            var newDevice = _acDeviceRepository.Find(x => x.Id.Equals(id)).SingleOrDefault();
+            _acDeviceRepository.CurrentDevice = newDevice ?? throw new ItemNotFoundException($"AcDevice with id {id} not found!");
+            _currentDevice.OnChanged -= _currentDevice_OnChanged;
+            _currentDevice = newDevice;
+            return _currentDevice;
+        }
+
+        private void _currentDevice_OnChanged()
+        {
+            SaveCurrentDeviceChanges();
+        }
+
+        private void SaveCurrentDeviceChanges()
+        {
+            _acDeviceRepository.Update(_currentDevice);
         }
     }
 }

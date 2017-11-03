@@ -20,18 +20,18 @@ namespace ACCSApi.Services.Domain
     {
         private readonly IACScheduleRepository _scheduleRepository;
         private readonly IACStateControlService _acStateControlService;
-        private readonly IACDeviceRepository _acDeviceRepository;
+        private readonly IACDeviceService _acDeviceService;
         private readonly IACDevice _currentDevice;
         private readonly IACState _turnOffState;
         private static readonly IDictionary<IACSchedule, Tuple<Timer, Timer>> SchedulesTimersDict = new Dictionary<IACSchedule, Tuple<Timer, Timer>>();
         private static bool _isFirstInstance = true;
 
-        public ACScheduleService(IACScheduleRepository scheduleRepository, IACStateControlService stateControlService, IACDeviceRepository acDeviceRepository)
+        public ACScheduleService(IACScheduleRepository scheduleRepository, IACStateControlService stateControlService, IACDeviceRepository acDeviceRepository, IACDeviceService acDeviceService)
         {
             _acStateControlService = stateControlService;
+            _acDeviceService = acDeviceService;
             _scheduleRepository = scheduleRepository;
-            _acDeviceRepository = acDeviceRepository;
-            _currentDevice = _acDeviceRepository.CurrentDevice;
+            _currentDevice = _acDeviceService.GetCurrentDevice();
 
             _turnOffState = new ACState { IsTurnOff = true };
             if(_isFirstInstance)

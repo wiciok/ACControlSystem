@@ -1,7 +1,6 @@
 ﻿using System;
 using ACCSApi.Model.Interfaces;
 using ACCSApi.Model.Transferable;
-using ACCSApi.Repositories.Interfaces;
 using ACCSApi.Services.Interfaces;
 using IRSlingerCsharp;
 
@@ -12,13 +11,18 @@ namespace ACCSApi.Services.Domain
         private readonly IIRSlingerCsharp _irService;
         private readonly IRaspberryPiDevice _hostDevice;
         private readonly IACDevice _acDevice;
+        private readonly IACDeviceService _acDeviceService;
+        private readonly IHostDeviceService _hostDeviceService;
 
-        public IRControlService(IIRSlingerCsharp irService, IRaspberryPiDeviceRepository hardwareDevicesRepo, IACDeviceRepository acDeviceRepo)
+
+        public IRControlService(IIRSlingerCsharp irService, IACDeviceService acDeviceService, IHostDeviceService hostDeviceService)
         {
             _irService = irService;
+            _acDeviceService = acDeviceService;
+            _hostDeviceService = hostDeviceService;
 
-            _acDevice = acDeviceRepo.CurrentDevice;
-            _hostDevice = hardwareDevicesRepo.CurrentDevice;
+            _acDevice = _acDeviceService.GetCurrentDevice();
+            _hostDevice = _hostDeviceService.GetCurrentDevice();
         }
 
         public void SendMessage(ICode code)

@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using MessagePack;
+﻿using System;
+using System.Collections.Generic;
 
 namespace ACCSApi.Model.Interfaces
 {
@@ -7,6 +7,8 @@ namespace ACCSApi.Model.Interfaces
     {
         string Name { get; set; }
         IDictionary<uint, uint> ValidBoardAndBroadcomPins { get; set; } //key: XX - board number, value: GPIOXX - broadcom number
+
+        event Action OnChanged;
 
         uint BoardOutPin { get; set; }
         uint BoardInPin { get; set; }

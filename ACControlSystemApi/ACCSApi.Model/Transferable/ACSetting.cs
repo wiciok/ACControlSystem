@@ -6,15 +6,17 @@ namespace ACCSApi.Model.Transferable
 {
     public class ACSetting : IACSetting
     {
-        public ACSetting()
+        public ACSetting(JObject settings, ICode code, bool isTurnOff = false)
         {
             UniqueId = Guid.NewGuid();
-            IsTurnOff = false;
+            IsTurnOff = isTurnOff;
+            Settings = settings;
+            Code = code;
         }
 
         public Guid UniqueId { get; }
-        public bool IsTurnOff { get; set; }
-        public JObject Settings { get; set; }
-        public ICode Code { get; set; }
+        public bool IsTurnOff { get; }
+        public JObject Settings { get; }
+        public ICode Code { get; }
     }
 }

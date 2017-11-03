@@ -11,12 +11,14 @@ namespace ACCSApi.Services.Domain
     {
         private IACState _currentState;
         private readonly IIRControlService _irControlService;
+        private readonly IACDeviceService _acDeviceService;
         private readonly IACDevice _currentAcDevice;
 
-        public ACStateControlService(IIRControlService irControlService, IACDeviceRepository acDeviceRepository)
+        public ACStateControlService(IIRControlService irControlService, IACDeviceService acDeviceService)
         {
             _irControlService = irControlService;
-            _currentAcDevice = acDeviceRepository.CurrentDevice;
+            _acDeviceService = acDeviceService;
+            _currentAcDevice = _acDeviceService.GetCurrentDevice();
         }
 
         public void SetCurrentState(IACState newState)

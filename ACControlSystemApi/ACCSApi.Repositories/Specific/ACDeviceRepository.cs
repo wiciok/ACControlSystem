@@ -11,7 +11,7 @@ namespace ACCSApi.Repositories.Specific
     {
         public ACDeviceRepository(IDao<IACDevice> deviceDao) : base(deviceDao)
         {
-            if(GlobalConfig.GenerateInitialData)
+            if (GlobalConfig.GenerateInitialData)
                 CreateInitialDataTemp();
         }
 
@@ -26,50 +26,41 @@ namespace ACCSApi.Repositories.Specific
                     Model="",
                     ModulationFrequencyInHz=38,
                     DutyCycle=0.5,
-                    NecCodeSettings = new NecCodeSettings()
-                    {
-                        LeadingPulseDuration = 3200,
-                        LeadingGapDuration = 1600,
-                        OneGapDuration = 1200,
-                        OnePulseDuration = 410,
-                        ZeroPulseDuration = 410,
-                        ZeroGapDuration = 410,
-                        SendTrailingPulse = true
-                    },                   
+                    NecCodeSettings = new NecCodeSettings(
+
+                        leadingPulseDuration: 3200,
+                        leadingGapDuration: 1600,
+                        oneGapDuration: 1200,
+                        onePulseDuration: 410,
+                        zeroPulseDuration : 410,
+                        zeroGapDuration: 410,
+                        sendTrailingPulse: true)
+                    ,
                     AvailableSettings= new ACSetting[]
                     {
-                        new ACSetting()
-                        {
-                            Code=new NecCode()
+                        new ACSetting
+                        (
+                            code:new NecCode()
                             {
                                 Code ="00101000 11000110 00000000 00001000 00001000 01000000 00111111"
                             },
-                            IsTurnOff=true,
-                            Settings=null
-                        },
+                            settings:null,
+                            isTurnOff:true
+                        ),
 
-                        new ACSetting()
-                        {
-                            Code=new NecCode()
+                        new ACSetting
+                        (
+                            code: new NecCode()
                             {
                                 Code ="00101000 11000110 00000000 00001000 00001000 01111111 10010000 00001100 10001010 10000000 00001100 00000000 00000000 00000000 00000100 01110100"
                             },
-                            IsTurnOff=true,
-                            Settings=null
-                        },
 
-                        new ACSetting()
-                        {
-                            Code=new NecCode()
-                            {
-                                Code ="00101000 11000110 00000000 00001000 00001000 01111111 10010000 00001100 10001010 10000000 00001100 00000000 00000000 00000000 00000100 01110100"
-                            },
-                            IsTurnOff=false,
-                            Settings=new JObject()
+                            settings:new JObject()
                             {
                                 { "Mode" , "Cool" }
-                            }
-                        }
+                            },
+                            isTurnOff:false
+                        )
                     }
                 }
             });

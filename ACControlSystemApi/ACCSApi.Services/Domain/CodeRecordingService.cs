@@ -5,7 +5,6 @@ using System.Linq;
 using System.Text;
 using ACCSApi.Model.Interfaces;
 using ACCSApi.Model.Transferable;
-using ACCSApi.Repositories.Interfaces;
 using ACCSApi.Services.Interfaces;
 using Unosquare.RaspberryIO;
 using Unosquare.RaspberryIO.Gpio;
@@ -16,16 +15,17 @@ namespace ACCSApi.Services.Domain
     {
         private const int ShortAndLongPulseBoundary = 1000;
         private const int MaxAcCommandLength = 10000;
-        private readonly IACDeviceRepository _acDeviceRepository;
+        private readonly IACDeviceService _acDeviceService;
+        private readonly IHostDeviceService _hostDeviceService;
         private readonly IACDevice _currentAcDevice;
         private readonly GpioPin _inputPin;
 
-        public CodeRecordingService(IACDeviceRepository acDeviceRepository, IRaspberryPiDeviceRepository raspberryPiDeviceRepository)
+        public CodeRecordingService(IACDeviceService acDeviceService, IHostDeviceService hostDeviceService)
         {
-            _acDeviceRepository = acDeviceRepository;
-
-            _currentAcDevice = _acDeviceRepository.CurrentDevice;
-            var currentRaspberryPiDevice = raspberryPiDeviceRepository.CurrentDevice;
+            _acDeviceService = acDeviceService;
+            _hostDeviceService = hostDeviceService;
+            _currentAcDevice = _acDeviceService.GetCurrentDevice();
+            var currentRaspberryPiDevice = _hostDeviceService.GetCurrentDevice();
 
             _inputPin = Pi.Gpio.Pins.Single(x => x.HeaderPinNumber == currentRaspberryPiDevice.BoardInPin);
             _inputPin.PinMode = GpioPinDriveMode.Input;
@@ -61,7 +61,7 @@ namespace ACCSApi.Services.Domain
             stopwatch.Stop();
 
             return pulseList;
-        }       
+        }
 
         public void ResetCurrentAcDeviceNecCodeSettings()
         {
@@ -99,27 +99,25 @@ namespace ACCSApi.Services.Domain
 
         private NecCodeSettings RegisterNecCodeSettings(List<Tuple<byte, double>> pulseList)
         {
-            var necCodeSettings = new NecCodeSettings
-            {
-                LeadingPulseDuration = (int)pulseList[0].Item2,
-                LeadingGapDuration = (int)pulseList[1].Item2
-            };
+            var necLeadingPulseDuration = (int)pulseList[0].Item2;
+            var necLeadingGapDuration = (int)pulseList[1].Item2;
+            bool necSendTrailingPulse;
 
             pulseList.RemoveRange(0, 2);
 
             if (pulseList.Count % 2 == 1)
             {
-                necCodeSettings.SendTrailingPulse = true;
+                necSendTrailingPulse = true;
                 pulseList.Remove(pulseList.Last());
             }
             else
             {
-                necCodeSettings.SendTrailingPulse = false;
+                necSendTrailingPulse = false;
             }
 
             //determine duration of pulses
 
-            necCodeSettings.OneGapDuration =
+            var necOneGapDuration =
                 (int)Math.Round(
                     pulseList
                         .Where(x => x.Item2 >= ShortAndLongPulseBoundary && x.Item1 == 1)
@@ -142,9 +140,20 @@ namespace ACCSApi.Services.Domain
 
             var averageShortPulse = (zeroGapDuration + zeroPulseAndOnePulseDuration) / 2;
 
-            necCodeSettings.OnePulseDuration = averageShortPulse;
-            necCodeSettings.ZeroPulseDuration = averageShortPulse;
-            necCodeSettings.ZeroGapDuration = averageShortPulse;
+            var necOnePulseDuration = averageShortPulse;
+            var necZeroPulseDuration = averageShortPulse;
+            var necZeroGapDuration = averageShortPulse;
+
+            var necCodeSettings = new NecCodeSettings
+            (
+                leadingPulseDuration: (int)pulseList[0].Item2,
+                leadingGapDuration: (int)pulseList[1].Item2,
+                onePulseDuration: necOnePulseDuration,
+                oneGapDuration: necOneGapDuration,
+                zeroPulseDuration: necZeroPulseDuration,
+                zeroGapDuration: necZeroGapDuration,
+                sendTrailingPulse: necSendTrailingPulse
+            );
 
             return necCodeSettings;
         }
@@ -152,7 +161,6 @@ namespace ACCSApi.Services.Domain
         private void SaveNecCodeSettingsToAcDeviceObject(NecCodeSettings settings)
         {
             _currentAcDevice.NecCodeSettings = settings;
-            _acDeviceRepository.Update(_currentAcDevice);
         }
 
         private static string BuildStringCode(IEnumerable<Tuple<byte, double>> pulseList, int threshold)

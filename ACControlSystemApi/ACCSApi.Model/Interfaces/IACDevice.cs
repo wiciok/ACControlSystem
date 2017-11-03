@@ -1,10 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using ACCSApi.Model.Transferable;
 
 namespace ACCSApi.Model.Interfaces
 {
     public interface IACDevice: IACCSSerializable
     {
+        event Action OnChanged;
+
         string Model { get; set; }
         string Brand { get; set; }
 

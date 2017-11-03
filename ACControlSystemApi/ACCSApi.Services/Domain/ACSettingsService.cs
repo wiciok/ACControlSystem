@@ -8,7 +8,7 @@ using ACCSApi.Services.Models.Exceptions;
 
 namespace ACCSApi.Services.Domain
 {
-    public class ACSettingsService: IACSettingsService
+    public class ACSettingsService : IACSettingsService
     {
         private readonly IACDevice _currentAcDevice;
         private readonly ICodeRecordingService _codeRecordingService;
@@ -24,13 +24,12 @@ namespace ACCSApi.Services.Domain
         {
             var code = _codeRecordingService.RecordRawCode();
 
-            var acSetting = new ACSetting()
-            {
-                
-                Code = code,
-                IsTurnOff = settingDto.IsTurnOff,
-                Settings = settingDto.Settings
-            };
+            var acSetting = new ACSetting
+            (
+                code: code,
+                settings: settingDto.Settings,
+                isTurnOff: settingDto.IsTurnOff
+            );
             _currentAcDevice.AvailableSettings.Add(acSetting);
             return acSetting.UniqueId;
         }
@@ -39,13 +38,12 @@ namespace ACCSApi.Services.Domain
         {
             var code = _codeRecordingService.RecordNecCode();
 
-            var acSetting = new ACSetting()
-            {
-
-                Code = code,
-                IsTurnOff = settingDto.IsTurnOff,
-                Settings = settingDto.Settings
-            };
+            var acSetting = new ACSetting
+            (
+                code: code,
+                settings: settingDto.Settings,
+                isTurnOff: settingDto.IsTurnOff
+            );
             _currentAcDevice.AvailableSettings.Add(acSetting);
             return acSetting.UniqueId;
         }
@@ -53,7 +51,7 @@ namespace ACCSApi.Services.Domain
         public IACSetting Get(Guid guid)
         {
             var acSetting = _currentAcDevice.AvailableSettings.SingleOrDefault(x => x.UniqueId.Equals(guid));
-            if(acSetting==null)
+            if (acSetting == null)
                 throw new ItemNotFoundException("ACSetting with guid {guid} not found in current ACDevice available settings list");
             return acSetting;
         }
@@ -85,7 +83,7 @@ namespace ACCSApi.Services.Domain
         public IACSetting GetDefaultOn()
         {
             var defOn = _currentAcDevice.DefaultTurnOnSetting;
-            if(defOn==null)
+            if (defOn == null)
                 throw new ItemNotFoundException("Default On Setting not set in ACDevice!");
             return defOn;
         }
