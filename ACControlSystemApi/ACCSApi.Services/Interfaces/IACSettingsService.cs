@@ -14,5 +14,10 @@ namespace ACCSApi.Services.Interfaces
         IEnumerable<IACSetting> GetAll();
         void Delete(Guid guid);
         IACSetting Update(IACSetting setting);
+
+        IACSetting GetDefaultOn();
+        IACSetting GetDefaultOff();
+        IACSetting SetDefaultOn(Guid defaultOnGuid);
+        IACSetting SetDefaultOff(Guid defaultOffGuid);
     }
 }

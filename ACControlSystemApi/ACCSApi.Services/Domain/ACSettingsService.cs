@@ -79,5 +79,37 @@ namespace ACCSApi.Services.Domain
             acSetting = setting;
             return acSetting;
         }
+
+        //default on/off related
+
+        public IACSetting GetDefaultOn()
+        {
+            var defOn = _currentAcDevice.DefaultTurnOnSetting;
+            if(defOn==null)
+                throw new ItemNotFoundException("Default On Setting not set in ACDevice!");
+            return defOn;
+        }
+
+        public IACSetting GetDefaultOff()
+        {
+            var defOff = _currentAcDevice.TurnOffSetting;
+            if (defOff == null)
+                throw new ItemNotFoundException("Default Off Setting not set in ACDevice!");
+            return defOff;
+        }
+
+        public IACSetting SetDefaultOn(Guid defaultOnGuid)
+        {
+            var defaultOn = _currentAcDevice.AvailableSettings.SingleOrDefault(x => x.UniqueId.Equals(defaultOnGuid));
+            _currentAcDevice.DefaultTurnOnSetting = defaultOn ?? throw new ItemNotFoundException($"ACSetting with specified Guid {defaultOnGuid} doesnt exist and therefore cannot be set as default!");
+            return defaultOn;
+        }
+
+        public IACSetting SetDefaultOff(Guid defaultOffGuid)
+        {
+            var defaultOff = _currentAcDevice.AvailableSettings.SingleOrDefault(x => x.UniqueId.Equals(defaultOffGuid));
+            _currentAcDevice.TurnOffSetting = defaultOff ?? throw new ItemNotFoundException($"ACSetting with specified Guid {defaultOffGuid} doesnt exist and therefore cannot be set as default!");
+            return defaultOff;
+        }
     }
 }
