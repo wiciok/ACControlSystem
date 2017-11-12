@@ -10,8 +10,7 @@ namespace ACCSApi.Repositories.Generic
     public class GenericBinaryFileDao<T> : IDao<T> where T : class, IACCSSerializable
     {
         private List<T> _objectsList;
-        //private static readonly string pathToFile = GlobalSettings.PathToKeepFilesWithData + nameof(T) + ".bin";
-        private static readonly string pathToFile = GlobalConfig.PathToKeepFilesWithData;
+        private static readonly string PathToFile = GlobalConfig.PathToKeepFilesWithData;
         private int _lastClassUniqueId = 1;
 
         public GenericBinaryFileDao()
@@ -46,7 +45,7 @@ namespace ACCSApi.Repositories.Generic
 
         public T Get(int id)
         {
-            return _objectsList.Where(x => x.Id == id).SingleOrDefault();
+            return _objectsList.SingleOrDefault(x => x.Id == id);
         }
 
         public IEnumerable<T> GetAll()
@@ -56,7 +55,7 @@ namespace ACCSApi.Repositories.Generic
 
         public void Update(T obj)
         {
-            var updatedObj = _objectsList.Where(x => x.Id == obj.Id).SingleOrDefault();
+            var updatedObj = _objectsList.SingleOrDefault(x => x.Id == obj.Id);
             updatedObj = updatedObj ?? obj;
 
             if (updatedObj == null)
@@ -80,7 +79,7 @@ namespace ACCSApi.Repositories.Generic
 
             byte[] data = MessagePack.MessagePackSerializer.Serialize<List<T>>(_objectsList);
 
-            using (var writer = new BinaryWriter(new FileStream(pathToFile, FileMode.Create)))
+            using (var writer = new BinaryWriter(new FileStream(PathToFile, FileMode.Create)))
             {
                 writer.Write(_lastClassUniqueId);
                 writer.Write(data);
@@ -92,7 +91,7 @@ namespace ACCSApi.Repositories.Generic
             try
             {
                 byte[] buffer;
-                using (var reader = new BinaryReader(new FileStream(pathToFile, FileMode.Open)))
+                using (var reader = new BinaryReader(new FileStream(PathToFile, FileMode.Open)))
                 {
                     _lastClassUniqueId = reader.ReadInt32();
                     buffer = reader.ReadBytes(int.MaxValue); //?? does this work?

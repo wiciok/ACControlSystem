@@ -7,8 +7,6 @@ using ACCSApi.Services.Models.Exceptions;
 
 namespace ACCSApi.Services.Utils
 {
-    //todo: mark as singleton in DI configuration!
-
     public class AuthService : IAuthService
     {
         private readonly IUserService _userService;

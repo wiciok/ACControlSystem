@@ -33,20 +33,10 @@ namespace ACCSApi.Controllers
             var builder = new ContainerBuilder();
             builder.Populate(services);
 
-            /*builder.RegisterGeneric(typeof(GenericBinaryFileDao<>))
-                .As(typeof(IDao<>))
-                .InstancePerDependency();
-                //.SingleInstance();*/
-
             builder.RegisterGeneric(typeof(GenericJsonFileDao<>))
                 .As(typeof(IDao<>))
                 .InstancePerDependency();
             //.SingleInstance();
-
-
-            /*builder.RegisterAssemblyTypes(AppDomain.CurrentDomain.GetAssemblies())
-                .Where(t => t.Namespace.Equals("ACCSApi.Model.Transferable"))
-                .AsImplementedInterfaces();*/
 
             builder.RegisterType<RaspberryPiDevice>()
                 .AsImplementedInterfaces();
@@ -83,10 +73,14 @@ namespace ACCSApi.Controllers
                 //.InstancePerRequest();
                 .InstancePerDependency();
                 //.SingleInstance();
+
+            builder.RegisterType(typeof(AuthService))
+                .AsImplementedInterfaces()
+                .SingleInstance();
             
             ApplicationContainer = builder.Build();
 
-            GlobalConfig.Container = ApplicationContainer; //todo: do something with this shitty workaround
+            GlobalConfig.Container = ApplicationContainer;
 
             return new AutofacServiceProvider(ApplicationContainer);
         }

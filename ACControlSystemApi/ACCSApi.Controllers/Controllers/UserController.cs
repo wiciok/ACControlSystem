@@ -7,8 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ACCSApi.Controllers.Controllers
 {
-    //todo: check routing if its working!
-
     [Produces("application/json")]
     [Route("api/User")]
     public class UserController : Controller

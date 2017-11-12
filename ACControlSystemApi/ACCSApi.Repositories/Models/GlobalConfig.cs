@@ -15,7 +15,6 @@ namespace ACCSApi.Repositories.Models
         public static int CurrentAcDeviceId = 1;
 
         //Utils:
-        //todo: configure DI to use this!
         public static TokenExpirationType TokenExpirationType = TokenExpirationType.ByTime;
         public static int TokenExpirationTimeInSeconds = 10;
 

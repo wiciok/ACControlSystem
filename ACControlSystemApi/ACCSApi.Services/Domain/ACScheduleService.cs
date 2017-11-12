@@ -14,8 +14,6 @@ namespace ACCSApi.Services.Domain
     //todo: przemyslec usuwanie scheduli ktore nie sa juz aktualne
     //todo: przy starcie aplikacji powinno sie dodawac wszystkie schedule do wykonania
 
-        //todo: check why isntanceperrequest is not working!
-
     public class ACScheduleService : IACScheduleService
     {
         private readonly IACScheduleRepository _scheduleRepository;
