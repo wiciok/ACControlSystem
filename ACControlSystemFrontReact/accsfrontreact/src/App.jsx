@@ -6,31 +6,10 @@ import Navbar from "./Navbar";
 import Footer from "./Footer";
 import ContentArea from "./ContentArea";
 import MainMenu from "./MainMenu";
-
-import Home from './content-components/Home';
-
-class ContentComponentInfo {
-    constructor(menuName, link, categoryId) {
-        this.name = menuName;
-        this.link = link;
-        this.categoryId = categoryId;
-    }
-}
+import MainMenuCategoriesAndItems from './MainMenuCategoriesAndItems';
 
 
 class App extends Component {
-    //todo: wydzielic do osobnego pliku
-
-    menuCategories =
-        [
-            {
-                id: 1,
-                name: "System",
-                contentComponentInfoList: [new ContentComponentInfo("Home", "/", 1)]
-            },
-        ];
-
-
     render() {
         return (
             <BrowserRouter>
@@ -41,10 +20,16 @@ class App extends Component {
                             <div className="container">
                                 <div className="columns">
                                     <div className="column is-3">
-                                        <MainMenu categories={this.menuCategories} />
+                                        <MainMenu
+                                            categories={(new MainMenuCategoriesAndItems()).menuCategoriesAndItems}
+                                        />
                                     </div>
                                     <div className="column is-9">
-                                        <ContentArea categories={this.menuCategories} />
+                                        <ContentArea
+                                            componentList={(new MainMenuCategoriesAndItems())
+                                                .menuCategoriesAndItems
+                                                .map((item) => item.contentComponentInfoList)}
+                                        />
                                     </div>
                                 </div>
                             </div>
