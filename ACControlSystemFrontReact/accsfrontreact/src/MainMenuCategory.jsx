@@ -1,16 +1,14 @@
 import React, { Component } from 'react';
 import 'bulma/css/bulma.css';
+import './MainMenuCategory.css'
 
 import MainMenuItem from "./MainMenuItem";
 
 class MainMenuCategory extends Component {
-    constructor(props) {
-        super(props);
-    }
 
     render() {
         return (
-            <div>
+            <div className="menu-category">
                 <p className="menu-label">{this.props.categoryName}</p>
                 <ul className="menu-list">
                     {this.props.menuItems.map((item, index) => (
@@ -20,7 +18,6 @@ class MainMenuCategory extends Component {
                         />
                     ))}
                 </ul>
-                <br />
             </div>
         );
     }

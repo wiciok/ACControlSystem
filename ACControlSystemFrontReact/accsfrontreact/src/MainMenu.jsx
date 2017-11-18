@@ -1,13 +1,10 @@
 import React, { Component } from 'react';
+
 import 'bulma/css/bulma.css';
 
 import MainMenuCategory from './MainMenuCategory'
 
 class MainMenu extends Component {
-    constructor(props) {
-        super(props);
-    }
-
     categories =
         [
             {
@@ -22,7 +19,14 @@ class MainMenu extends Component {
                 menuItems: [
                     { text: "Ustawienia konta", link: "../index.html" }
                 ]
-            }
+            },
+
+            {
+                name: "123",
+                menuItems: [
+                    { text: "", link: "" }
+                ]
+            },
         ];
 
 
@@ -49,10 +53,6 @@ class MainMenu extends Component {
                             <li><a>Zarządzaj</a></li>
                         </ul>
                     </li>
-                </ul>
-                <p className="menu-label">Administracja</p>
-                <ul className="menu-list">
-                    <li><a>Konta użytkowników</a></li>
                 </ul>
             </aside>
         );

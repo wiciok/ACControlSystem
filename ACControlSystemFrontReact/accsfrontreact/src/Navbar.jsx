@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import 'bulma/css/bulma.css';
-import NavbarItem from "./NavbarItem.js"
+import NavbarItem from "./NavbarItem"
 
 class Navbar extends Component {
     render() {

@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
+import { Route } from 'react-router-dom';
+
+import Home from './content-components/Home';
+
 import 'bulma/css/bulma.css';
 
 class ContentArea extends Component {
     render() {
         return (
             <div>
-                <a className="has-text-black">
-                    <h1>test</h1>
-                </a>
+                <Route exact path="/" component={Home} />
             </div>
         );
     }
