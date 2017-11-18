@@ -1,7 +1,13 @@
 import React, { Component } from 'react';
-import ContentComponent from './ContentComponent';
 
-class Home extends ContentComponent {
+class Home extends Component {
+    constructor(props) {
+        super(props);
+        this.name = "Home";
+        this.menuName = "Strona główna";
+        this.link = "/";
+    }
+
     render() {
         return (
             <div>

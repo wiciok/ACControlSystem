@@ -5,15 +5,21 @@ import './MainMenuCategory.css'
 import MainMenuItem from "./MainMenuItem";
 
 class MainMenuCategory extends Component {
+    constructor(props) {
+        super(props);
+        this.name = props.name;
+        this.items = props.items;
+    }
+
 
     render() {
         return (
             <div className="menu-category">
-                <p className="menu-label">{this.props.categoryName}</p>
+                <p className="menu-label">{this.name}</p>
                 <ul className="menu-list">
-                    {this.props.menuItems.map((item, index) => (
+                    {this.items.map((item) => (
                         <MainMenuItem
-                            text={item.text}
+                            text={item.name}
                             link={item.link}
                         />
                     ))}
