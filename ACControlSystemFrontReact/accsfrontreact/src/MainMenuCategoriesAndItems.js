@@ -19,7 +19,7 @@ class MainMenuCategoriesAndItems {
                 name: "System",
                 contentComponentInfoList:
                     [
-                        new ContentComponentInfo("Home", "/", Home),
+                        new ContentComponentInfo("Home", "/index.html", Home),
                     ]
             },
             {

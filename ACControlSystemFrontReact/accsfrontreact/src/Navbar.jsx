@@ -9,7 +9,7 @@ class Navbar extends Component {
                 <div className="container">
                     <div className="navbar-brand">
                         <NavbarItem
-                            link="index.js"
+                            link="index.html"
                             text="System sterowania klimatyzacją"
                         />
                     </div>
