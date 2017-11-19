@@ -19,14 +19,37 @@ class MainMenuCategoriesAndItems {
                 name: "System",
                 contentComponentInfoList:
                     [
-                        new ContentComponentInfo("Home", "/index.html", Home),
+                        new ContentComponentInfo("Strona główna", "/index.html", Home),
                     ]
             },
             {
                 id: 2,
-                name: "Klimatyzator",
-                contentComponentInfoList: [new ContentComponentInfo("AcState", "/acState", AcState)]
+                name: "Sterowanie klimatyzatorem",
+                contentComponentInfoList:
+                    [
+                        new ContentComponentInfo("Stan", "/acState", AcState),
+                        new ContentComponentInfo("Terminarz", "/acSchedule", AcState),
+                        new ContentComponentInfo("Ustawienia", "/acSetting", AcState),
+                    ]
             },
+            {
+                id: 3,
+                name: "Urządzenia",
+                contentComponentInfoList:
+                    [
+                        new ContentComponentInfo("Klimatyzatory", "/acDevice", AcState),
+                        new ContentComponentInfo("Urządzenia hostujące", "/hostDevice", AcState)
+                    ]
+            },
+            {
+                id: 4,
+                name: "Użytkownicy",
+                contentComponentInfoList:
+                    [
+                        new ContentComponentInfo("Dodaj", "/addUser", AcState),
+                        new ContentComponentInfo("Zarządzaj", "/manageUsers", AcState)
+                    ]
+            }
         ];
 }
 
