@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
+import 'bulma/css/bulma.css';
+
+import CurrentStateTag from './CurrentStateTag';
+import ToggeStateButton from './ToggleStateButton';
 
 class AcState extends Component {
     constructor(props) {
         super(props);
-        this.name = "AcState";
-        this.menuName = "Stan klimatyzatora";
-        this.link = "/acstate";
+
+        this.state = { currentAcState: "unknown" };
 
         this.rstatus = "";
     };
@@ -29,10 +32,29 @@ class AcState extends Component {
     render() {
         return (
             <div>
-                AcState: {this.rstatus}
-                <br />
-                <button onClick={this.fetchInfo}>
-                    test</button>
+                <h2 className="title is-2">Stan klimatyzatora</h2>
+                <div className="box">
+                    <div className="columns">
+                        <div class="column">
+                            <h4 className="title is-4">
+                                Obecny stan klimatyzatora: &emsp;
+                                <br /><br />
+                                <CurrentStateTag tagState={this.state.currentAcState} />
+                            </h4>
+                        </div>
+                        <div class="column">
+                            <h4 className="title is-4">
+                                Sterowanie ręczne: &emsp;
+                                <br /><br />
+                                <ToggeStateButton actionType="on" />
+                                <br /><br />
+                                <ToggeStateButton actionType="off" />
+                            </h4>
+                        </div>
+                    </div>
+                </div>
+
+
             </div>
         );
     }
