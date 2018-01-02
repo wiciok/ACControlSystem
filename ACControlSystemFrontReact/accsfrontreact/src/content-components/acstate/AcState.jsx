@@ -2,7 +2,7 @@ import React, {Component, Fragment} from 'react';
 import 'bulma/css/bulma.css';
 
 import CurrentStateTag from './current-state-tag/CurrentStateTag';
-import ToggeStateButton from './ToggleStateButton';
+import ToggleStateButton from './ToggleStateButton';
 import ErrorMessageComponent from '../../ErrorMessageComponent';
 
 class AcState extends Component {
@@ -50,7 +50,6 @@ class AcState extends Component {
             }
         }).catch(err => {
             console.log(err);
-            alert('error');
             this.setState({
                 error: {
                     isError: true,
@@ -84,16 +83,17 @@ class AcState extends Component {
                                 <br/><br/>
                                 <CurrentStateTag
                                     tagState={this.state.currentAcState}
-                                    onClick={this.getCurrentAcState}/>
+                                    onClick={e=> {this.getCurrentAcState()}}
+                                    />
                             </h4>
                         </div>
                         <div className="column">
                             <h4 className="title is-4">
                                 Sterowanie ręczne: &emsp;
                                 <br/><br/>
-                                <ToggeStateButton actionType="on"/>
+                                <ToggleStateButton actionType="on"/>
                                 <br/><br/>
-                                <ToggeStateButton actionType="off"/>
+                                <ToggleStateButton actionType="off"/>
                             </h4>
                         </div>
                     </div>

@@ -23,9 +23,11 @@ class CurrentStateTag extends Component {
         };
 
         return (
-            <span className={this.tagCssClass}>
-                {this.tagText}
-            </span>
+            <a onClick={this.props.onClick} title="Kliknij aby odświeżyć">
+                <span className={this.tagCssClass}>
+                    {this.tagText}
+                </span>
+            </a>
         );
     }
 }
