@@ -1,5 +1,5 @@
-import Home from './content-components/Home';
-import AcState from './content-components/AcState';
+import Home from './../content-components/Home';
+import AcState from './../content-components/acstate/AcState';
 
 
 class ContentComponentInfo {

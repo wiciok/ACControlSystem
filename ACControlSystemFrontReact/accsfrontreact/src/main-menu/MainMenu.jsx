@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-
 import 'bulma/css/bulma.css';
-
 import MainMenuCategory from './MainMenuCategory'
 
 class MainMenu extends Component {
@@ -10,8 +8,6 @@ class MainMenu extends Component {
         this.menuCategories = this.props.categories;
     }
 
-
-    //todo: foreach albo map
     render() {
         return (
             <aside className="menu">

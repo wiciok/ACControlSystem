@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { Route } from 'react-router-dom';
 
 import 'bulma/css/bulma.css';
@@ -11,7 +11,7 @@ class ContentArea extends Component {
 
     render() {
         return (
-            <div>
+            <Fragment>
                 {this.componentList.map(item => (
                     item.map((innerItem, index) => (
                         <Route
@@ -21,7 +21,7 @@ class ContentArea extends Component {
                         />
                     ))
                 ))}
-            </div>
+            </Fragment>
         );
     }
 }

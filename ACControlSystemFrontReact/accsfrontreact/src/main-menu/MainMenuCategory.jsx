@@ -1,6 +1,5 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import 'bulma/css/bulma.css';
-import './MainMenuCategory.css'
 
 import MainMenuItem from "./MainMenuItem";
 
@@ -14,7 +13,7 @@ class MainMenuCategory extends Component {
 
     render() {
         return (
-            <div className="menu-category">
+            <Fragment>
                 <p className="menu-label">{this.name}</p>
                 <ul className="menu-list">
                     {this.items.map((item, index) => (
@@ -25,7 +24,7 @@ class MainMenuCategory extends Component {
                         />
                     ))}
                 </ul>
-            </div>
+            </Fragment>
         );
     }
 }

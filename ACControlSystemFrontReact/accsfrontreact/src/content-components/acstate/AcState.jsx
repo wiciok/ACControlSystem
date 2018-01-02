@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import 'bulma/css/bulma.css';
 
-import CurrentStateTag from './CurrentStateTag';
+import CurrentStateTag from './current-state-tag/CurrentStateTag';
 import ToggeStateButton from './ToggleStateButton';
 
 class AcState extends Component {
@@ -9,7 +9,6 @@ class AcState extends Component {
         super(props);
 
         this.state = { currentAcState: "unknown" };
-
         this.rstatus = "";
     };
 
