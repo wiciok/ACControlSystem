@@ -3,22 +3,27 @@ import 'bulma/css/bulma.css';
 
 import CurrentStateTag from './current-state-tag/CurrentStateTag';
 import ToggeStateButton from './ToggleStateButton';
+import ErrorMessageComponent from '../../ErrorMessageComponent';
 
 class AcState extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            currentAcState: "unknown"
+            currentAcState: "unknown",
+            error: {
+                isError: false,
+                errorMessage: null
+            }
         };
     };
 
     componentDidMount() {
-        this.getCurrentState();
+        this.getCurrentAcState();
     }
 
-    getCurrentState() {
-        let endpointAddress=`${window.apiAddress}/acstate`;
+    getCurrentAcState() {
+        let endpointAddress = `${window.apiAddress}/acstate`;
         console.log(endpointAddress);
 
         fetch(endpointAddress).then(response => {
@@ -32,10 +37,9 @@ class AcState extends Component {
                         .json()
                         .then(json => {
                             console.log(json);
-                            if(json.isTurnOff===true){
+                            if (json.isTurnOff === true) {
                                 this.setState({currentAcState: "off"});
-                            }
-                            else{
+                            } else {
                                 this.setState({currentAcState: "on"});
                             }
                         })
@@ -45,22 +49,42 @@ class AcState extends Component {
                     throw new Error("Unexpected return code");
             }
         }).catch(err => {
-            alert(err);
+            console.log(err);
             alert('error');
-        })
+            this.setState({
+                error: {
+                    isError: true,
+                    errorMessage: "Błąd pobierania danych z API!"
+                }
+            });
+
+        });
     }
 
     render() {
         return (
             <Fragment>
                 <h2 className="title is-2">Stan klimatyzatora</h2>
+                <ErrorMessageComponent
+                    isVisible={this.state.error.isError}
+                    bodyText={this.state.error.errorMessage}
+                    onChangeErrorState={e => {
+                    this.setState({
+                        error: {
+                            isError: false,
+                            errorMessage: null
+                        }
+                    })
+                }}/>
                 <div className="box">
                     <div className="columns">
                         <div className="column">
                             <h4 className="title is-4">
                                 Obecny stan klimatyzatora: &emsp;
                                 <br/><br/>
-                                <CurrentStateTag tagState={this.state.currentAcState}/>
+                                <CurrentStateTag
+                                    tagState={this.state.currentAcState}
+                                    onClick={this.getCurrentAcState}/>
                             </h4>
                         </div>
                         <div className="column">
