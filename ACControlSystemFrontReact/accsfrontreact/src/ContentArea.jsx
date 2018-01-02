@@ -1,5 +1,5 @@
-import React, { Component, Fragment } from 'react';
-import { Route } from 'react-router-dom';
+import React, {Component, Fragment} from 'react';
+import {Route} from 'react-router-dom';
 
 import 'bulma/css/bulma.css';
 
@@ -12,15 +12,13 @@ class ContentArea extends Component {
     render() {
         return (
             <Fragment>
-                {this.componentList.map(item => (
-                    item.map((innerItem, index) => (
-                        <Route
-                            key={index}
-                            exact path={innerItem.link}
-                            component={innerItem.componentType}
-                        />
-                    ))
-                ))}
+                {this
+                    .componentList
+                    .map(item => (item.map((innerItem, index) => (<Route
+                        key={index}
+                        exact
+                        path={innerItem.link}
+                        component={innerItem.componentType}/>))))}
             </Fragment>
         );
     }

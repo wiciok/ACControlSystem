@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import "./CurrentStateTag.css"
 
 class CurrentStateTag extends Component {

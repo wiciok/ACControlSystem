@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import 'bulma/css/bulma.css';
 import MainMenuCategory from './MainMenuCategory'
 
@@ -11,13 +11,12 @@ class MainMenu extends Component {
     render() {
         return (
             <aside className="menu">
-                {this.menuCategories.map((item, index) => (
-                    <MainMenuCategory
+                {this
+                    .menuCategories
+                    .map((item, index) => (<MainMenuCategory
                         key={index}
                         name={item.name}
-                        items={item.contentComponentInfoList}
-                    />
-                ))}
+                        items={item.contentComponentInfoList}/>))}
             </aside>
         );
     }
