@@ -35,14 +35,14 @@ class AcState extends Component {
                 <h2 className="title is-2">Stan klimatyzatora</h2>
                 <div className="box">
                     <div className="columns">
-                        <div class="column">
+                        <div className="column">
                             <h4 className="title is-4">
                                 Obecny stan klimatyzatora: &emsp;
                                 <br /><br />
                                 <CurrentStateTag tagState={this.state.currentAcState} />
                             </h4>
                         </div>
-                        <div class="column">
+                        <div className="column">
                             <h4 className="title is-4">
                                 Sterowanie ręczne: &emsp;
                                 <br /><br />

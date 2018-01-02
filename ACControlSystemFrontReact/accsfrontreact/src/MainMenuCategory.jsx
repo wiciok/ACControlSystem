@@ -17,8 +17,9 @@ class MainMenuCategory extends Component {
             <div className="menu-category">
                 <p className="menu-label">{this.name}</p>
                 <ul className="menu-list">
-                    {this.items.map((item) => (
+                    {this.items.map((item, index) => (
                         <MainMenuItem
+                            key={index}
                             text={item.name}
                             link={item.link}
                         />

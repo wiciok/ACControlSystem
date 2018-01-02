@@ -15,8 +15,9 @@ class MainMenu extends Component {
     render() {
         return (
             <aside className="menu">
-                {this.menuCategories.map((item) => (
+                {this.menuCategories.map((item, index) => (
                     <MainMenuCategory
+                        key={index}
                         name={item.name}
                         items={item.contentComponentInfoList}
                     />

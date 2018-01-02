@@ -12,9 +12,13 @@ class ContentArea extends Component {
     render() {
         return (
             <div>
-                {this.componentList.map((item) => (
-                    item.map((innerItem) => (
-                        <Route exact path={innerItem.link} component={innerItem.componentType} />
+                {this.componentList.map(item => (
+                    item.map((innerItem, index) => (
+                        <Route
+                            key={index}
+                            exact path={innerItem.link}
+                            component={innerItem.componentType}
+                        />
                     ))
                 ))}
             </div>
