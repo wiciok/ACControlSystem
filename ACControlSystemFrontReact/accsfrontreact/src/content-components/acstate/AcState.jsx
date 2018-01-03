@@ -24,7 +24,7 @@ class AcState extends Component {
 
     getCurrentAcState() {
         let endpointAddress = `${window.apiAddress}/acstate`;
-        console.log(endpointAddress);
+        console.log("get " + endpointAddress);
 
         fetch(endpointAddress).then(response => {
             console.log(response.status);
@@ -43,20 +43,51 @@ class AcState extends Component {
                                 this.setState({currentAcState: "on"});
                             }
                         })
-                        .catch();
+                        .catch(err => {
+                            this.setState({
+                                error: {
+                                    isError: true,
+                                    errorMessage: "Blad deserializacji odpowiedzi serwera do formatu JSON"
+                                }
+                            });
+                        });
                     break;
                 default:
-                    throw new Error("Unexpected return code");
+                    let error = new Error(response.statusText);
+                    error.statusCode = response.status;
+
+                    //todo: poprawic to/usunac
+                    if (response.bodyUsed) {
+                        response
+                            .json()
+                            .then(x => {
+                                console.log(x);
+                                error.errorMessage = x;
+                                throw error;
+                            });
+                    };
+
+                    throw error;
+                    break;
             }
         }).catch(err => {
             console.log(err);
-            this.setState({
-                error: {
-                    isError: true,
-                    errorMessage: "Błąd pobierania danych z API!"
-                }
-            });
+            this.setApiFetchError(err);
+        });
+    }
 
+    setApiFetchError(error) {
+        //console.log(error); console.log(error.statusCode);
+        let errorMessage = `Błąd ${error.statusCode}: ${error.message}`;
+        if (error.errorMessge) {
+            errorMessage += "Dodatkowe informacje: " + error.errorMessage;
+        }
+
+        this.setState({
+            error: {
+                isError: true,
+                errorMessage: errorMessage
+            }
         });
     }
 
@@ -83,17 +114,24 @@ class AcState extends Component {
                                 <br/><br/>
                                 <CurrentStateTag
                                     tagState={this.state.currentAcState}
-                                    onClick={e=> {this.getCurrentAcState()}}
-                                    />
+                                    onClick={e => {
+                                    this.getCurrentAcState()
+                                }}/>
                             </h4>
                         </div>
                         <div className="column">
                             <h4 className="title is-4">
                                 Sterowanie ręczne: &emsp;
                                 <br/><br/>
-                                <ToggleStateButton actionType="on"/>
+                                <ToggleStateButton
+                                    actionType="on"
+                                    stateRefreshCallback={e => this.getCurrentAcState()}
+                                    setErrorCallback={e => this.setApiFetchError(e)}/>
                                 <br/><br/>
-                                <ToggleStateButton actionType="off"/>
+                                <ToggleStateButton
+                                    actionType="off"
+                                    stateRefreshCallback={e => this.getCurrentAcState()}
+                                    setErrorCallback={e => this.setApiFetchError(e)}/>
                             </h4>
                         </div>
                     </div>
