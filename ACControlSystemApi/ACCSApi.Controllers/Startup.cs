@@ -4,6 +4,7 @@ using ACCSApi.Model;
 using ACCSApi.Repositories.Generic;
 using ACCSApi.Repositories.Models;
 using ACCSApi.Services.Domain;
+using ACCSApi.Services.Interfaces;
 using ACCSApi.Services.Models;
 using ACCSApi.Services.Utils;
 using Autofac;
@@ -84,6 +85,11 @@ namespace ACCSApi.Controllers
                 //.InstancePerRequest();
                 .InstancePerDependency();
                 //.SingleInstance();
+
+            builder
+                .RegisterType(typeof(IAuthService))
+                .AsImplementedInterfaces()
+                .SingleInstance();
             
             ApplicationContainer = builder.Build();
 
