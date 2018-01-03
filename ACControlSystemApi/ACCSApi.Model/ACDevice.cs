@@ -95,7 +95,10 @@ namespace ACCSApi.Model
             get => _settingsList;
             set
             {
-                _settingsList.CollectionChanged-= _settingsList_CollectionChanged;
+                if (_settingsList != null)
+                {
+                    _settingsList.CollectionChanged -= _settingsList_CollectionChanged;
+                }
                 _settingsList = new ObservableCollection<IACSetting>(value);
                 _settingsList.CollectionChanged += _settingsList_CollectionChanged;
                 OnChanged?.Invoke();

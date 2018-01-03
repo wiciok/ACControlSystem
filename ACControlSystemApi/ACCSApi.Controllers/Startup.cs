@@ -29,14 +29,25 @@ namespace ACCSApi.Controllers
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+            services.AddCors();
 
             var builder = new ContainerBuilder();
             builder.Populate(services);
+
+            /*builder.RegisterGeneric(typeof(GenericBinaryFileDao<>))
+                .As(typeof(IDao<>))
+                .InstancePerDependency();
+                //.SingleInstance();*/
 
             builder.RegisterGeneric(typeof(GenericJsonFileDao<>))
                 .As(typeof(IDao<>))
                 .InstancePerDependency();
             //.SingleInstance();
+
+
+            /*builder.RegisterAssemblyTypes(AppDomain.CurrentDomain.GetAssemblies())
+                .Where(t => t.Namespace.Equals("ACCSApi.Model.Transferable"))
+                .AsImplementedInterfaces();*/
 
             builder.RegisterType<RaspberryPiDevice>()
                 .AsImplementedInterfaces();
@@ -73,14 +84,10 @@ namespace ACCSApi.Controllers
                 //.InstancePerRequest();
                 .InstancePerDependency();
                 //.SingleInstance();
-
-            builder.RegisterType(typeof(AuthService))
-                .AsImplementedInterfaces()
-                .SingleInstance();
             
             ApplicationContainer = builder.Build();
 
-            GlobalConfig.Container = ApplicationContainer;
+            GlobalConfig.Container = ApplicationContainer; //todo: do something with this shitty workaround
 
             return new AutofacServiceProvider(ApplicationContainer);
         }
@@ -95,6 +102,11 @@ namespace ACCSApi.Controllers
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseCors(
+                opt => opt
+                .WithOrigins("http://localhost:3000")
+                .AllowAnyMethod()
+                .AllowAnyHeader());
             app.UseMvc();
         }
     }

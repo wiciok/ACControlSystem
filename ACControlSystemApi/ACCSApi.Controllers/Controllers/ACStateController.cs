@@ -20,14 +20,32 @@ namespace ACCSApi.Controllers.Controllers
             _acStateControlService = acStateControlService;
             _authService = authService;
         }
-    
+
         //no authorization required, device state can be accesed by anyone
         [HttpGet]
         public IActionResult Get()   //gets current state of ACDevice
         {
-            try
+            /*try
             {
                 var retState = _acStateControlService.GetCurrentState();
+                return Ok(retState);
+            }
+
+            catch (ACStateUndefinedException ex)
+            {
+                return NoContent();
+            }
+
+            catch (Exception ex)
+            {
+                //todo: logging
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }*/
+
+            try
+            {
+                //var retState = _acStateControlService.GetCurrentState();
+                var retState = new ACState() {IsTurnOff = false};
                 return Ok(retState);
             }
 
@@ -43,29 +61,10 @@ namespace ACCSApi.Controllers.Controllers
             }
         }
 
-        // POST: api/ACControl
-        [HttpGet("{token}")]
-        public IActionResult Get(string token) //manually on/off ACDevice
-        {
-            try
-            {
-                var state = new ACState() {IsTurnOff = true};
-                _acStateControlService.SetCurrentState(state);
-
-                return Ok();
-            }
-
-            catch (Exception ex)
-            {
-                //todo: logging
-                return StatusCode(StatusCodes.Status500InternalServerError);
-            }
-        }
-
-        // POST: api/ACControl
+        /*// POST: api/ACControl
         [HttpPost("{token}")]
         public IActionResult Post(string token, [FromBody]IACState state) //manually on/off ACDevice
-        {           
+        {
             try
             {
                 if (_authService.CheckAuthentication(token))
@@ -89,6 +88,36 @@ namespace ACCSApi.Controllers.Controllers
             {
                 //todo: logging
                 return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+        }*/
+        [HttpPost]
+        public IActionResult Post([FromBody]ACState state) //manually on/off ACDevice
+        {
+            try
+            {
+                //if (_authService.CheckAuthentication(token))
+                if (true)
+                {
+                    try
+                    {
+                        _acStateControlService.SetCurrentState(state);
+                    }
+
+                    catch (ArgumentException ex)
+                    {
+                        return BadRequest(ex.Message);
+                    }
+                    return Ok();
+                }
+                else
+                    return Unauthorized();
+            }
+
+            catch (Exception ex)
+            {
+                //todo: logging
+                //return StatusCode(StatusCodes.Status500InternalServerError,"test error");
+                return BadRequest(ex.Message);
             }
         }
     }
