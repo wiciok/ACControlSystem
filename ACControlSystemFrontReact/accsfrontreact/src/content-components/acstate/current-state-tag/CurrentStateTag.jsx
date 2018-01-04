@@ -2,9 +2,6 @@ import React, {Component} from 'react';
 import "./CurrentStateTag.css"
 
 class CurrentStateTag extends Component {
-    constructor(props) {
-        super(props);
-    }
 
     render() {
         switch (this.props.tagState) {

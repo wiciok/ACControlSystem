@@ -15,6 +15,8 @@ class ToggleStateButton extends Component {
                 this.colorClass = "is-danger";
                 this.tagText = "Wyłącz";
                 break;
+            default:
+                break;
         };
         this.cssClass += ` ${this.colorClass}`;
     }
@@ -44,6 +46,8 @@ class ToggleStateButton extends Component {
                     isTurnOff: true,
                     acSettingGuid: null
                 }
+                break;
+            default:
                 break;
         };
 

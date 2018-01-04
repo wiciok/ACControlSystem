@@ -1,5 +1,6 @@
 import Home from './../content-components/Home';
 import AcState from './../content-components/acstate/AcState';
+import AcDevice from './../content-components/acdevice/AcDevice';
 
 class ContentComponentInfo {
     constructor(menuName, link, componentType) {
@@ -27,7 +28,7 @@ class MainMenuCategoriesAndItems {
             id: 3,
             name: "Urządzenia",
             contentComponentInfoList: [
-                new ContentComponentInfo("Klimatyzatory", "/acDevice", AcState),
+                new ContentComponentInfo("Klimatyzatory", "/acDevice", AcDevice),
                 new ContentComponentInfo("Urządzenia hostujące", "/hostDevice", AcState)
             ]
         }, {
