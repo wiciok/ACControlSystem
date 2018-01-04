@@ -1,4 +1,4 @@
-import React, {Component, Fragment} from 'react';
+import React, { Component, Fragment } from 'react';
 import 'bulma/css/bulma.css';
 
 import ErrorMessageComponent from '../../ErrorMessageComponent';
@@ -9,9 +9,9 @@ class AcDevice extends Component {
     constructor(props) {
         super(props);
 
-        this.onRowSelected = this
-            .onRowSelected
-            .bind(this);
+        this.onRowSelected = this.onRowSelected.bind(this);
+        this.getAllAcDevices = this.getAllAcDevices.bind(this);
+        this.setApiFetchError = this.setApiFetchError.bind(this);
 
         this.endpointAddress = `${window.apiAddress}/acdevice`;
 
@@ -31,9 +31,7 @@ class AcDevice extends Component {
 
     getAllAcDevices() {
         //let fullAddress = this.endpointAddress.concat("/all");
-        let fullAddress = this
-            .endpointAddress
-            .concat("/123temporaryfaketoken/all");
+        let fullAddress = this.endpointAddress.concat("/123temporaryfaketoken/all");
         console.log("get " + fullAddress);
 
         fetch(fullAddress).then(response => {
@@ -44,7 +42,7 @@ class AcDevice extends Component {
                         .json()
                         .then(json => {
                             console.log(json);
-                            this.setState({allDevicesData: json})
+                            this.setState({ allDevicesData: json })
                         })
                         .catch(err => {
                             this.setState({
@@ -100,7 +98,7 @@ class AcDevice extends Component {
     }
 
     onRowSelected(rowId) {
-        this.setState({selectedRow: rowId});
+        this.setState({ selectedRow: rowId });
     }
 
     render() {
@@ -113,13 +111,13 @@ class AcDevice extends Component {
                     isVisible={this.state.error.isError}
                     bodyText={this.state.error.errorMessage}
                     onChangeErrorState={e => {
-                    this.setState({
-                        error: {
-                            isError: false,
-                            errorMessage: null
-                        }
-                    })
-                }}/>
+                        this.setState({
+                            error: {
+                                isError: false,
+                                errorMessage: null
+                            }
+                        })
+                    }} />
 
                 <div className="box">
                     <h4 className="title is-4">
@@ -137,17 +135,19 @@ class AcDevice extends Component {
                             <AcDevicesTable
                                 data={this.state.allDevicesData}
                                 selectedRow={this.state.selectedRow}
-                                onRowClicked={this.onRowSelected}/>
+                                onRowClicked={this.onRowSelected} 
+                            />
                             <div className="control">
-                                <button className="button is-link is-success" onClick={e=> this.onRowSelected(0)}>Dodaj nowy</button>
+                                <button className="button is-link is-success" onClick={e => this.onRowSelected(0)}>Dodaj nowy</button>
                             </div>
                         </div>
                         <div className="column">
                             <AcDeviceAddEditForm
                                 isEdit={this.state.selectedRow}
-                                editedDeviceData={this.state.selectedRow
-                                ? this.state.allDevicesData[this.state.selectedRow - 1]
-                                : null}/>
+                                editedDeviceData={this.state.selectedRow ? this.state.allDevicesData[this.state.selectedRow - 1] : null}
+                                refreshCallback={this.getAllAcDevices}
+                                errorCallback={this.setApiFetchError}
+                            />
                         </div>
                     </div>
                 </div>
