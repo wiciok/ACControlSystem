@@ -1,6 +1,7 @@
 import Home from './../content-components/Home';
 import AcState from './../content-components/acstate/AcState';
 import AcDevice from './../content-components/acdevice/AcDevice';
+import UserManage from './../content-components/user-manage/UserManage';
 
 class ContentComponentInfo {
     constructor(menuName, link, componentType) {
@@ -35,8 +36,7 @@ class MainMenuCategoriesAndItems {
             id: 4,
             name: "Użytkownicy",
             contentComponentInfoList: [
-                new ContentComponentInfo("Dodaj", "/addUser", AcState),
-                new ContentComponentInfo("Zarządzaj", "/manageUsers", AcState)
+                new ContentComponentInfo("Użytkownicy", "/user", UserManage),
             ]
         }
     ];
