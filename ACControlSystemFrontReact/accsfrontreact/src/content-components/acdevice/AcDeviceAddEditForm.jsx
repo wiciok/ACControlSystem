@@ -6,6 +6,7 @@ class AcDeviceAddEditForm extends Component {
 
         this.onSaveButtonClick = this.onSaveButtonClick.bind(this);
         this.onDeleteButtonClick = this.onDeleteButtonClick.bind(this);
+        this.onSetActiveButtonClick = this.onSetActiveButtonClick.bind(this);
         this.changeButtonInProgress = this.changeButtonInProgress.bind(this);
         this.doFetch = this.doFetch.bind(this);
 
@@ -58,6 +59,21 @@ class AcDeviceAddEditForm extends Component {
         this.doFetch(fetchObj, fullAddress, this.removeButton);
     }
 
+    onSetActiveButtonClick(){
+        let headers = new Headers({ "Content-Type": "application/json" });
+        
+        let fetchObj = {
+            method: 'put',
+            body: `${this.props.editedDeviceData.id}`,
+            headers: headers
+        }
+        let fullAddress = this.endpointAddress.concat("/123temporaryfaketoken").concat("/current");
+
+        console.log(fetchObj.body);
+
+        this.doFetch(fetchObj, fullAddress, this.setActiveButton);
+    }
+
     changeButtonInProgress(isInProgress, button) {
         if (isInProgress === true) {
             button.classList.add("is-loading");
@@ -106,13 +122,15 @@ class AcDeviceAddEditForm extends Component {
         let idLabel = <label className="label">Id: {this.props.editedDeviceData ? this.props.editedDeviceData.id : null}</label>
 
         let setActiveButton = <div className="control">
-            <button className="button is-link is-success">
+            <button className="button is-link is-success" onClick={this.onSetActiveButtonClick}  ref={setActiveButton => this.setActiveButton = setActiveButton}>
                 Ustaw jako aktywny
             </button>
         </div>
 
         let removeButton = <div className="control">
-            <button className="button is-link is-danger" onClick={this.onDeleteButtonClick}  ref={removeButton => this.removeButton = removeButton}>Usuń</button>
+            <button className="button is-link is-danger" onClick={this.onDeleteButtonClick}  ref={removeButton => this.removeButton = removeButton}>
+                Usuń
+            </button>
         </div>
 
         return (

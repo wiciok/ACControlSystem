@@ -27,10 +27,8 @@ class ActiveAcDeviceBox extends Component {
                 let error;
 
                 if (!response.ok) {
-
-                    if(response.status===404){
+                    if (response.status === 404)
                         return;
-                    }
 
                     error = new Error(response.statusText);
                     error.statusCode = response.status;
@@ -57,8 +55,6 @@ class ActiveAcDeviceBox extends Component {
                     .catch(err => {
                         error = new Error("Blad deserializacji odpowiedzi serwera do formatu JSON");
                     });
-
-
             })
             .catch(err => {
                 //console.log("error in toggle state: "+err);

@@ -17,7 +17,6 @@ class AcDevice extends Component {
         this.endpointAddress = `${window.apiAddress}/acdevice`;
 
         this.state = {
-            activeDevice: null,
             allDevicesData: null,
             selectedRow: null,
             error: {
@@ -44,7 +43,10 @@ class AcDevice extends Component {
                         .json()
                         .then(json => {
                             console.log(json);
-                            this.setState({ allDevicesData: json })
+                            this.setState({ 
+                                allDevicesData: json,
+                                selectedRow: 0 
+                            })
                         })
                         .catch(err => {
                             this.setState({
