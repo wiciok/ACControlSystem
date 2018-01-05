@@ -9,12 +9,18 @@ class EmailInput extends Component {
     }
 
     onChange() {
-        if (this.validateEmail(this.emailInput.value)) {
+        //console.log(this.emailInput.value)
+        if(!this.emailInput.value){
+            this.emailInput.classList.remove("is-danger", "is-success");
+            this.props.onEmailEntered(null);
+            return;
+        }
 
+        if (this.validateEmail(this.emailInput.value)) {
             this.emailInput.classList.remove("is-danger");
             this.emailInput.classList.add("is-success");
             this.warningIcon.style.visibility = "hidden";
-            console.log("onchange inside emailinput: ", this.emailInput.value);
+            //console.log("onchange inside emailinput: ", this.emailInput.value);
             this.props.onEmailEntered(this.emailInput.value);
 
         }
@@ -22,19 +28,23 @@ class EmailInput extends Component {
             this.emailInput.classList.add("is-danger");
             this.emailInput.classList.remove("is-success");
             this.warningIcon.style.visibility = "visible";
+            this.props.onEmailEntered(null);
         }
     }
 
-    componentDidUpdate() {
-        if (this.props.initialValue) {
-            this.emailInput.value = this.props.initialValue
-            //this.onChange();
+    componentWillReceiveProps(newProps){
+        if (this.props.initialValue != newProps.initialValue) {
+            if(newProps.initialValue){
+                this.emailInput.value = newProps.initialValue
+                this.onChange();
+            }
+            else{
+                this.emailInput.value = '';
+                this.onChange();
+            }
         }
-        else {
-            this.emailInput.value = '';
-        }
-
     }
+
 
     validateEmail(email) {
         var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
