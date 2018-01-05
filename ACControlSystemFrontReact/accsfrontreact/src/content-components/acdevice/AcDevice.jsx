@@ -13,11 +13,13 @@ class AcDevice extends Component {
         this.onRowSelected = this.onRowSelected.bind(this);
         this.getAllAcDevices = this.getAllAcDevices.bind(this);
         this.setApiFetchError = this.setApiFetchError.bind(this);
+        this.refresh = this.refresh.bind(this);
 
         this.endpointAddress = `${window.apiAddress}/acdevice`;
 
         this.state = {
             allDevicesData: null,
+            activeDevice: null,
             selectedRow: null,
             error: {
                 isError: false,
@@ -27,7 +29,59 @@ class AcDevice extends Component {
     }
 
     componentDidMount() {
+        this.refresh();
+    }
+
+    refresh(){
         this.getAllAcDevices();
+        this.getActiveAcDevice();
+    }
+
+    getActiveAcDevice() {
+        let endpointAddress = `${window.apiAddress}/acdevice`;
+        let fullAddress = endpointAddress.concat("/123temporaryfaketoken/current");
+        console.log(fullAddress);
+
+        fetch(fullAddress)
+            .then(response => {
+                console.log("get active ac device response: " + response.status);
+                let error;
+
+                if (!response.ok) {
+                    if (response.status === 404)
+                        return;
+
+                    error = new Error(response.statusText);
+                    error.statusCode = response.status;
+
+                    //todo: poprawic to/usunac
+                    if (response.bodyUsed) {
+                        response.json()
+                            .then(x => {
+                                console.log(x);
+                                error.errorMessage = x;
+                                throw error;
+                            });
+                    };
+                    throw error;
+                }
+
+                response.json()
+                    .then(json => {
+                        console.log(json);
+                        this.setState({
+                            activeDevice: json
+                        })
+                    })
+                    .catch(err => {
+                        error = new Error("Blad deserializacji odpowiedzi serwera do formatu JSON");
+                    });
+            })
+            .catch(err => {
+                //console.log("error in toggle state: "+err);
+                this.setApiFetchError(err);
+            });
+
     }
 
     getAllAcDevices() {
@@ -106,7 +160,6 @@ class AcDevice extends Component {
     render() {
         return (
             <Fragment>
-
                 <h2 className="title is-2">Klimatyzatory</h2>
 
                 <ErrorMessageComponent
@@ -121,9 +174,7 @@ class AcDevice extends Component {
                         })
                     }} />
 
-                <ActiveAcDeviceBox 
-                    errorCallback={this.setApiFetchError}
-                />
+                <ActiveAcDeviceBox activeAcDevice={this.state.activeDevice}/>
 
                 <div className="box">
                     <div className="columns">
@@ -144,7 +195,7 @@ class AcDevice extends Component {
                             <AcDeviceAddEditForm
                                 isEdit={this.state.selectedRow}
                                 editedDeviceData={this.state.selectedRow ? this.state.allDevicesData[this.state.selectedRow - 1] : null}
-                                refreshCallback={this.getAllAcDevices}
+                                refreshCallback={this.refresh}
                                 errorCallback={this.setApiFetchError}
                             />
                         </div>
