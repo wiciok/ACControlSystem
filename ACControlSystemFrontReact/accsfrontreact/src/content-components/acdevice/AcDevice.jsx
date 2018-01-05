@@ -4,6 +4,7 @@ import 'bulma/css/bulma.css';
 import ErrorMessageComponent from '../../ErrorMessageComponent';
 import AcDevicesTable from './AcDevicesTable';
 import AcDeviceAddEditForm from './AcDeviceAddEditForm';
+import ActiveAcDeviceBox from './ActiveAcDeviceBox';
 
 class AcDevice extends Component {
     constructor(props) {
@@ -16,6 +17,7 @@ class AcDevice extends Component {
         this.endpointAddress = `${window.apiAddress}/acdevice`;
 
         this.state = {
+            activeDevice: null,
             allDevicesData: null,
             selectedRow: null,
             error: {
@@ -80,9 +82,7 @@ class AcDevice extends Component {
         let errorMessage = `${error.message}`;
         //console.log(error); console.log(error.statusCode);
         if (error.statusCode) {
-            errorMessage = `Błąd ${error
-                .statusCode}: `
-                .concat(errorMessage);
+            errorMessage = `Błąd ${error.statusCode}: `.concat(errorMessage);
         }
 
         if (error.errorMessge) {
@@ -119,12 +119,9 @@ class AcDevice extends Component {
                         })
                     }} />
 
-                <div className="box">
-                    <h4 className="title is-4">
-                        Aktywny klimatyzator:
-                    </h4>
-
-                </div>
+                <ActiveAcDeviceBox 
+                    errorCallback={this.setApiFetchError}
+                />
 
                 <div className="box">
                     <div className="columns">
