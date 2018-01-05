@@ -5,6 +5,7 @@ class AcDeviceAddEditForm extends Component {
         super(props);
 
         this.onSaveButtonClick = this.onSaveButtonClick.bind(this);
+        this.onDeleteButtonClick = this.onDeleteButtonClick.bind(this);
         this.changeButtonInProgress = this.changeButtonInProgress.bind(this);
         this.doFetch = this.doFetch.bind(this);
 
@@ -17,6 +18,7 @@ class AcDeviceAddEditForm extends Component {
             this.modelInput.value = this.props.editedDeviceData.model;
         } else {
             this.brandInput.value = '';
+            this.modelInput.value = '';
         }
     }
 
@@ -41,31 +43,39 @@ class AcDeviceAddEditForm extends Component {
                 body: JSON.stringify(acDeviceObj)
             }
         }
+        fetchObj.headers = new Headers({ "Content-Type": "application/json" });
+        let fullAddress = this.endpointAddress.concat("/123temporaryfaketoken");
 
-        this.doFetch(acDeviceObj, fetchObj);
+        this.doFetch(fetchObj, fullAddress, this.saveButton);
     }
 
-    changeButtonInProgress(isInProgress) {
+    onDeleteButtonClick() {
+        let fetchObj = {
+            method: 'delete'
+        }
+        let fullAddress = this.endpointAddress.concat("/123temporaryfaketoken").concat(`/${this.props.editedDeviceData.id}`);
+
+        this.doFetch(fetchObj, fullAddress, this.removeButton);
+    }
+
+    changeButtonInProgress(isInProgress, button) {
         if (isInProgress === true) {
-            this.saveButton.classList.add("is-loading");
-            this.saveButton.classList.remove("is-primary");
+            button.classList.add("is-loading");
+            button.classList.remove("is-primary");
         } else {
-            this.saveButton.classList.remove("is-loading");
-            this.saveButton.classList.add("is-primary");
+            button.classList.remove("is-loading");
+            button.classList.add("is-primary");
         }
     }
 
-    doFetch(acDeviceObj, fetchObj) {
-        let fullAddress = this.endpointAddress.concat("/123temporaryfaketoken");
-        fetchObj.headers = new Headers({ "Content-Type": "application/json" });
-
-        this.changeButtonInProgress(true);
+    doFetch(fetchObj, fullAddress, button) {
+        this.changeButtonInProgress(true, button);
 
         fetch(fullAddress, fetchObj)
             .then(response => {
                 console.log("response: " + response.status);
 
-                this.changeButtonInProgress(false);
+                this.changeButtonInProgress(false, button);
 
                 if (!response.ok) {
                     let error = new Error(response.statusText);
@@ -93,11 +103,17 @@ class AcDeviceAddEditForm extends Component {
 
 
     render() {
+        let idLabel = <label className="label">Id: {this.props.editedDeviceData ? this.props.editedDeviceData.id : null}</label>
+
         let setActiveButton = <div className="control">
-            <button className="button is-link is-success">Ustaw jako aktywny</button>
+            <button className="button is-link is-success">
+                Ustaw jako aktywny
+            </button>
         </div>
 
-        let idLabel = <label className="label">Id: {this.props.editedDeviceData ? this.props.editedDeviceData.id : null}</label>
+        let removeButton = <div className="control">
+            <button className="button is-link is-danger" onClick={this.onDeleteButtonClick}  ref={removeButton => this.removeButton = removeButton}>Usuń</button>
+        </div>
 
         return (
             <Fragment>
@@ -136,7 +152,7 @@ class AcDeviceAddEditForm extends Component {
                             onClick={this.onSaveButtonClick}
                             ref={saveButton => this.saveButton = saveButton}>Zapisz</button>
                     </div>
-
+                    {this.props.isEdit ? removeButton : null}
                     {this.props.isEdit ? setActiveButton : null}
                 </div>
             </Fragment>

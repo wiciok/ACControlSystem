@@ -27,6 +27,11 @@ class ActiveAcDeviceBox extends Component {
                 let error;
 
                 if (!response.ok) {
+
+                    if(response.status===404){
+                        return;
+                    }
+
                     error = new Error(response.statusText);
                     error.statusCode = response.status;
 
