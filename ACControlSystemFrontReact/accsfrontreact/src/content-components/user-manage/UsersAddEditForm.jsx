@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react';
 import EmailInput from './EmailInput';
 import 'bulma/css/bulma.css';
 import 'font-awesome/css/font-awesome.min.css'
+import PasswordInput from './PasswordInput';
 
 class UserAddEditForm extends Component {
     constructor(props) {
@@ -10,20 +11,38 @@ class UserAddEditForm extends Component {
         this.onSaveButtonClick = this.onSaveButtonClick.bind(this);
         this.onDeleteButtonClick = this.onDeleteButtonClick.bind(this);
         this.changeButtonInProgress = this.changeButtonInProgress.bind(this);
+        this.saveButtonChange=this.saveButtonChange.bind(this);
         this.onEmailEntered = this.onEmailEntered.bind(this);
+        this.onPasswordEntered = this.onPasswordEntered.bind(this);
         this.doFetch = this.doFetch.bind(this);
 
         this.endpointAddress = `${window.apiAddress}/user`;
 
         this.state = {
-            emailAddress: null
+            saveButtonActive: null,
+            emailAddress: null,
+            password: null
         }
     }
 
     onEmailEntered(email) {
         this.setState({
-            emailAddress: email
+            emailAddress: email    
         });
+        this.saveButtonChange(email,this.state.password);
+    }
+
+    onPasswordEntered(password){
+        this.setState({
+            password: password
+        })
+        this.saveButtonChange(this.state.emailAddress,password);
+    }
+
+    saveButtonChange(email, password){
+        this.setState({
+            saveButtonActive: email && password
+        })
     }
 
     onSaveButtonClick() {
@@ -96,7 +115,7 @@ class UserAddEditForm extends Component {
                     };
                     throw error;
                 }
-
+                
                 this.props.refreshCallback();
             })
             .catch(err => {
@@ -118,7 +137,7 @@ class UserAddEditForm extends Component {
             </button>
         </div>
 
-        let saveButton = this.state.emailAddress
+        let saveButton = this.state.saveButtonActive
             ?   <button
                     className="button is-link"
                     onClick={this.onSaveButtonClick}
@@ -144,6 +163,7 @@ class UserAddEditForm extends Component {
                 {this.props.isEdit ? idLabel : null}
 
                 {emailInput}
+                <PasswordInput initialValue={this.props.editedUserData} onPasswordEntered={this.onPasswordEntered} />
 
                 <div className="field is-grouped">
                     <div className="control">
