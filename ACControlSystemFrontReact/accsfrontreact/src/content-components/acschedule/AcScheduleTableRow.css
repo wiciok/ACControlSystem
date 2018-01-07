@@ -1,0 +1,14 @@
+table tbody tr {
+     cursor: auto; 
+}
+
+.table td.is-selected,
+.table th.is-selected {
+  background-color: #fafafa;
+  color: black;
+}
+
+.table tr.is-selected {
+  background-color: #fafafa;
+  color: black;
+}

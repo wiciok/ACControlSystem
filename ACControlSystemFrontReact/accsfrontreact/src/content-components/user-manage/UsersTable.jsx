@@ -2,15 +2,11 @@ import React, {Component} from 'react';
 import UsersTableRow from './UsersTableRow';
 
 class UsersTable extends Component {
-    constructor(props) {
-        super(props);
-        this.data = null;
-    }
 
     render() {
         if (this.props.data) {
             return (
-                <table className="table">
+                <table className="table is-hoverable">
                     <thead>
                         <tr>
                             <th>Id</th>
@@ -25,7 +21,7 @@ class UsersTable extends Component {
                             .map(item => <UsersTableRow
                                 data={item}
                                 key={item.id}
-                                isActive={this.props.selectedRow == item.id}
+                                isActive={this.props.selectedRow === item.id}
                                 onRowClicked={this
                                 .props
                                 .onRowClicked}/>)}

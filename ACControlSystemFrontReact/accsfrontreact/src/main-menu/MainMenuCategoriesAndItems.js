@@ -2,6 +2,7 @@ import Home from './../content-components/Home';
 import AcState from './../content-components/acstate/AcState';
 import AcDevice from './../content-components/acdevice/AcDevice';
 import UserManage from './../content-components/user-manage/UserManage';
+import AcSchedule from '../content-components/acschedule/AcSchedule';
 
 class ContentComponentInfo {
     constructor(menuName, link, componentType) {
@@ -22,7 +23,7 @@ class MainMenuCategoriesAndItems {
             name: "Sterowanie klimatyzatorem",
             contentComponentInfoList: [
                 new ContentComponentInfo("Stan", "/acState", AcState),
-                new ContentComponentInfo("Terminarz", "/acSchedule", AcState),
+                new ContentComponentInfo("Terminarz", "/acSchedule", AcSchedule),
                 new ContentComponentInfo("Ustawienia", "/acSetting", AcState)
             ]
         }, {

@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import './EmailInput.css';
 
 class PasswordInput extends Component {
@@ -34,7 +34,7 @@ class PasswordInput extends Component {
 
 
     componentWillReceiveProps(newProps){
-        if (this.props.initialValue != newProps.initialValue) {
+        if (this.props.initialValue !== newProps.initialValue) {
             this.passwordInput.value = '';
             this.onChange();
         }

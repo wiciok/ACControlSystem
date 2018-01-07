@@ -10,7 +10,7 @@ class AcDevicesTable extends Component {
     render() {
         if (this.props.data) {
             return (
-                <table className="table">
+                <table className="table is-hoverable">
                     <thead>
                         <tr>
                             <th>Id</th>
@@ -25,7 +25,7 @@ class AcDevicesTable extends Component {
                             .map(item => <AcDeviceTableRow
                                 data={item}
                                 key={item.id}
-                                isActive={this.props.selectedRow == item.id}
+                                isActive={this.props.selectedRow === item.id}
                                 onRowClicked={this
                                 .props
                                 .onRowClicked}/>)}

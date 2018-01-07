@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import './EmailInput.css';
 
 class EmailInput extends Component {
@@ -33,7 +33,7 @@ class EmailInput extends Component {
     }
 
     componentWillReceiveProps(newProps){
-        if (this.props.initialValue != newProps.initialValue) {
+        if (this.props.initialValue !== newProps.initialValue) {
             if(newProps.initialValue){
                 this.emailInput.value = newProps.initialValue
                 this.onChange();
