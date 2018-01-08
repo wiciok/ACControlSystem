@@ -7,6 +7,7 @@ class AcSchedule extends Component {
     constructor(props) {
         super(props);
 
+        this.addNewSchedule = this.addNewSchedule.bind(this);
         this.removeSchedule = this.removeSchedule.bind(this);
         this.getAllSchedulesData = this.getAllSchedulesData.bind(this);
         this.changeAllSchedulesState = this.changeAllSchedulesState.bind(this);
@@ -22,9 +23,9 @@ class AcSchedule extends Component {
             }
         };
 
-        this.scheduleArray=['Jednorazowo','Codziennie','Co godzinę','Dzień tygodnia'];
+        this.scheduleArray = ['Jednorazowo', 'Codziennie', 'Co godzinę', 'Dzień tygodnia'];
 
-        this.weekDaysArray= ["niedziela","poniedziałek","wtorek","środa","czwartek","piątek","sobota"]
+        this.weekDaysArray = ["niedziela", "poniedziałek", "wtorek", "środa", "czwartek", "piątek", "sobota"]
     }
 
     componentDidMount() {
@@ -54,7 +55,18 @@ class AcSchedule extends Component {
             method: 'delete'
         };
 
-        this.doFetch(fetchObj,fullAddress,this.getAllSchedulesData);
+        this.doFetch(fetchObj, fullAddress, this.getAllSchedulesData);
+    }
+
+    addNewSchedule(acSchedule) {
+        let fullAddress = this.endpointAddress.concat("/123temporaryfaketoken");
+        let fetchObj = {
+            method: 'post',
+            body: JSON.stringify(acSchedule),
+            headers: new Headers({ "Content-Type": "application/json" })
+        };
+
+        this.doFetch(fetchObj, fullAddress, this.getAllSchedulesData);
     }
 
     doFetch(fetchObj, fullAddress, successCallback) {
@@ -78,7 +90,7 @@ class AcSchedule extends Component {
                     throw error;
                 }
                 else {
-                    if(response.status===204){
+                    if (response.status === 204) {
                         successCallback();
                         return;
                     }
@@ -95,6 +107,8 @@ class AcSchedule extends Component {
                             });
                         })
                 }
+            }).catch(err=>{
+                this.setApiFetchError(err);
             })
     }
 
@@ -144,9 +158,10 @@ class AcSchedule extends Component {
                 </div>
 
                 <div className="box">
-                    <AcScheduleAddForm 
+                    <AcScheduleAddForm
                         scheduleArray={this.scheduleArray}
                         weekDaysArray={this.weekDaysArray}
+                        addCallback={this.addNewSchedule}
                     />
                 </div>
             </Fragment>

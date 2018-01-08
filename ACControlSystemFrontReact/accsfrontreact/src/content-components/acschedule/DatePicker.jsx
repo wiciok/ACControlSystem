@@ -46,7 +46,7 @@ class DatePicker extends Component {
 
     //every day of week:
     onDayOfWeekEntered() {
-        if (this.dowDay == null || this.dowTime == null)
+        if (this.dowTime == null)
             return;
         let dateObj = this.dowTime;
 
@@ -74,8 +74,6 @@ class DatePicker extends Component {
     render() {
         let dateTime;
         let labelText;
-
-        console.log("datepicker scheduletype", this.props.scheduleType);
 
         switch (this.props.scheduleType) {
             case 0: //single
