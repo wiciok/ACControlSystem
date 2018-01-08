@@ -3,26 +3,6 @@ import AcScheduleTableRow from './AcScheduleTableRow';
 import './AcScheduleTable.css'
 
 class AcScheduleTable extends Component {
-    constructor(props) {
-        super(props);
-
-        this.getAllAcSettings = this.getAllAcSettings.bind(this);
-        this.doFetch = this.doFetch.bind(this);
-    }
-
-    componentDidMount() {
-        this.getAllAcSettings();
-    }
-
-    getAllAcSettings() {
-        //todo
-
-        this.doFetch();
-    }
-
-    doFetch() {
-        //todo
-    }
 
     render() {
         if (this.props.scheduleData) {
@@ -41,8 +21,9 @@ class AcScheduleTable extends Component {
                             {this.props.scheduleData.map(item => <AcScheduleTableRow
                                 data={item}
                                 key={item.id}
-                                scheduleDictionary={this.props.scheduleDictionary}
+                                scheduleArray={this.props.scheduleArray}
                                 weekDaysArray={this.props.weekDaysArray}
+                                onDeleteButtonClick={this.props.onDeleteButtonClick}
                             />)}
                         </tbody>
                     </table>

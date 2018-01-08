@@ -8,7 +8,6 @@ class AcScheduleTableRow extends Component {
         this.onRowHover=this.onRowHover.bind(this);
         this.onRowUnHover=this.onRowUnHover.bind(this);
     }
-    
 
 
     getDateFormatted(date, scheduleType) {
@@ -46,7 +45,7 @@ class AcScheduleTableRow extends Component {
             <Fragment>
                 <tr ref={row => this.row1=row} onMouseOver={this.onRowHover} onMouseLeave={this.onRowUnHover}>
                     <th>{this.props.data.id}</th>
-                    <td>{this.props.scheduleDictionary[this.props.data.scheduleType]}</td>
+                    <td>{this.props.scheduleArray[this.props.data.scheduleType]}</td>
                     <td>{this.getDateFormatted(startDate, this.props.data.scheduleType)}</td>
                     <td>{this.getDateFormatted(endDate, this.props.data.scheduleType)}</td>
                 </tr>
@@ -60,7 +59,7 @@ class AcScheduleTableRow extends Component {
                         <div className="control">
                             <button 
                                 className="button is-link is-danger is-small" 
-                                onClick={this.onDeleteButtonClick} 
+                                onClick={e=>this.props.onDeleteButtonClick(this.props.data.id)} 
                                 ref={removeButton => this.removeButton = removeButton}
                             >
                                 Usuń

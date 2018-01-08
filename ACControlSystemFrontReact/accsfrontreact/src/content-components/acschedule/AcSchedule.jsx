@@ -22,12 +22,7 @@ class AcSchedule extends Component {
             }
         };
 
-        this.scheduleDictionary={
-            0: 'Jednorazowo',
-            1: 'Codziennie',
-            2: 'Co godzinę',
-            3: 'Dzień tygodnia'
-        };
+        this.scheduleArray=['Jednorazowo','Codziennie','Co godzinę','Dzień tygodnia'];
 
         this.weekDaysArray= ["niedziela","poniedziałek","wtorek","środa","czwartek","piątek","sobota"]
     }
@@ -53,7 +48,13 @@ class AcSchedule extends Component {
     }
 
     removeSchedule(id) {
+        let fullAddress = this.endpointAddress.concat("/123temporaryfaketoken").concat(`/${id}`);
 
+        let fetchObj = {
+            method: 'delete'
+        };
+
+        this.doFetch(fetchObj,fullAddress,this.getAllSchedulesData);
     }
 
     doFetch(fetchObj, fullAddress, successCallback) {
@@ -77,6 +78,11 @@ class AcSchedule extends Component {
                     throw error;
                 }
                 else {
+                    if(response.status===204){
+                        successCallback();
+                        return;
+                    }
+
                     response
                         .json()
                         .then(json => successCallback(json))
@@ -131,14 +137,17 @@ class AcSchedule extends Component {
                     <h4 className="title is-4">Lista wpisów terminarza:</h4>
                     <AcScheduleTable
                         scheduleData={this.state.allSchedulesData}
-                        onRemoveButtonClicked={this.removeSchedule}
-                        scheduleDictionary={this.scheduleDictionary}
+                        onDeleteButtonClick={this.removeSchedule}
+                        scheduleArray={this.scheduleArray}
                         weekDaysArray={this.weekDaysArray}
                     />
                 </div>
 
                 <div className="box">
-                    <AcScheduleAddForm />
+                    <AcScheduleAddForm 
+                        scheduleArray={this.scheduleArray}
+                        weekDaysArray={this.weekDaysArray}
+                    />
                 </div>
             </Fragment>
         );
