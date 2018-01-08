@@ -3,6 +3,7 @@ import AcState from './../content-components/acstate/AcState';
 import AcDevice from './../content-components/acdevice/AcDevice';
 import UserManage from './../content-components/user-manage/UserManage';
 import AcSchedule from '../content-components/acschedule/AcSchedule';
+import AcSettings from '../content-components/acsettings/AcSettings';
 
 class ContentComponentInfo {
     constructor(menuName, link, componentType) {
@@ -24,14 +25,13 @@ class MainMenuCategoriesAndItems {
             contentComponentInfoList: [
                 new ContentComponentInfo("Stan", "/acState", AcState),
                 new ContentComponentInfo("Terminarz", "/acSchedule", AcSchedule),
-                new ContentComponentInfo("Ustawienia", "/acSetting", AcState)
+                new ContentComponentInfo("Ustawienia", "/acSetting", AcSettings)
             ]
         }, {
             id: 3,
             name: "Urządzenia",
             contentComponentInfoList: [
                 new ContentComponentInfo("Klimatyzatory", "/acDevice", AcDevice),
-                new ContentComponentInfo("Urządzenia hostujące", "/hostDevice", AcState)
             ]
         }, {
             id: 4,

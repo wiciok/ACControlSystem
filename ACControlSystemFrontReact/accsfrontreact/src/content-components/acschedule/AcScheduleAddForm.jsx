@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react';
 import 'bulma/css/bulma.css';
 import 'font-awesome/css/font-awesome.min.css'
 import DatePicker from './DatePicker';
+import AcSettingsSelect from '../acsettings/AcSettingsSelect';
 
 class AcScheduleAddForm extends Component {
     constructor(props) {
@@ -10,6 +11,7 @@ class AcScheduleAddForm extends Component {
         this.onSelectChange = this.onSelectChange.bind(this);
         this.onValidStartDateOrTimeEntered = this.onValidStartDateOrTimeEntered.bind(this);
         this.onValidEndDateOrTimeEntered = this.onValidEndDateOrTimeEntered.bind(this);
+        this.onAcSettingsSelected = this.onAcSettingsSelected.bind(this);
         this.onSaveButtonClick = this.onSaveButtonClick.bind(this);
         this.saveButtonActivate = this.saveButtonActivate.bind(this);
 
@@ -18,7 +20,7 @@ class AcScheduleAddForm extends Component {
             selectedScheduleType: 0,
             startTime: null,
             endTime: null,
-            acSettingsGuid: null
+            acSettingGuid: null
         };
     }
 
@@ -29,12 +31,12 @@ class AcScheduleAddForm extends Component {
             selectedScheduleType: Number.parseInt(value, 10),
             startTime: null,
             endTime: null,
-            acSettingsGuid: null
+            acSettingGuid: null
         }, () => { this.saveButtonActivate(); });
     }
 
     saveButtonActivate() {
-        if (this.state.startTime !== null && this.state.endTime !== null) { //&& this.state.acSettingsGuid !== null
+        if (this.state.startTime !== null && this.state.endTime !== null && this.state.acSettingGuid !== null) {
             this.setState({
                 saveButtonActive: true
             });
@@ -59,14 +61,21 @@ class AcScheduleAddForm extends Component {
         }, () => { this.saveButtonActivate(); });
     }
 
+    onAcSettingsSelected(guid) {
+        this.setState({
+            acSettingGuid: guid
+        }, () => { this.saveButtonActivate(); });
+    }
+
     onSaveButtonClick() {
         let newAcScheduleObj = {
             id: 0,
             startTime: this.state.startTime,
             endTime: this.state.endTime,
             scheduleType: this.state.selectedScheduleType,
-            acSettingsGuid: null
+            acSettingGuid: this.state.acSettingGuid
         }
+        console.log(this.state);
         console.log(newAcScheduleObj);
 
         this.props.addCallback(newAcScheduleObj);
@@ -120,6 +129,13 @@ class AcScheduleAddForm extends Component {
                         />
                     </div>
                 </div>
+                <label>Ustawienia klimatyzatora: </label>
+                <br />
+                <AcSettingsSelect
+                    onChange={this.onAcSettingsSelected}
+                    allAcSettings={this.props.acSettings}
+                />
+                <br /><br />
                 {saveButton}
             </Fragment>
         );

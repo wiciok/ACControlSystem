@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import ErrorMessageComponent from '../../ErrorMessageComponent';
 import AcScheduleTable from './AcScheduleTable';
+import AcSettingsSelect from '../acsettings/AcSettingsSelect';
 import AcScheduleAddForm from './AcScheduleAddForm';
 
 class AcSchedule extends Component {
@@ -10,6 +11,7 @@ class AcSchedule extends Component {
         this.addNewSchedule = this.addNewSchedule.bind(this);
         this.removeSchedule = this.removeSchedule.bind(this);
         this.getAllSchedulesData = this.getAllSchedulesData.bind(this);
+        this.getAcSettings = this.getAcSettings.bind(this);
         this.changeAllSchedulesState = this.changeAllSchedulesState.bind(this);
         this.doFetch = this.doFetch.bind(this);
 
@@ -17,6 +19,7 @@ class AcSchedule extends Component {
 
         this.state = {
             allSchedulesData: null,
+            acSettings: null,
             error: {
                 isError: false,
                 errorMessage: null
@@ -30,6 +33,7 @@ class AcSchedule extends Component {
 
     componentDidMount() {
         this.getAllSchedulesData();
+        this.getAcSettings();
     }
 
     getAllSchedulesData() {
@@ -66,7 +70,24 @@ class AcSchedule extends Component {
             headers: new Headers({ "Content-Type": "application/json" })
         };
 
+        console.log(fetchObj);
         this.doFetch(fetchObj, fullAddress, this.getAllSchedulesData);
+    }
+
+    getAcSettings() {
+        let endpointAddress = `${window.apiAddress}/acsetting`;
+        let fullAddress = endpointAddress.concat("/123temporaryfaketoken");
+
+        let fetchObj = {
+            method: 'get'
+        }
+
+        let callback = (arg) =>
+            this.setState({
+                acSettings: arg
+            });
+
+        this.doFetch(fetchObj, fullAddress, callback);
     }
 
     doFetch(fetchObj, fullAddress, successCallback) {
@@ -107,7 +128,7 @@ class AcSchedule extends Component {
                             });
                         })
                 }
-            }).catch(err=>{
+            }).catch(err => {
                 this.setApiFetchError(err);
             })
     }
@@ -138,7 +159,7 @@ class AcSchedule extends Component {
                 <ErrorMessageComponent
                     isVisible={this.state.error.isError}
                     bodyText={this.state.error.errorMessage}
-                    onChangeErrorState={e => {
+                    onChangeErrorState={() => {
                         this.setState({
                             error: {
                                 isError: false,
@@ -151,6 +172,7 @@ class AcSchedule extends Component {
                     <h4 className="title is-4">Lista wpisów terminarza:</h4>
                     <AcScheduleTable
                         scheduleData={this.state.allSchedulesData}
+                        acSettings={this.state.acSettings}
                         onDeleteButtonClick={this.removeSchedule}
                         scheduleArray={this.scheduleArray}
                         weekDaysArray={this.weekDaysArray}
@@ -162,6 +184,7 @@ class AcSchedule extends Component {
                         scheduleArray={this.scheduleArray}
                         weekDaysArray={this.weekDaysArray}
                         addCallback={this.addNewSchedule}
+                        acSettings={this.state.acSettings}
                     />
                 </div>
             </Fragment>

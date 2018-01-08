@@ -7,6 +7,7 @@ class AcScheduleTableRow extends Component {
         
         this.onRowHover=this.onRowHover.bind(this);
         this.onRowUnHover=this.onRowUnHover.bind(this);
+        this.getAcSettingString=this.getAcSettingString.bind(this);
     }
 
 
@@ -37,9 +38,39 @@ class AcScheduleTableRow extends Component {
         this.row2.classList.remove("is-selected");
     }
 
+    getAcSettingString(){
+        let currentAcSetting;
+        
+        for(let acSetting in this.props.acSettings){
+            if(acSetting.uniqueId===this.props.data.acSettingGuid){
+                currentAcSetting=acSetting;
+                break;
+            }
+        }
+
+        if(!currentAcSetting){
+            readableName="Brak ustawienia o danym id!";
+            return readableName;
+        }
+            
+        let readableName = "";
+        if (currentAcSetting.settings) {
+            for (let key in currentAcSetting.settings) {
+                let value = currentAcSetting.settings[key];
+                readableName = readableName.concat(`${key} : ${value}`);
+            }
+        }
+        else 
+            readableName = readableName.concat("(Brak ustawień)");
+        readableName = readableName.concat(`, id: ${currentAcSetting.uniqueId}`);
+
+        return readableName;
+    }
+
     render() {
         let startDate = new Date(this.props.data.startTime);
         let endDate = new Date(this.props.data.endTime);
+        let acSetting = this.getAcSettingString();
 
         return (
             <Fragment>
@@ -53,7 +84,7 @@ class AcScheduleTableRow extends Component {
                     <td></td>
 
                     <td colSpan="2">
-                        {this.props.data.acSettingGuid}
+                        {acSetting}
                     </td>
                     <td>
                         <div className="control">

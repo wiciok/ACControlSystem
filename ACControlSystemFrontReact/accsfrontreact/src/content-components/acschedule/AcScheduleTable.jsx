@@ -21,6 +21,7 @@ class AcScheduleTable extends Component {
                             {this.props.scheduleData.map(item => <AcScheduleTableRow
                                 data={item}
                                 key={item.id}
+                                acSettings={this.props.acSettings}
                                 scheduleArray={this.props.scheduleArray}
                                 weekDaysArray={this.props.weekDaysArray}
                                 onDeleteButtonClick={this.props.onDeleteButtonClick}
