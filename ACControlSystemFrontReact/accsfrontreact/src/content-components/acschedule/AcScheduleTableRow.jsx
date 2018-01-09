@@ -15,16 +15,12 @@ class AcScheduleTableRow extends Component {
         switch (scheduleType) {
             case 0: //Single
                 return `${this.props.weekDaysArray[date.getDay()]}, ${date.toLocaleString()}`;
-                break;
             case 1: //EveryDay
                 return date.toLocaleTimeString();
-                break;
             case 2: //EveryHour
                 return `[godzina] : ${date.getMinutes()} minut`
-                break;
             case 3: //EveryDayOfWeek
                 return `${this.props.weekDaysArray[date.getDay()]}, ${date.toLocaleTimeString()}`;
-                break;
         }
     }
 
@@ -47,13 +43,12 @@ class AcScheduleTableRow extends Component {
                 break;
             }
         }
-
+        let readableName = "";
         if(!currentAcSetting){
             readableName="Brak ustawienia o danym id!";
             return readableName;
         }
-            
-        let readableName = "";
+        
         if (currentAcSetting.settings) {
             for (let key in currentAcSetting.settings) {
                 let value = currentAcSetting.settings[key];

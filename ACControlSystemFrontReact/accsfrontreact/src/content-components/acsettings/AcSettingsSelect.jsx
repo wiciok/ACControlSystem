@@ -34,7 +34,7 @@ class AcSettingsSelect extends Component {
                     }
                 }
                 else 
-                    readableName = readableName.concat("(Brak ustawień)");
+                    readableName = readableName.concat("(Brak opcji)");
                 
                 readableName = readableName.concat(`, id: ${object.uniqueId}`);
 

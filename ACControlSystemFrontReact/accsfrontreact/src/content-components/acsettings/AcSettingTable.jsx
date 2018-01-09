@@ -24,7 +24,7 @@ class AcSettingTable extends Component {
                     <table className="table">
                         <thead>
                             <tr>
-                                <th>Ustawienie</th>
+                                <th>Opcja</th>
                                 <th>Wartość</th>
                             </tr>
                         </thead>

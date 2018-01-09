@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react';
 import ErrorMessageComponent from '../../ErrorMessageComponent';
 import AcSettingsSelect from './AcSettingsSelect';
 import AcSettingTable from './AcSettingTable';
+import AcSettingAdd from './AcSettingAdd';
 
 class AcSettings extends Component {
     constructor(props) {
@@ -11,6 +12,8 @@ class AcSettings extends Component {
         this.setApiFetchError = this.setApiFetchError.bind(this);
         this.onDeleteButtonClick = this.onDeleteButtonClick.bind(this);
         this.onSetAsDefaultButtonClick = this.onSetAsDefaultButtonClick.bind(this);
+        this.onAcSettingAddButtonClick = this.onAcSettingAddButtonClick.bind(this);
+        this.acSettingRegistered = this.acSettingRegistered.bind(this);
         this.doFetch = this.doFetch.bind(this);
 
         this.endpointAddress = `${window.apiAddress}/acsetting`;
@@ -69,6 +72,25 @@ class AcSettings extends Component {
         console.log(fetchObj);
 
         this.doFetch(fetchObj, fullAddress, this.getAcSettings, this.setDefaultButton)
+    }
+
+    onAcSettingAddButtonClick(newObj, button){
+        let newSettingType = "/nec"; //or /raw
+
+        let fullAddress = this.endpointAddress.concat("/123temporaryfaketoken").concat(newSettingType);
+        let fetchObj = {
+            method: 'post',
+            body: JSON.stringify(newObj),
+            headers: new Headers({ "Content-Type": "application/json" })
+        }   
+        console.log(newObj);
+        console.log(fetchObj);
+
+        this.doFetch(fetchObj, fullAddress, this.acSettingRegistered, button)
+    }
+
+    acSettingRegistered(){
+        alert("registered");
     }
 
 
@@ -200,10 +222,13 @@ class AcSettings extends Component {
                         {removeButton}&emsp;
                         {setAsDefaultOnOffSettingButton}
                     </span>
-
                 </div>
-
-
+                <div className="box">
+                    <h4 className="title is-4">Zarejestruj nowe ustawienie:</h4>
+                    <AcSettingAdd
+                        onAddButtonClick={this.onAcSettingAddButtonClick}
+                    />
+                </div>
             </Fragment>
         );
     }
