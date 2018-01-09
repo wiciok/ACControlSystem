@@ -1,13 +1,17 @@
 import React, { Component, Fragment } from 'react';
 import ErrorMessageComponent from '../../ErrorMessageComponent';
 import AcSettingsSelect from './AcSettingsSelect';
+import AcSettingTable from './AcSettingTable';
 
 class AcSettings extends Component {
     constructor(props) {
         super(props);
 
-        this.onSelectionChanged=this.onSelectionChanged.bind(this);
-        this.setApiFetchError=this.setApiFetchError.bind(this);
+        this.onSelectionChanged = this.onSelectionChanged.bind(this);
+        this.setApiFetchError = this.setApiFetchError.bind(this);
+        this.onDeleteButtonClick = this.onDeleteButtonClick.bind(this);
+        this.onSetAsDefaultButtonClick = this.onSetAsDefaultButtonClick.bind(this);
+        this.doFetch = this.doFetch.bind(this);
 
         this.endpointAddress = `${window.apiAddress}/acsetting`;
 
@@ -15,26 +19,82 @@ class AcSettings extends Component {
             error: {
                 isError: false,
                 errorMessage: null,
-                allAcSettings: null
+                allAcSettings: null,
+                currentAcSetting: null
             }
         };
     }
 
-    componentDidMount(){
+    componentDidMount() {
         this.getAcSettings();
     }
 
-    onSelectionChanged(guid){
-        console.log(guid);
+    onSelectionChanged(guid) {
+        let currentAcSetting;
+
+        for (let index in this.state.allAcSettings) {
+            if (this.state.allAcSettings[index].uniqueId === guid) {
+                currentAcSetting = this.state.allAcSettings[index];
+                break;
+            }
+        }
+
+        this.setState({
+            currentAcSetting: currentAcSetting
+        }, () => { console.log(this.state); })
     }
 
-    getAcSettings(){
+    onDeleteButtonClick() {
+        let fullAddress = this.endpointAddress.concat("/123temporaryfaketoken/").concat(this.state.currentAcSetting.uniqueId);
+        let fetchObj = {
+            method: 'delete'
+        }
+
+        console.log(fetchObj);
+
+        this.doFetch(fetchObj, fullAddress, this.getAcSettings, this.removeButton)
+    }
+
+    onSetAsDefaultButtonClick() {
+        let isOnOff = this.state.currentAcSetting.isTurnOff ? "/defaultOff/" : "/defaultOn/"
+
+        let fullAddress = this.endpointAddress
+            .concat("/123temporaryfaketoken")
+            .concat(isOnOff)
+            .concat(this.state.currentAcSetting.uniqueId);
+        let fetchObj = {
+            method: 'post'
+        }
+
+        console.log(fetchObj);
+
+        this.doFetch(fetchObj, fullAddress, this.getAcSettings, this.setDefaultButton)
+    }
+
+
+    getAcSettings() {
         let fullAddress = this.endpointAddress.concat("/123temporaryfaketoken");
+        let fetchObj = {
+            method: 'get'
+        }
 
+        let successCallback = json => {
+            this.setState({
+                allAcSettings: json
+            });
+        }
 
-        fetch(fullAddress)
+        this.doFetch(fetchObj, fullAddress, successCallback, null)
+    }
+
+    doFetch(fetchObj, fullAddress, successCallback, button) {
+        this.changeButtonInProgress(true, button);
+
+        fetch(fullAddress, fetchObj)
             .then(response => {
                 console.log("response: " + response.status);
+
+                this.changeButtonInProgress(false, button);
 
                 if (!response.ok) {
                     let error = new Error(response.statusText);
@@ -51,20 +111,29 @@ class AcSettings extends Component {
                     };
                     throw error;
                 }
+
                 else {
                     response
                         .json()
-                        .then(json => {
-                            this.setState({
-                                allAcSettings: json
-                            });
-                            console.log(this.state.allAcSettings);
-                        })
-                        .catch(err => {this.props.errorCallback(err)});
+                        .then(json => successCallback(json))
+                        .catch(err => { this.setApiFetchError(err) });
                 }
-            }).catch(err=>{
-                this.props.errorCallback(err);
+            }).catch(err => {
+                this.setApiFetchError(err);
             })
+    }
+
+    changeButtonInProgress(isInProgress, button) {
+        if (button == null)
+            return;
+
+        if (isInProgress === true) {
+            button.classList.add("is-loading");
+            button.classList.remove("is-primary");
+        } else {
+            button.classList.remove("is-loading");
+            button.classList.add("is-primary");
+        }
     }
 
     setApiFetchError(error) {
@@ -85,12 +154,29 @@ class AcSettings extends Component {
             }
         });
     }
-    
+
 
     render() {
+        let removeButton =
+            <button className="button is-link is-danger" onClick={this.onDeleteButtonClick} ref={removeButton => this.removeButton = removeButton}>
+                Usuń
+            </button>
+
+        let setAsDefaultOnOffSettingButton;
+        if (this.state.currentAcSetting && this.state.currentAcSetting.isTurnOff)
+            setAsDefaultOnOffSettingButton =
+                <button className="button is-link is-primary" onClick={this.onSetAsDefaultButtonClick} ref={setDefaultButton => this.setDefaultButton = setDefaultButton}>
+                    Ustaw jako domyślne ust. wyłączania
+                </button>
+        else
+            setAsDefaultOnOffSettingButton =
+                <button className="button is-link is-primary" onClick={this.onSetAsDefaultButtonClick} ref={setDefaultButton => this.setDefaultButton = setDefaultButton}>
+                    Ustaw jako domyślne ust. włączania
+                </button>
+
         return (
             <Fragment>
-                 <h2 className="title is-2">Ustawienia</h2>
+                <h2 className="title is-2">Ustawienia</h2>
                 <ErrorMessageComponent
                     isVisible={this.state.error.isError}
                     bodyText={this.state.error.errorMessage}
@@ -102,10 +188,22 @@ class AcSettings extends Component {
                             }
                         })
                     }} />
-                
-                <AcSettingsSelect
-                    onChange={this.onSelectionChanged}
-                    allAcSettings={this.state.allAcSettings}/>
+
+                <div className="box">
+                    <h4 className="title is-4">Dostępne ustawienia:</h4>
+                    <AcSettingsSelect
+                        onChange={this.onSelectionChanged}
+                        allAcSettings={this.state.allAcSettings} />
+                    <br /><br />
+                    <AcSettingTable acSetting={this.state.currentAcSetting} />
+                    <span className="control">
+                        {removeButton}&emsp;
+                        {setAsDefaultOnOffSettingButton}
+                    </span>
+
+                </div>
+
+
             </Fragment>
         );
     }
