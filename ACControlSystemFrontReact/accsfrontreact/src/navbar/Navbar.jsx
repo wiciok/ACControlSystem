@@ -1,6 +1,5 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import 'bulma/css/bulma.css';
-import NavbarItem from "./NavbarItem"
 
 class Navbar extends Component {
     render() {
@@ -8,14 +7,18 @@ class Navbar extends Component {
             <nav className="navbar has-shadow" aria-label="main navigation">
                 <div className="container">
                     <div className="navbar-brand">
-                        <NavbarItem link="index.html" text="System sterowania klimatyzacją"/>
+                        <a className="navbar-item is-tab" href="index.html" >
+                            System sterowania klimatyzacją
+                            </a>
                     </div>
-
-                    <div className="navbar-menu">
+                    <div className="navbar-menu is-active">
                         <div className="navbar-end">
-                            <NavbarItem text="Użytkownik: test"/>
-
-                            <NavbarItem text="Wyloguj"/>
+                            <a className="navbar-item is-tab" href={null}>
+                                {`Użytkownik: ${this.props.userEmail}`}
+                            </a>
+                            <a className="navbar-item is-tab" href={null}>
+                                Wyloguj
+                            </a>
                         </div>
                     </div>
                 </div>
