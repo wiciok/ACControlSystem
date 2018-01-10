@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 
 class AcSettingsSelect extends Component {
     constructor(props) {
@@ -42,15 +42,18 @@ class AcSettingsSelect extends Component {
                 return <option key={index} value={object.uniqueId}>{readableName}</option>
             })
 
-            select = <select id='test' ref={select => this.select = select} onChange={this.onSelectionChanged}>
-                {options}
-            </select>
+            select = 
+            <div className="select">
+                <select id='test' ref={select => this.select = select} onChange={this.onSelectionChanged}>
+                    {options}
+                </select>
+            </div>
         }
 
         return (
-            <div className="select">
-                {this.props.allAcSettings ? select : "Brak dostępnych ustawień!"}
-            </div>
+            <Fragment>
+                {this.props.allAcSettings ? select : <div>Brak dostępnych ustawień!</div>}
+            </Fragment>
         );
     }
 }
