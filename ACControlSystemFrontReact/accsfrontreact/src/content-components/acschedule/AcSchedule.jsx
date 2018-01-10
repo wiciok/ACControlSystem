@@ -7,6 +7,7 @@ class AcSchedule extends Component {
     constructor(props) {
         super(props);
 
+        this.checkTurnOffSetting = this.checkTurnOffSetting.bind(this);
         this.addNewSchedule = this.addNewSchedule.bind(this);
         this.removeSchedule = this.removeSchedule.bind(this);
         this.getAllSchedulesData = this.getAllSchedulesData.bind(this);
@@ -17,6 +18,7 @@ class AcSchedule extends Component {
         this.endpointAddress = `${window.apiAddress}/acschedule`;
 
         this.state = {
+            isTurnOffSettingSet: true,
             allSchedulesData: null,
             acSettings: null,
             error: {
@@ -33,7 +35,42 @@ class AcSchedule extends Component {
     componentDidMount() {
         this.getAllSchedulesData();
         this.getAcSettings();
+        this.checkTurnOffSetting();
     }
+
+    checkTurnOffSetting() {
+        let endpointAddress = `${window.apiAddress}/acsetting`;
+        let fullAddress = endpointAddress.concat("/123temporaryfaketoken").concat("/defaultOff");
+
+
+        fetch(fullAddress)
+            .then(response => {
+                console.log("check turn off response: " + response.status);
+
+                switch (response.status) {
+                    case 200:
+                        this.setState({
+                            isTurnOffSettingSet: true
+                        })
+                        break;
+                    case 404:
+                        response.json().then(
+                            json => {
+                                console.log(json);
+                                this.setState({
+                                    isTurnOffSettingSet: false
+                                })
+                            }
+                        )
+                        break;
+                    default:
+                        break;
+                }
+            }).catch(err => {
+                this.setApiFetchError(err);
+            })
+    }
+
 
     getAllSchedulesData() {
         let fullAddress = this.endpointAddress.concat("/123temporaryfaketoken");
@@ -75,7 +112,7 @@ class AcSchedule extends Component {
 
     getAcSettings() {
         let endpointAddress = `${window.apiAddress}/acsetting`;
-        let fullAddress = endpointAddress.concat("/123temporaryfaketoken");
+        let fullAddress = endpointAddress.concat("/123temporaryfaketoken").concat("/allon");
 
         let fetchObj = {
             method: 'get'
@@ -98,15 +135,12 @@ class AcSchedule extends Component {
                     let error = new Error(response.statusText);
                     error.statusCode = response.status;
 
-                    //todo: poprawic to/usunac
-                    if (response.bodyUsed) {
-                        response.json()
-                            .then(x => {
-                                console.log(x);
-                                error.errorMessage = x;
-                                throw error;
-                            });
-                    };
+                    response.json()
+                        .then(x => {
+                            console.log(x);
+                            error.errorMessage = x;
+                            throw error;
+                        });
                     throw error;
                 }
                 else {
@@ -139,7 +173,7 @@ class AcSchedule extends Component {
             errorMessage = `Błąd ${error.statusCode}: `.concat(errorMessage);
         }
 
-        if (error.errorMessge) {
+        if (error.errorMessage) {
             errorMessage += "Dodatkowe informacje: " + error.errorMessage;
         }
 
@@ -152,6 +186,24 @@ class AcSchedule extends Component {
     }
 
     render() {
+        let addForm =
+            <AcScheduleAddForm
+                scheduleArray={this.scheduleArray}
+                weekDaysArray={this.weekDaysArray}
+                addCallback={this.addNewSchedule}
+                acSettings={this.state.acSettings}
+            />
+        let addNotPossible =
+            <article className="message is-danger">
+                <div className="message-header">
+                    <p>Błąd!</p>
+                </div>
+                <div className="message-body">
+                    Nie można dodać nowego wpisu terminarza! Ustawienie wyłączające klimatyzator nie zostało zdefiniowane w ustawieniach!
+                    </div>
+            </article>
+
+
         return (
             <Fragment>
                 <h2 className="title is-2">Terminarz</h2>
@@ -179,12 +231,8 @@ class AcSchedule extends Component {
                 </div>
 
                 <div className="box">
-                    <AcScheduleAddForm
-                        scheduleArray={this.scheduleArray}
-                        weekDaysArray={this.weekDaysArray}
-                        addCallback={this.addNewSchedule}
-                        acSettings={this.state.acSettings}
-                    />
+                    <h4 className="title is-4"> Dodaj nową regułę terminarza:</h4>
+                    {this.state.isTurnOffSettingSet ? addForm : addNotPossible}
                 </div>
             </Fragment>
         );

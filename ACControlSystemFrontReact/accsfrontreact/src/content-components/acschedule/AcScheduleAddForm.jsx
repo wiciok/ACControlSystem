@@ -102,7 +102,6 @@ class AcScheduleAddForm extends Component {
                 </button>
         return (
             <Fragment>
-                <h4 className="title is-4"> Dodaj nową regułę terminarza:</h4>
                 <label>Cykliczność reguły:</label>
                 <br />
                 <div className="select">
