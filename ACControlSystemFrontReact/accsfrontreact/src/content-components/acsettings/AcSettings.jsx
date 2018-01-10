@@ -13,7 +13,6 @@ class AcSettings extends Component {
         this.onDeleteButtonClick = this.onDeleteButtonClick.bind(this);
         this.onSetAsDefaultButtonClick = this.onSetAsDefaultButtonClick.bind(this);
         this.onAcSettingAddButtonClick = this.onAcSettingAddButtonClick.bind(this);
-        this.acSettingRegistered = this.acSettingRegistered.bind(this);
         this.doFetch = this.doFetch.bind(this);
 
         this.endpointAddress = `${window.apiAddress}/acsetting`;
@@ -83,14 +82,9 @@ class AcSettings extends Component {
             body: JSON.stringify(newObj),
             headers: new Headers({ "Content-Type": "application/json" })
         }   
-        console.log(newObj);
         console.log(fetchObj);
 
-        this.doFetch(fetchObj, fullAddress, this.acSettingRegistered, button)
-    }
-
-    acSettingRegistered(){
-        alert("registered");
+        this.doFetch(fetchObj, fullAddress, this.getAcSettings, button)
     }
 
 

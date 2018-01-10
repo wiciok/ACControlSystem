@@ -8,7 +8,7 @@ class AcScheduleTable extends Component {
         if (this.props.scheduleData) {
             return (
                 <div className="overflow">
-                    <table className="table is-fullwidth">
+                    <table className="table is-fullwidth schedule-table">
                         <thead>
                             <tr>
                                 <th>Id</th>

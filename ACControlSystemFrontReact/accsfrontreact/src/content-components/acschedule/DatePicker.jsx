@@ -114,6 +114,8 @@ class DatePicker extends Component {
                 ];
                 labelText = "Wybierz dzień tygodnia i godzinę:";
                 break;
+            default:
+                break;
         }
 
         return (

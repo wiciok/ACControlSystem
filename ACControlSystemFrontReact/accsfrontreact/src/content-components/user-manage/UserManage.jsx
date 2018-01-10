@@ -132,7 +132,7 @@ class UserManage extends Component {
                                 onRowClicked={this.onRowSelected}
                             />
                             <div className="control">
-                                <button className="button is-link is-success" onClick={e => this.onRowSelected(0)}>Dodaj nowego</button>
+                                <button className="button is-link is-success" onClick={e => this.onRowSelected(0)}>Dodaj nowego użytkownika</button>
                             </div>
                         </div>
                         <div className="column">

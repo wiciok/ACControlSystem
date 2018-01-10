@@ -21,6 +21,8 @@ class AcScheduleTableRow extends Component {
                 return `[godzina] : ${date.getMinutes()} minut`
             case 3: //EveryDayOfWeek
                 return `${this.props.weekDaysArray[date.getDay()]}, ${date.toLocaleTimeString()}`;
+            default:
+                break;
         }
     }
 
@@ -86,8 +88,7 @@ class AcScheduleTableRow extends Component {
                             <button 
                                 className="button is-link is-danger is-small" 
                                 onClick={e=>this.props.onDeleteButtonClick(this.props.data.id)} 
-                                ref={removeButton => this.removeButton = removeButton}
-                            >
+                                ref={removeButton => this.removeButton = removeButton}>
                                 Usuń
                             </button>
                         </div>

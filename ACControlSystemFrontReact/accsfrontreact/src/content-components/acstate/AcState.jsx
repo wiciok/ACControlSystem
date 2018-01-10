@@ -130,7 +130,7 @@ class AcState extends Component {
                                     actionType="on"
                                     stateRefreshCallback={e => this.getCurrentAcState()}
                                     setErrorCallback={e => this.setApiFetchError(e)}/>
-                                <br/><br/>
+                                &emsp;
                                 <ToggleStateButton
                                     actionType="off"
                                     stateRefreshCallback={e => this.getCurrentAcState()}

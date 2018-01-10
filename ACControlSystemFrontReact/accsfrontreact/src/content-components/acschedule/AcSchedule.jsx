@@ -1,7 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import ErrorMessageComponent from '../../ErrorMessageComponent';
 import AcScheduleTable from './AcScheduleTable';
-import AcSettingsSelect from '../acsettings/AcSettingsSelect';
 import AcScheduleAddForm from './AcScheduleAddForm';
 
 class AcSchedule extends Component {

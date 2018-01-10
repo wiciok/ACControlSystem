@@ -1,14 +1,14 @@
-table tbody tr {
+.schedule-table tbody tr {
      cursor: auto; 
 }
 
-.table td.is-selected,
-.table th.is-selected {
+.schedule-table td.is-selected,
+.schedule-table th.is-selected {
   background-color: #fafafa;
   color: black;
 }
 
-.table tr.is-selected {
+.schedule-table tr.is-selected {
   background-color: #fafafa;
   color: black;
 }
