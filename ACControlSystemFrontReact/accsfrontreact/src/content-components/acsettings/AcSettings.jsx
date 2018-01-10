@@ -3,6 +3,7 @@ import ErrorMessageComponent from '../../ErrorMessageComponent';
 import AcSettingsSelect from './AcSettingsSelect';
 import AcSettingTable from './AcSettingTable';
 import AcSettingAdd from './AcSettingAdd';
+import AcSettingsDefaultOnOffStatus from './AcSettingsDefaultOnOffStatus';
 
 class AcSettings extends Component {
     constructor(props) {
@@ -13,12 +14,15 @@ class AcSettings extends Component {
         this.onDeleteButtonClick = this.onDeleteButtonClick.bind(this);
         this.onSetAsDefaultButtonClick = this.onSetAsDefaultButtonClick.bind(this);
         this.onAcSettingAddButtonClick = this.onAcSettingAddButtonClick.bind(this);
+        this.getTurnOnOffSetting = this.getTurnOnOffSetting.bind(this);
         this.doFetch = this.doFetch.bind(this);
 
         this.endpointAddress = `${window.apiAddress}/acsetting`;
 
         this.state = {
             error: {
+                defaultOn: null,
+                defaultOff: null,
                 isError: false,
                 errorMessage: null,
                 allAcSettings: null,
@@ -29,6 +33,7 @@ class AcSettings extends Component {
 
     componentDidMount() {
         this.getAcSettings();
+        this.getTurnOnOffSetting();
     }
 
     onSelectionChanged(guid) {
@@ -73,7 +78,7 @@ class AcSettings extends Component {
         this.doFetch(fetchObj, fullAddress, this.getAcSettings, this.setDefaultButton)
     }
 
-    onAcSettingAddButtonClick(newObj, button){
+    onAcSettingAddButtonClick(newObj, button) {
         let newSettingType = "/nec"; //or /raw
 
         let fullAddress = this.endpointAddress.concat("/123temporaryfaketoken").concat(newSettingType);
@@ -81,7 +86,7 @@ class AcSettings extends Component {
             method: 'post',
             body: JSON.stringify(newObj),
             headers: new Headers({ "Content-Type": "application/json" })
-        }   
+        }
         console.log(fetchObj);
 
         this.doFetch(fetchObj, fullAddress, this.getAcSettings, button)
@@ -102,6 +107,63 @@ class AcSettings extends Component {
 
         this.doFetch(fetchObj, fullAddress, successCallback, null)
     }
+
+    getTurnOnOffSetting() {
+        let endpointAddress = `${window.apiAddress}/acsetting`;
+        let fullAddress = endpointAddress.concat("/123temporaryfaketoken").concat("/defaultOn");
+
+        fetch(fullAddress)
+            .then(response => {
+                console.log("check turn on response: " + response.status);
+
+                switch (response.status) {
+                    case 200:
+                        response.json().then(data => {
+                            this.setState({
+                                defaultOn: data
+                            });
+                        })
+                        break;
+                    case 404:
+                        this.setState({
+                            defaultOn: null
+                        });
+                        break;
+                    default:
+                        break;
+                }
+            }).catch(err => {
+                this.setApiFetchError();
+            })
+
+        endpointAddress = `${window.apiAddress}/acsetting`;
+        fullAddress = endpointAddress.concat("/123temporaryfaketoken").concat("/defaultOff");
+
+        fetch(fullAddress)
+            .then(response => {
+                console.log("check turn off response: " + response.status);
+
+                switch (response.status) {
+                    case 200:
+                        response.json().then(data => {
+                            this.setState({
+                                defaultOff: data
+                            },()=>console.log(data))
+                        })
+                        break;
+                    case 404:
+                        this.setState({
+                            defaultOff: null
+                        })
+                        break;
+                    default:
+                        break;
+                }
+            }).catch(err => {
+                this.setApiFetchError();
+            })
+    }
+
 
     doFetch(fetchObj, fullAddress, successCallback, button) {
         this.changeButtonInProgress(true, button);
@@ -204,6 +266,13 @@ class AcSettings extends Component {
                             }
                         })
                     }} />
+
+                <div className="box">
+                    <h4 className="title is-4">Domyślne ustawienia:</h4>
+                    <AcSettingsDefaultOnOffStatus
+                        defaultOn={this.state.defaultOn}
+                        defaultOff={this.state.defaultOff} />
+                </div>
 
                 <div className="box">
                     <h4 className="title is-4">Dostępne ustawienia:</h4>
