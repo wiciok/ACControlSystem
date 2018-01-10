@@ -111,11 +111,10 @@ class AcState extends Component {
                         .json()
                         .then(json => {
                             console.log(json);
-                            if (json.isTurnOff === true) {
+                            if (json.isTurnOff === true) 
                                 this.setState({ currentAcState: "off" });
-                            } else {
+                            else 
                                 this.setState({ currentAcState: "on" });
-                            }
                         })
                         .catch(err => {
                             this.setState({
@@ -133,10 +132,9 @@ class AcState extends Component {
                     response.json().then(data => {
                         console.log(data);
                         error.errorMessage = data;
-                        throw error;
+                        this.setApiFetchError(error);
                     });
-
-                    throw error;
+                    this.setApiFetchError(error);
             }
         }).catch(err => {
             this.setApiFetchError(err);
@@ -149,7 +147,7 @@ class AcState extends Component {
         if (error.statusCode)
             errorMessage = `Błąd ${error.statusCode}: `.concat(errorMessage);
 
-        if (error.errorMessge)
+        if (error.errorMessage)
             errorMessage += "Dodatkowe informacje: " + error.errorMessage;
 
         this.setState({

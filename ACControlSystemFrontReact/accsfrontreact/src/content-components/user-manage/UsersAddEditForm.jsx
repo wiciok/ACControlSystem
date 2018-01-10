@@ -11,7 +11,7 @@ class UserAddEditForm extends Component {
         this.onSaveButtonClick = this.onSaveButtonClick.bind(this);
         this.onDeleteButtonClick = this.onDeleteButtonClick.bind(this);
         this.changeButtonInProgress = this.changeButtonInProgress.bind(this);
-        this.saveButtonChange=this.saveButtonChange.bind(this);
+        this.saveButtonChange = this.saveButtonChange.bind(this);
         this.onEmailEntered = this.onEmailEntered.bind(this);
         this.onPasswordEntered = this.onPasswordEntered.bind(this);
         this.doFetch = this.doFetch.bind(this);
@@ -27,46 +27,54 @@ class UserAddEditForm extends Component {
 
     onEmailEntered(email) {
         this.setState({
-            emailAddress: email    
+            emailAddress: email
         });
-        this.saveButtonChange(email,this.state.password);
+        this.saveButtonChange(email, this.state.password);
     }
 
-    onPasswordEntered(password){
+    onPasswordEntered(password) {
         this.setState({
             password: password
         })
-        this.saveButtonChange(this.state.emailAddress,password);
+        this.saveButtonChange(this.state.emailAddress, password);
     }
 
-    saveButtonChange(email, password){
+    saveButtonChange(email, password) {
         this.setState({
             saveButtonActive: email && password
         })
     }
 
     onSaveButtonClick() {
-        let userObj = {
-            brand: this.emailInput.value
+        /*let userRegisterObject = {
+            emailAddress: this.emailInput.value,
+            passwordHash: this.PasswordInput.value
+        }*/
+        let userRegisterObject = {
+            authenticationData: {
+                EmailAddress: this.state.emailAddress,
+                Password: this.state.password
+            }
         }
 
         let fetchObj;
         if (this.props.isEdit) {
-            userObj.id = this.props.editedUserData.id;
+            userRegisterObject.id = this.props.editedUserData.id;
             fetchObj = {
                 method: 'put',
-                body: JSON.stringify(userObj)
+                body: JSON.stringify(userRegisterObject)
             }
         }
         else {
-            userObj.id = 0;
             fetchObj = {
                 method: 'post',
-                body: JSON.stringify(userObj)
+                body: JSON.stringify(userRegisterObject)
             }
         }
         fetchObj.headers = new Headers({ "Content-Type": "application/json" });
         let fullAddress = this.endpointAddress.concat("/123temporaryfaketoken");
+
+        console.log(fetchObj);
 
         this.doFetch(fetchObj, fullAddress, this.saveButton);
     }
@@ -104,18 +112,14 @@ class UserAddEditForm extends Component {
                     let error = new Error(response.statusText);
                     error.statusCode = response.status;
 
-                    //todo: poprawic to/usunac
-                    if (response.bodyUsed) {
-                        response.json()
-                            .then(x => {
-                                console.log(x);
-                                error.errorMessage = x;
-                                throw error;
-                            });
-                    };
-                    throw error;
+                    response.json().then(x => {
+                        console.log(x);
+                        error.errorMessage = x;
+                        this.props.errorCallback(error);
+                    });
+                    this.props.errorCallback(error);
                 }
-                
+
                 this.props.refreshCallback();
             })
             .catch(err => {
@@ -138,18 +142,18 @@ class UserAddEditForm extends Component {
         </div>
 
         let saveButton = this.state.saveButtonActive
-            ?   <button
-                    className="button is-link"
-                    onClick={this.onSaveButtonClick}
-                    ref={saveButton => this.saveButton = saveButton}>
-                    Zapisz
+            ? <button
+                className="button is-link"
+                onClick={this.onSaveButtonClick}
+                ref={saveButton => this.saveButton = saveButton}>
+                Zapisz
                 </button>
-            :   <button
-                    className="button is-link"
-                    onClick={this.onSaveButtonClick}
-                    disabled
-                    ref={saveButton => this.saveButton = saveButton}>
-                    Zapisz
+            : <button
+                className="button is-link"
+                onClick={this.onSaveButtonClick}
+                disabled
+                ref={saveButton => this.saveButton = saveButton}>
+                Zapisz
                 </button>
 
         let captionText = this.props.isEdit ? "Edytuj użytkownika:" : "Dodaj użytkownika";

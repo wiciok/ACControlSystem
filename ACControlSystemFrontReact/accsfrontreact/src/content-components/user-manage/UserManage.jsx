@@ -29,7 +29,6 @@ class UserManage extends Component {
         this.getAllUsers();
     }
 
-
     getAllUsers() {
         //let fullAddress = this.endpointAddress.concat("/all");
         let fullAddress = this.endpointAddress.concat("/123temporaryfaketoken/all");
@@ -60,18 +59,11 @@ class UserManage extends Component {
                 default:
                     let error = new Error(response.statusText);
                     error.statusCode = response.status;
-
-                    //todo: poprawic to/usunac
-                    if (response.bodyUsed) {
-                        response
-                            .json()
-                            .then(x => {
-                                console.log(x);
-                                error.errorMessage = x;
-                                throw error;
-                            });
-                    };
-
+                    response.json().then(x => {
+                        console.log(x);
+                        error.errorMessage = x;
+                        throw error;
+                    });
                     throw error;
             }
         }).catch(err => {
@@ -82,14 +74,11 @@ class UserManage extends Component {
 
     setApiFetchError(error) {
         let errorMessage = `${error.message}`;
-        //console.log(error); console.log(error.statusCode);
-        if (error.statusCode) {
-            errorMessage = `Błąd ${error.statusCode}: `.concat(errorMessage);
-        }
+        if (error.statusCode)
+            errorMessage = `Błąd ${error.statusCode}: `.concat(errorMessage).concat("\n");
 
-        if (error.errorMessge) {
+        if (error.errorMessage)
             errorMessage += "Dodatkowe informacje: " + error.errorMessage;
-        }
 
         this.setState({
             error: {
@@ -136,12 +125,12 @@ class UserManage extends Component {
                             </div>
                         </div>
                         <div className="column">
-                            {<UsersAddEditForm
+                            <UsersAddEditForm
                                 isEdit={this.state.selectedRow}
                                 editedUserData={this.state.selectedRow ? this.state.allUsersData[this.state.selectedRow - 1] : null}
                                 refreshCallback={this.getAllUsers}
                                 errorCallback={this.setApiFetchError}
-                            />}
+                            />
                         </div>
                     </div>
                 </div>

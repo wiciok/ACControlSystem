@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import './ErrorMessageComponent.css';
 
 class ErrorMessageComponent extends Component {
     constructor(props) {
@@ -17,11 +18,9 @@ class ErrorMessageComponent extends Component {
                         <button
                             className="delete"
                             aria-label="delete"
-                            onClick={e => this
-                            .props
-                            .onChangeErrorState()}/>
+                            onClick={this.props.onChangeErrorState}/>
                     </div>
-                    <div className="message-body">
+                    <div className="message-body whitespace">
                         {this.props.bodyText}
                     </div>
                 </article>

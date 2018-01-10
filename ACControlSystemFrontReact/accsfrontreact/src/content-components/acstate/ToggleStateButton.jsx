@@ -49,11 +49,13 @@ class ToggleStateButton extends Component {
                 break;
         };
 
-        fetch(endpointAddress, {
+        let fetchObj= {
             method: 'post',
             headers: new Headers({ "Content-Type": "application/json" }),
             body: JSON.stringify(acStateObj)
-        }).then(response => {
+        }
+
+        fetch(endpointAddress,fetchObj).then(response => {
             console.log("response: " + response.status);
 
             this.changeInProgressAppeareance(false);
@@ -62,12 +64,12 @@ class ToggleStateButton extends Component {
                 let error = new Error(response.statusText);
                 error.statusCode = response.status;
 
-                response.json().then(x => {
-                    console.log(x);
-                    error.errorMessage = x;
-                    throw error;
+                response.json().then(data => {
+                    console.log(data);
+                    error.errorMessage = data;
+                    this.props.setErrorCallback(error);
                 });
-                throw error;
+                this.props.setErrorCallback(error);
             }
             else
                 this.props.stateRefreshCallback();

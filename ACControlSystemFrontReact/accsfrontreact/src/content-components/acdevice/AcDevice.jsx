@@ -32,7 +32,7 @@ class AcDevice extends Component {
         this.refresh();
     }
 
-    refresh(){
+    refresh() {
         this.getAllAcDevices();
         this.getActiveAcDevice();
     }
@@ -53,17 +53,12 @@ class AcDevice extends Component {
 
                     error = new Error(response.statusText);
                     error.statusCode = response.status;
-
-                    //todo: poprawic to/usunac
-                    if (response.bodyUsed) {
-                        response.json()
-                            .then(x => {
-                                console.log(x);
-                                error.errorMessage = x;
-                                throw error;
-                            });
-                    };
-                    throw error;
+                    response.json().then(data => {
+                        console.log(data);
+                        error.errorMessage = data;
+                        this.setApiFetchError(error);
+                    });
+                    this.setApiFetchError(error);
                 }
 
                 response.json()
@@ -97,9 +92,9 @@ class AcDevice extends Component {
                         .json()
                         .then(json => {
                             console.log(json);
-                            this.setState({ 
+                            this.setState({
                                 allDevicesData: json,
-                                selectedRow: 0 
+                                selectedRow: 0
                             })
                         })
                         .catch(err => {
@@ -115,18 +110,12 @@ class AcDevice extends Component {
                     let error = new Error(response.statusText);
                     error.statusCode = response.status;
 
-                    //todo: poprawic to/usunac
-                    if (response.bodyUsed) {
-                        response
-                            .json()
-                            .then(x => {
-                                console.log(x);
-                                error.errorMessage = x;
-                                throw error;
-                            });
-                    };
-
-                    throw error;
+                    response.json().then(data => {
+                        console.log(data);
+                        error.errorMessage = data;
+                        this.setApiFetchError(error);
+                    });
+                    this.setApiFetchError(error);
             }
         }).catch(err => {
             console.log(err);
@@ -136,14 +125,12 @@ class AcDevice extends Component {
 
     setApiFetchError(error) {
         let errorMessage = `${error.message}`;
-        //console.log(error); console.log(error.statusCode);
-        if (error.statusCode) {
-            errorMessage = `Błąd ${error.statusCode}: `.concat(errorMessage);
-        }
 
-        if (error.errorMessge) {
+        if (error.statusCode) 
+            errorMessage = `Błąd ${error.statusCode}: `.concat(errorMessage);
+
+        if (error.errorMessage) 
             errorMessage += "Dodatkowe informacje: " + error.errorMessage;
-        }
 
         this.setState({
             error: {
@@ -174,7 +161,7 @@ class AcDevice extends Component {
                         })
                     }} />
 
-                <ActiveAcDeviceBox activeAcDevice={this.state.activeDevice}/>
+                <ActiveAcDeviceBox activeAcDevice={this.state.activeDevice} />
 
                 <div className="box">
                     <div className="columns">
@@ -185,7 +172,7 @@ class AcDevice extends Component {
                             <AcDevicesTable
                                 data={this.state.allDevicesData}
                                 selectedRow={this.state.selectedRow}
-                                onRowClicked={this.onRowSelected} 
+                                onRowClicked={this.onRowSelected}
                             />
                             <div className="control">
                                 <button className="button is-link is-success" onClick={e => this.onRowSelected(0)}>Dodaj nowy</button>

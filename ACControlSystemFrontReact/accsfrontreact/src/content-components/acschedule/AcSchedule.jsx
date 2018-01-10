@@ -135,13 +135,12 @@ class AcSchedule extends Component {
                     let error = new Error(response.statusText);
                     error.statusCode = response.status;
 
-                    response.json()
-                        .then(x => {
-                            console.log(x);
-                            error.errorMessage = x;
-                            throw error;
-                        });
-                    throw error;
+                    response.json().then(data => {
+                        console.log(data);
+                        error.errorMessage = data;
+                        this.setApiFetchError(error);
+                    });
+                    this.setApiFetchError(error);
                 }
                 else {
                     if (response.status === 204) {
@@ -149,8 +148,7 @@ class AcSchedule extends Component {
                         return;
                     }
 
-                    response
-                        .json()
+                    response.json()
                         .then(json => successCallback(json))
                         .catch(err => {
                             this.setState({
