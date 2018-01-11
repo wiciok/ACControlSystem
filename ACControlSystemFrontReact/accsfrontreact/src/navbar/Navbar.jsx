@@ -8,7 +8,7 @@ class Navbar extends Component {
             ?   <div className="navbar-menu is-active">
                     <div className="navbar-end">
                         <a className="navbar-item is-tab" href={null}>{`Użytkownik: ${this.props.userEmail}`}</a>
-                        <a className="navbar-item is-tab" href={null}>Wyloguj</a>
+                        <a className="navbar-item is-tab" href={null} onClick={this.props.onLogoutClick}>Wyloguj</a>
                     </div>
                 </div>
             :   null;
