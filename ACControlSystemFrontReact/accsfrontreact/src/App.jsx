@@ -29,26 +29,26 @@ class App extends Component {
     }
 
     onLogin(email, pass){
+        alert(`${email} : ${pass}`)
+
         this.setState({
             userEmail: email,
             userPassword: pass
-        })
+        });
     }
 
     render() {
         let content;
         if (window['userEmail'] === "" || window['userPassword'] === "")
-            content = <LoginPage />;
+            content = <LoginPage onLogin={this.onLogin}/>;
         else
             content =
                 <div className="columns">
                     <div className="column is-3">
-                        <MainMenu
-                            categories={(new MainMenuCategoriesAndItems()).menuCategoriesAndItems} />
+                        <MainMenu categories={(new MainMenuCategoriesAndItems()).menuCategoriesAndItems} />
                     </div>
                     <div className="column is-9">
-                        <ContentArea
-                            componentList={(new MainMenuCategoriesAndItems()).menuCategoriesAndItems.map((item) => item.contentComponentInfoList)} />
+                        <ContentArea componentList={(new MainMenuCategoriesAndItems()).menuCategoriesAndItems.map((item) => item.contentComponentInfoList)} />
                     </div>
                 </div>
 

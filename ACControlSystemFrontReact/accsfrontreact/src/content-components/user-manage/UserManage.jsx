@@ -62,9 +62,9 @@ class UserManage extends Component {
                     response.json().then(x => {
                         console.log(x);
                         error.errorMessage = x;
-                        throw error;
+                        this.setApiFetchError(error);
                     });
-                    throw error;
+                    this.setApiFetchError(error);
             }
         }).catch(err => {
             console.log(err);
