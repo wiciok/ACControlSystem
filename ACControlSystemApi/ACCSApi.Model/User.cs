@@ -1,6 +1,7 @@
 ﻿using System;
 using ACCSApi.Model.Dto;
 using ACCSApi.Model.Interfaces;
+using Newtonsoft.Json;
 
 namespace ACCSApi.Model
 {
@@ -11,8 +12,10 @@ namespace ACCSApi.Model
         public string PasswordHash { get; set; }
         public DateTime RegistrationTimestamp { get; set; }
 
+        [JsonIgnore]
         public IUserPublic PublicData => new UserPublic
         {
+            Id = Id,
             EmailAddress = EmailAddress,
             RegistrationTimestamp = RegistrationTimestamp
         };
