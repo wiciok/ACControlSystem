@@ -11,6 +11,7 @@ namespace ACCSApi.Services.Interfaces
         Guid AddNec(AcSettingAdd setting);
         IACSetting Get(Guid guid);
         IEnumerable<IACSetting> GetAll();
+        IEnumerable<IACSetting> GetAllOn();
         void Delete(Guid guid);
         IACSetting Update(IACSetting setting);
 

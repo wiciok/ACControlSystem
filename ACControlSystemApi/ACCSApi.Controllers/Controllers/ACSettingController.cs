@@ -9,17 +9,15 @@ using Microsoft.AspNetCore.Mvc;
 namespace ACCSApi.Controllers.Controllers
 {
     [Produces("application/json")]
-    [Route("api/ACSetting")]
+    [Route("api/acsetting")]
     public class ACSettingController : Controller
     {
         private readonly IAuthService _authService;
-        private readonly ICodeRecordingService _codeRecordingService;
         private readonly IACSettingsService _acSettingsService;
 
-        public ACSettingController(IAuthService authService, ICodeRecordingService codeRecordingService, IACSettingsService acSettingsService)
+        public ACSettingController(IAuthService authService, IACSettingsService acSettingsService)
         {
             _authService = authService;
-            _codeRecordingService = codeRecordingService;
             _acSettingsService = acSettingsService;
         }
 
@@ -46,23 +44,16 @@ namespace ACCSApi.Controllers.Controllers
             }
         }
 
-        //todo: check if its gonna deserialize properly
-        [HttpGet("{token}/{guid}")]
-        public IActionResult GetSpecific(string token, Guid guid)
+
+        [HttpGet("{token}/allon")]
+        public IActionResult GetAllTurnOn(string token)
         {
             try
             {
                 if (_authService.CheckAuthentication(token))
                 {
-                    IACSetting result;
-                    try
-                    {
-                        result = _acSettingsService.Get(guid);
-                    }
-                    catch (ItemNotFoundException e)
-                    {
-                        return NotFound(e.Message);
-                    }
+                    var result = _acSettingsService.GetAllOn();
+
                     return Ok(result);
                 }
                 else
@@ -77,37 +68,8 @@ namespace ACCSApi.Controllers.Controllers
         }
 
 
-
-        [HttpPut("{token}")]
-        public IActionResult Put(string token, [FromBody] IACSetting setting)
-        {
-            try
-            {
-                if (_authService.CheckAuthentication(token))
-                {
-                    try
-                    {
-                        setting = _acSettingsService.Update(setting);
-                    }
-                    catch (ItemNotFoundException e)
-                    {
-                        return NotFound(e.Message);
-                    }
-                    return Ok(setting);
-                }
-                else
-                    return Unauthorized();
-            }
-
-            catch (Exception ex)
-            {
-                //todo: logging
-                return StatusCode(StatusCodes.Status500InternalServerError);
-            }
-        }
-
-        [HttpDelete("{token}")]
-        public IActionResult Delete(string token, [FromBody]Guid guid)
+        [HttpDelete("{token}/{guid}")]
+        public IActionResult Delete(string token, Guid guid)
         {
             try
             {
@@ -192,6 +154,11 @@ namespace ACCSApi.Controllers.Controllers
                     return Unauthorized();
             }
 
+            catch (ItemNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+
             catch (Exception ex)
             {
                 //todo: logging
@@ -213,6 +180,11 @@ namespace ACCSApi.Controllers.Controllers
                     return Unauthorized();
             }
 
+            catch (ItemNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+
             catch (Exception ex)
             {
                 //todo: logging
@@ -220,8 +192,8 @@ namespace ACCSApi.Controllers.Controllers
             }
         }
 
-        [HttpGet("{token}/{guid}/defaultOn")]
-        public IActionResult SetDefaultOn(string token, [FromBody]Guid guid)
+        [HttpPost("{token}/defaultOn/{guid}")]
+        public IActionResult SetDefaultOn(string token, Guid guid)
         {
             try
             {
@@ -250,8 +222,8 @@ namespace ACCSApi.Controllers.Controllers
             }
         }
 
-        [HttpGet("{token}/{guid}/defaultOff")]
-        public IActionResult SetDefaultOff(string token, [FromBody]Guid guid)
+        [HttpPost("{token}/defaultOff/{guid}")]
+        public IActionResult SetDefaultOff(string token, Guid guid)
         {
             try
             {

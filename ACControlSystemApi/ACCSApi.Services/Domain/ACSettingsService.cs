@@ -62,6 +62,11 @@ namespace ACCSApi.Services.Domain
             return _currentAcDevice.AvailableSettings;
         }
 
+        public IEnumerable<IACSetting> GetAllOn()
+        {
+            return _currentAcDevice.AvailableSettings.Where(x => x.IsTurnOff == false);
+        }
+
         public void Delete(Guid guid)
         {
             var acSetting = _currentAcDevice.AvailableSettings.SingleOrDefault(x => x.UniqueId.Equals(guid));
