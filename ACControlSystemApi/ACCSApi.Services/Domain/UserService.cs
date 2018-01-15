@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using ACCSApi.Model;
 using ACCSApi.Model.Interfaces;
@@ -24,7 +25,7 @@ namespace ACCSApi.Services.Domain
             if (userData == null)
                 throw new ArgumentNullException();
             if (_userRepository.Find(x => x.EmailAddress.Equals(userData.AuthenticationData.EmailAddress)).Any())
-                throw new ItemAlreadyExistsException();
+                throw new ItemAlreadyExistsException("User with given email address is already registered!");
 
             try
             {
@@ -47,6 +48,11 @@ namespace ACCSApi.Services.Domain
             var userId = _userRepository.Find(x => x.EmailAddress.Equals(user.EmailAddress)).Single().Id;
 
             return userId;
+        }
+
+        public IEnumerable<IUserPublic> GetAllUsers()
+        {
+            return _userRepository.GetAll().Select(user => user.PublicData);
         }
 
         public IUser FindUser(string email)

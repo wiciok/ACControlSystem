@@ -1,4 +1,7 @@
 using System;
+using System.Collections.Generic;
+using ACCSApi.Model;
+using ACCSApi.Model.Dto;
 using ACCSApi.Model.Interfaces;
 using ACCSApi.Services.Interfaces;
 using ACCSApi.Services.Models.Exceptions;
@@ -8,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace ACCSApi.Controllers.Controllers
 {
     [Produces("application/json")]
-    [Route("api/User")]
+    [Route("api/user")]
     public class UserController : Controller
     {
         private readonly IUserService _userService;
@@ -20,26 +23,15 @@ namespace ACCSApi.Controllers.Controllers
             _authService = authService;
         }
 
-        // GET: api/User/5
-        [HttpGet("{token}/{id}")]
-        public IActionResult Get(string token, int id)
+        [HttpGet("{token}/all")]
+        public IActionResult GetAll(string token)
         {
             try
             {
                 if (_authService.CheckAuthentication(token))
                 {
-                    IUser user;
-                    try
-                    {
-                        user = _userService.GetUser(id);
-                    }
-                    
-                    catch(ItemNotFoundException ex)
-                    {
-                        return NotFound(ex.Message);
-                    }
-
-                    return Ok(user.PublicData);
+                    var usersDtos = _userService.GetAllUsers();
+                    return Ok(usersDtos);
                 }
                 else
                     return Unauthorized();
@@ -50,9 +42,9 @@ namespace ACCSApi.Controllers.Controllers
             }
         }
 
-        // POST: api/User
+
         [HttpPost("{token}")]
-        public IActionResult Post(string token, [FromBody]IUserRegister userData)
+        public IActionResult Post(string token, [FromBody]UserRegister userData)
         {
             try
             {
@@ -68,7 +60,7 @@ namespace ACCSApi.Controllers.Controllers
                     {
                         return StatusCode(StatusCodes.Status409Conflict, ex.Message);
                     }
-                    catch(ArgumentException ex)
+                    catch (ArgumentException ex)
                     {
                         return BadRequest(ex.Message);
                     }
@@ -85,10 +77,9 @@ namespace ACCSApi.Controllers.Controllers
             }
         }
 
-        // PUT: api/User/5
         //edit authorization data (email, password)
         [HttpPut("{token}")]
-        public IActionResult Put(string token, [FromBody]IUserRegister userData)
+        public IActionResult Put(string token, [FromBody]UserRegister userData)
         {
             try
             {
@@ -98,11 +89,11 @@ namespace ACCSApi.Controllers.Controllers
                     {
                         _userService.UpdateUserAuthData(userData);
                     }
-                    catch(ArgumentNullException ex)
+                    catch (ArgumentNullException ex)
                     {
                         return BadRequest(ex.Message);
                     }
-                    catch(ItemNotFoundException ex)
+                    catch (ItemNotFoundException ex)
                     {
                         return NotFound(ex.Message);
                     }
@@ -120,7 +111,6 @@ namespace ACCSApi.Controllers.Controllers
         }
 
 
-        // DELETE: api/ApiWithActions/5
         [HttpDelete("{token}/{id}")]
         public IActionResult Delete(string token, int id)
         {
@@ -132,8 +122,8 @@ namespace ACCSApi.Controllers.Controllers
                     {
                         _userService.RemoveUser(id);
                     }
-                    
-                    catch(ItemNotFoundException ex)
+
+                    catch (ItemNotFoundException ex)
                     {
                         return NotFound(ex.Message);
                     }
