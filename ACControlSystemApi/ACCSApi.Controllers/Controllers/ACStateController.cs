@@ -28,7 +28,7 @@ namespace ACCSApi.Controllers.Controllers
         [HttpGet]
         public IActionResult Get()   //gets current state of ACDevice
         {
-            /*try
+            try
             {
                 var retState = _acStateControlService.GetCurrentState();
                 return Ok(retState);
@@ -43,30 +43,13 @@ namespace ACCSApi.Controllers.Controllers
             {
                 _logger.LogError(ex, "500: Internal Server Error");
                 return StatusCode(StatusCodes.Status500InternalServerError);
-            }*/
-
-            try
-            {
-                //var retState = _acStateControlService.GetCurrentState();
-                var retState = new ACState() {IsTurnOff = false};
-                return Ok(retState);
             }
 
-            catch (ACStateUndefinedException ex)
-            {
-                return NoContent();
-            }
-
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "500: Internal Server Error");
-                return StatusCode(StatusCodes.Status500InternalServerError);
-            }
         }
 
-        /*// POST: api/ACControl
+        // POST: api/ACControl
         [HttpPost("{token}")]
-        public IActionResult Post(string token, [FromBody]IACState state) //manually on/off ACDevice
+        public IActionResult Post(string token, [FromBody]ACState state) //manually on/off ACDevice
         {
             try
             {
@@ -91,36 +74,6 @@ namespace ACCSApi.Controllers.Controllers
             {
                 _logger.LogError(ex, "500: Internal Server Error");
                 return StatusCode(StatusCodes.Status500InternalServerError);
-            }
-        }*/
-        [HttpPost]
-        public IActionResult Post([FromBody]ACState state) //manually on/off ACDevice
-        {
-            try
-            {
-                //if (_authService.CheckAuthentication(token))
-                if (true)
-                {
-                    try
-                    {
-                        _acStateControlService.SetCurrentState(state);
-                    }
-
-                    catch (ArgumentException ex)
-                    {
-                        return BadRequest(ex.Message);
-                    }
-                    return Ok();
-                }
-                else
-                    return Unauthorized();
-            }
-
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "500: Internal Server Error");
-                //return StatusCode(StatusCodes.Status500InternalServerError,"test error");
-                return BadRequest(ex.Message);
             }
         }
     }
