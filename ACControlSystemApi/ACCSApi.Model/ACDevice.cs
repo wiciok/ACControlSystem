@@ -99,9 +99,12 @@ namespace ACCSApi.Model
                 {
                     _settingsList.CollectionChanged -= _settingsList_CollectionChanged;
                 }
-                _settingsList = new ObservableCollection<IACSetting>(value);
-                _settingsList.CollectionChanged += _settingsList_CollectionChanged;
-                OnChanged?.Invoke();
+                if (value != null)
+                {
+                    _settingsList = new ObservableCollection<IACSetting>(value);
+                    _settingsList.CollectionChanged += _settingsList_CollectionChanged;
+                    OnChanged?.Invoke();
+                }
             }
         }
         public IACSetting TurnOffSetting

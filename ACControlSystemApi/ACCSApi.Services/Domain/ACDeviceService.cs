@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using ACCSApi.Model;
+using ACCSApi.Model.Dto;
 using ACCSApi.Model.Interfaces;
 using ACCSApi.Repositories.Interfaces;
 using ACCSApi.Services.Interfaces;
@@ -18,7 +20,19 @@ namespace ACCSApi.Services.Domain
             _acDeviceRepository = acDeviceRepository;
         }
 
-        public int AddDevice(IACDevice device)
+        public int AddDevice(AcDeviceDto deviceDto)
+        {
+            var device = new ACDevice()
+            {
+                Id = deviceDto.Id,
+                Brand = deviceDto.Brand,
+                Model = deviceDto.Model
+            };
+
+            return AddDevice(device);
+        }
+    
+        private int AddDevice(IACDevice device)
         {
             if (device == null)
                 throw new ArgumentNullException(nameof(device));
@@ -29,7 +43,7 @@ namespace ACCSApi.Services.Domain
             return _acDeviceRepository.Add(device);
         }
 
-        public IACDevice GetDevice(int id)
+        private IACDevice GetDevice(int id)
         {
             var device = _acDeviceRepository.Find(x => x.Id.Equals(id)).SingleOrDefault();
             if (device == null)
@@ -37,13 +51,23 @@ namespace ACCSApi.Services.Domain
             return device;
         }
 
-        public IEnumerable<IACDevice> GetAllDevices()
+        public AcDeviceDto GetDeviceDto(int id)
+        {
+            return new AcDeviceDto(GetDevice(id));
+        }
+
+        private IEnumerable<IACDevice> GetAllDevices()
         {
             var devices = _acDeviceRepository.GetAll();
             if (devices == null)
                 throw new ItemNotFoundException();
 
             return devices;
+        }
+
+        public IEnumerable<AcDeviceDto> GetAllDevicesDtos()
+        {
+            return GetAllDevices().Select(x => new AcDeviceDto(x));
         }
 
         public void DeleteDevice(int id)
@@ -54,15 +78,19 @@ namespace ACCSApi.Services.Domain
             _acDeviceRepository.Delete(device);
         }
 
-        public IACDevice UpdateDevice(IACDevice device)
+        public AcDeviceDto UpdateDevice(AcDeviceDto deviceDto)
         {
-            var dev = _acDeviceRepository.Find(x => x.Id.Equals(device.Id)).SingleOrDefault();
+            var dev = _acDeviceRepository.Find(x => x.Id.Equals(deviceDto.Id)).SingleOrDefault();
             if (dev == null)
-                throw new ItemNotFoundException($"RaspberryPiDevice with id {device.Id} not found!");
+                throw new ItemNotFoundException($"AcDevice with id {deviceDto.Id} not found!");
 
-            _acDeviceRepository.Update(device);
+            dev.Brand = deviceDto.Brand;
+            dev.Model = deviceDto.Model;
+            //todo: think about updating id
 
-            return device;
+            _acDeviceRepository.Update(dev);
+
+            return deviceDto;
         }
 
         public IACDevice GetCurrentDevice()
@@ -74,7 +102,7 @@ namespace ACCSApi.Services.Domain
 
             if (_currentDevice == null)
             {
-                //throw new ItemNotFoundException("Current device not set!");
+                //throw new ItemNotFoundException("Current deviceDto not set!");
                 return _currentDevice;
             }
                
@@ -82,13 +110,19 @@ namespace ACCSApi.Services.Domain
             return _currentDevice;
         }
 
-        public IACDevice SetCurrentDevice(int id)
+        public AcDeviceDto GetCurrentDeviceDto()
+        {
+            var currentDevice = GetCurrentDevice();
+            return currentDevice != null ? new AcDeviceDto(currentDevice) : null;
+        }
+
+        public AcDeviceDto SetCurrentDevice(int id)
         {
             var newDevice = _acDeviceRepository.Find(x => x.Id.Equals(id)).SingleOrDefault();
             _acDeviceRepository.CurrentDevice = newDevice ?? throw new ItemNotFoundException($"AcDevice with id {id} not found!");
             _currentDevice.OnChanged -= _currentDevice_OnChanged;
             _currentDevice = newDevice;
-            return _currentDevice;
+            return new AcDeviceDto(_currentDevice);
         }
 
         private void _currentDevice_OnChanged()

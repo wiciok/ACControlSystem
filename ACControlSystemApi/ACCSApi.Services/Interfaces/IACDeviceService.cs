@@ -1,16 +1,18 @@
 ﻿using System.Collections.Generic;
+using ACCSApi.Model.Dto;
 using ACCSApi.Model.Interfaces;
 
 namespace ACCSApi.Services.Interfaces
 {
     public interface IACDeviceService
     {
-        int AddDevice(IACDevice device);
-        IACDevice GetDevice(int id);
+        int AddDevice(AcDeviceDto device);
+        AcDeviceDto GetDeviceDto(int id);
+        AcDeviceDto GetCurrentDeviceDto();
         IACDevice GetCurrentDevice();
-        IEnumerable<IACDevice> GetAllDevices();
+        IEnumerable<AcDeviceDto> GetAllDevicesDtos();
         void DeleteDevice(int id);
-        IACDevice UpdateDevice(IACDevice device);
-        IACDevice SetCurrentDevice(int id);
+        AcDeviceDto UpdateDevice(AcDeviceDto device);
+        AcDeviceDto SetCurrentDevice(int id);
     }
 }

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using ACCSApi.Model.Dto;
 using ACCSApi.Model.Interfaces;
 using ACCSApi.Services.Interfaces;
 using ACCSApi.Services.Models.Exceptions;
@@ -27,7 +29,8 @@ namespace ACCSApi.Controllers.Controllers
                 if (!_authService.CheckAuthentication(token))
                     return Unauthorized();
 
-                var retVal = _acDeviceService.GetAllDevices();
+                var retVal = _acDeviceService.GetAllDevicesDtos();
+                
                 return Ok(retVal);
             }
 
@@ -46,10 +49,10 @@ namespace ACCSApi.Controllers.Controllers
                 if (!_authService.CheckAuthentication(token))
                     return Unauthorized();
 
-                IACDevice retVal;
+                AcDeviceDto retVal;
                 try
                 {
-                    retVal = _acDeviceService.GetDevice(id);
+                    retVal = _acDeviceService.GetDeviceDto(id);
                 }
                 catch (ItemNotFoundException ex)
                 {
@@ -71,12 +74,15 @@ namespace ACCSApi.Controllers.Controllers
             try
             {
                 if (!_authService.CheckAuthentication(token))
-                    return Unauthorized();
+                   return Unauthorized();
 
-                IACDevice retVal;
+                AcDeviceDto retVal;
                 try
                 {
-                    retVal = _acDeviceService.GetCurrentDevice();
+                    retVal = _acDeviceService.GetCurrentDeviceDto();
+
+                    if(retVal==null)
+                        throw new ItemNotFoundException("Current device not set!");
                 }
                 catch (ItemNotFoundException ex)
                 {
@@ -92,8 +98,8 @@ namespace ACCSApi.Controllers.Controllers
             }
         }
 
-        [HttpPost("{token}/{id}")]
-        public IActionResult Post(string token, [FromBody]IACDevice device)
+        [HttpPost("{token}")]
+        public IActionResult Post(string token, [FromBody]AcDeviceDto device)
         {
             try
             {
@@ -119,7 +125,7 @@ namespace ACCSApi.Controllers.Controllers
         }
 
         [HttpPut("{token}")]
-        public IActionResult Put(string token, [FromBody]IACDevice device)
+        public IActionResult Put(string token, [FromBody]AcDeviceDto device)
         {
             try
             {
@@ -144,18 +150,18 @@ namespace ACCSApi.Controllers.Controllers
             }
         }
 
-        [HttpPut("{token}/currentDevice")]
-        public IActionResult PutCurrentDevice(string token, [FromBody]int id)
+        [HttpPut("{token}/current")]
+        public IActionResult PutCurrentDevice(string token, [FromBody]string id)
         {
             try
             {
                 if (!_authService.CheckAuthentication(token))
                     return Unauthorized();
 
-                IACDevice currentDevice;
+                AcDeviceDto currentDevice;
                 try
                 {
-                    currentDevice = _acDeviceService.SetCurrentDevice(id);
+                    currentDevice = _acDeviceService.SetCurrentDevice(int.Parse(id));
                 }
                 catch (ItemNotFoundException e)
                 {
