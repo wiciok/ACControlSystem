@@ -14,7 +14,7 @@ namespace ACCSApi.Repositories.Generic
     {
         private List<T> _objectsList;
         private static readonly string pathToFile = GlobalConfig.PathToKeepFilesWithData + typeof(T).Name + ".json";
-        private int _lastClassUniqueId = 1;
+        private int _lastClassUniqueId = 0;
 
         public GenericJsonFileDao()
         {
@@ -31,7 +31,7 @@ namespace ACCSApi.Repositories.Generic
         public int Add(T obj)
         {
             if (obj.Id == 0)
-                obj.Id = _lastClassUniqueId++;
+                obj.Id = ++_lastClassUniqueId;
 
             _objectsList.Add(obj);
             return obj.Id;
@@ -100,6 +100,7 @@ namespace ACCSApi.Repositories.Generic
                     var d = (IList)serializer.Deserialize(file, list.GetType());
                     _objectsList = d.Cast<T>().ToList();
                 }
+                _lastClassUniqueId = _objectsList.Select(x => x.Id).Max();
             }
             catch (FileNotFoundException e)
             {
