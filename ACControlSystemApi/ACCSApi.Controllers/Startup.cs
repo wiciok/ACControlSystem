@@ -4,7 +4,6 @@ using ACCSApi.Model;
 using ACCSApi.Repositories.Generic;
 using ACCSApi.Repositories.Models;
 using ACCSApi.Services.Domain;
-using ACCSApi.Services.Interfaces;
 using ACCSApi.Services.Models;
 using ACCSApi.Services.Utils;
 using Autofac;
@@ -13,6 +12,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
 
 namespace ACCSApi.Controllers
 {
@@ -29,26 +29,19 @@ namespace ACCSApi.Controllers
         // This method gets called by the runtime. Use this method to add services to the container.
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc();
+            services.AddMvc().AddJsonOptions(options =>
+            {
+                var settings = options.SerializerSettings;
+                settings.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
+            });
             services.AddCors();
 
             var builder = new ContainerBuilder();
             builder.Populate(services);
 
-            /*builder.RegisterGeneric(typeof(GenericBinaryFileDao<>))
-                .As(typeof(IDao<>))
-                .InstancePerDependency();
-                //.SingleInstance();*/
-
             builder.RegisterGeneric(typeof(GenericJsonFileDao<>))
                 .As(typeof(IDao<>))
                 .InstancePerDependency();
-            //.SingleInstance();
-
-
-            /*builder.RegisterAssemblyTypes(AppDomain.CurrentDomain.GetAssemblies())
-                .Where(t => t.Namespace.Equals("ACCSApi.Model.Transferable"))
-                .AsImplementedInterfaces();*/
 
             builder.RegisterType<RaspberryPiDevice>()
                 .AsImplementedInterfaces();
@@ -59,37 +52,32 @@ namespace ACCSApi.Controllers
                 .AsImplementedInterfaces()
                 .InstancePerDependency();
 
+            builder
+                .RegisterType(typeof(AuthService))
+                .AsImplementedInterfaces()
+                .SingleInstance();
+
             builder.RegisterTypes(typeof(TokenExpiringByTimeFactory), typeof(TokenExpiringByTime))
                 .AsImplementedInterfaces();
 
             builder.RegisterType<ACScheduleService>()
                 .AsImplementedInterfaces()
                 .InstancePerRequest();
-            //.SingleInstance();
 
             builder.RegisterType<IRSlingerCsharp.IRSlingerCsharp>()
                 .AsImplementedInterfaces()
-                //.InstancePerRequest();
                 .InstancePerDependency();
-                //.SingleInstance();
 
             builder.RegisterAssemblyTypes(AppDomain.CurrentDomain.GetAssemblies())
                 .Where(t => t.Name.EndsWith("Repository"))
                 .AsImplementedInterfaces()
                 .InstancePerDependency();
-            //.SingleInstance();
 
             builder.RegisterAssemblyTypes(AppDomain.CurrentDomain.GetAssemblies())
                 .Where(t => t.Name.EndsWith("Service"))
                 .AsImplementedInterfaces()
-                //.InstancePerRequest();
                 .InstancePerDependency();
-                //.SingleInstance();
 
-            builder
-                .RegisterType(typeof(IAuthService))
-                .AsImplementedInterfaces()
-                .SingleInstance();
             
             ApplicationContainer = builder.Build();
 
@@ -110,7 +98,8 @@ namespace ACCSApi.Controllers
 
             app.UseCors(
                 opt => opt
-                .WithOrigins("http://localhost:3000")
+                //.WithOrigins("http://localhost:3000")
+                .AllowAnyOrigin()
                 .AllowAnyMethod()
                 .AllowAnyHeader());
             app.UseMvc();
