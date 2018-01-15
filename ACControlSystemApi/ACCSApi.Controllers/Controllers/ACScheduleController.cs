@@ -1,5 +1,8 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using ACCSApi.Model;
+using ACCSApi.Model.Enums;
 using ACCSApi.Model.Interfaces;
 using ACCSApi.Services.Interfaces;
 using ACCSApi.Services.Models.Exceptions;
@@ -9,7 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace ACCSApi.Controllers.Controllers
 {
     [Produces("application/json")]
-    [Route("api/ACSchedule")]
+    [Route("api/acschedule")]
     public class ACScheduleController : Controller
     {
         private readonly IACScheduleService _scheduleService;
@@ -22,15 +25,14 @@ namespace ACCSApi.Controllers.Controllers
         }
 
         [HttpGet("{token}")]
-        public IActionResult Get(string token)
+        public IActionResult GetAll(string token)
         {            
             try
             {
                 if (_authService.CheckAuthentication(token))
                 {
                     var retVal = _scheduleService.GetAllSchedules();
-                    if (retVal == null || !retVal.Any())
-                        return NoContent();
+
                     return Ok(retVal);
                 }
                 return Unauthorized();
@@ -72,7 +74,7 @@ namespace ACCSApi.Controllers.Controllers
         }
 
         [HttpPost("{token}")]
-        public IActionResult Post(string token, [FromBody]IACSchedule schedule)
+        public IActionResult Post(string token, [FromBody]ACSchedule schedule)
         {
             try
             {
@@ -116,7 +118,7 @@ namespace ACCSApi.Controllers.Controllers
                 {
                     try
                     {
-                        _scheduleService.DeleteSchedule(id);
+                       _scheduleService.DeleteSchedule(id);
                     }
                     catch(ItemNotFoundException ex)
                     {
