@@ -7,6 +7,7 @@ using ACCSApi.Services.Interfaces;
 using ACCSApi.Services.Models.Exceptions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace ACCSApi.Controllers.Controllers
 {
@@ -16,11 +17,13 @@ namespace ACCSApi.Controllers.Controllers
     {
         private readonly IUserService _userService;
         private readonly IAuthService _authService;
+        private readonly ILogger<UserController> _logger;
 
-        public UserController(IUserService userService, IAuthService authService)
+        public UserController(IUserService userService, IAuthService authService, ILogger<UserController> logger)
         {
             _userService = userService;
             _authService = authService;
+            _logger = logger;
         }
 
         [HttpGet("{token}/all")]
@@ -38,6 +41,7 @@ namespace ACCSApi.Controllers.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "500: Internal Server Error");
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
@@ -72,7 +76,7 @@ namespace ACCSApi.Controllers.Controllers
 
             catch (Exception ex)
             {
-                //todo: logging
+                _logger.LogError(ex, "500: Internal Server Error");
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
@@ -105,7 +109,7 @@ namespace ACCSApi.Controllers.Controllers
             }
             catch (Exception ex)
             {
-                //todo: logging
+                _logger.LogError(ex, "500: Internal Server Error");
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
@@ -134,7 +138,7 @@ namespace ACCSApi.Controllers.Controllers
             }
             catch (Exception ex)
             {
-                //todo: logging
+                _logger.LogError(ex, "500: Internal Server Error");
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }

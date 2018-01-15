@@ -5,6 +5,7 @@ using ACCSApi.Services.Interfaces;
 using ACCSApi.Services.Models.Exceptions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace ACCSApi.Controllers.Controllers
 {
@@ -14,11 +15,13 @@ namespace ACCSApi.Controllers.Controllers
     {
         private readonly IAuthService _authService;
         private readonly IACSettingsService _acSettingsService;
+        private readonly ILogger<ACSettingController> _logger;
 
-        public ACSettingController(IAuthService authService, IACSettingsService acSettingsService)
+        public ACSettingController(IAuthService authService, IACSettingsService acSettingsService, ILogger<ACSettingController> logger)
         {
             _authService = authService;
             _acSettingsService = acSettingsService;
+            _logger = logger;
         }
 
 
@@ -39,7 +42,7 @@ namespace ACCSApi.Controllers.Controllers
 
             catch (Exception ex)
             {
-                //todo: logging
+                _logger.LogError(ex, "500: Internal Server Error");
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
@@ -62,7 +65,7 @@ namespace ACCSApi.Controllers.Controllers
 
             catch (Exception ex)
             {
-                //todo: logging
+                _logger.LogError(ex, "500: Internal Server Error");
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
@@ -91,7 +94,7 @@ namespace ACCSApi.Controllers.Controllers
 
             catch (Exception ex)
             {
-                //todo: logging
+                _logger.LogError(ex, "500: Internal Server Error");
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
@@ -113,7 +116,7 @@ namespace ACCSApi.Controllers.Controllers
             }
             catch (Exception ex)
             {
-                //todo: logging
+                _logger.LogError(ex, "500: Internal Server Error");
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
@@ -133,7 +136,7 @@ namespace ACCSApi.Controllers.Controllers
             }
             catch (Exception ex)
             {
-                //todo: logging
+                _logger.LogError(ex, "500: Internal Server Error");
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
@@ -161,7 +164,7 @@ namespace ACCSApi.Controllers.Controllers
 
             catch (Exception ex)
             {
-                //todo: logging
+                _logger.LogError(ex, "500: Internal Server Error");
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
@@ -187,7 +190,7 @@ namespace ACCSApi.Controllers.Controllers
 
             catch (Exception ex)
             {
-                //todo: logging
+                _logger.LogError(ex, "500: Internal Server Error");
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
@@ -217,7 +220,7 @@ namespace ACCSApi.Controllers.Controllers
 
             catch (Exception ex)
             {
-                //todo: logging
+                _logger.LogError(ex, "500: Internal Server Error");
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
@@ -251,7 +254,7 @@ namespace ACCSApi.Controllers.Controllers
 
             catch (Exception ex)
             {
-                //todo: logging
+                _logger.LogError(ex, "500: Internal Server Error");
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }

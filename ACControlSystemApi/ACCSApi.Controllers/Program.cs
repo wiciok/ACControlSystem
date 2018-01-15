@@ -1,6 +1,9 @@
-﻿using ACCSApi.Services.GlobalConfig;
+﻿using System;
+using System.IO;
+using ACCSApi.Services.GlobalConfig;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using NLog.Web;
 
 namespace ACCSApi.Controllers
 {
@@ -8,7 +11,20 @@ namespace ACCSApi.Controllers
     {
         public static void Main(string[] args)
         {
-            BuildWebHost(args).Run();
+            var path = Path.GetFullPath("nlog.config");
+            // NLog: setup the logger first to catch all errors
+            var logger = NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger();
+            try
+            {
+                logger.Debug("init main");
+                BuildWebHost(args).Run();
+            }
+            catch (Exception e)
+            {
+                //NLog: catch setup errors
+                logger.Error(e, "Stopped program because of exception");
+                throw;
+            }
 
             var configPersister = new GlobalConfigPersister();
             //configPersister.GenerateConfigFile();
@@ -18,6 +34,7 @@ namespace ACCSApi.Controllers
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
+                .UseNLog()
                 .Build();
     }
 }

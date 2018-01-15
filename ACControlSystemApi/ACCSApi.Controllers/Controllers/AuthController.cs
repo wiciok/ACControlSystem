@@ -4,18 +4,21 @@ using ACCSApi.Services.Interfaces;
 using ACCSApi.Services.Models.Exceptions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace ACCSApi.Controllers.Controllers
 {
     [Produces("application/json")]
-    [Route("api/Auth")]
+    [Route("api/auth")]
     public class AuthController : Controller
     {
         private readonly IAuthService _authService;
+        private readonly ILogger<AuthController> _logger;
 
-        public AuthController(IAuthService authService)
+        public AuthController(IAuthService authService, ILogger<AuthController> logger)
         {
             _authService = authService;
+            _logger = logger;
         }
 
         [HttpPost]
@@ -37,7 +40,7 @@ namespace ACCSApi.Controllers.Controllers
 
             catch (Exception ex)
             {
-                //todo: logging
+                _logger.LogError(ex, "500: Internal Server Error");
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }

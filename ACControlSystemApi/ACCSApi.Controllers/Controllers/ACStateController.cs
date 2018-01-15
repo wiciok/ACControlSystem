@@ -5,6 +5,7 @@ using ACCSApi.Services.Interfaces;
 using ACCSApi.Services.Models.Exceptions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace ACCSApi.Controllers.Controllers
 {
@@ -14,11 +15,13 @@ namespace ACCSApi.Controllers.Controllers
     {
         private readonly IACStateControlService _acStateControlService;
         private readonly IAuthService _authService;
+        private readonly ILogger<ACStateController> _logger;
 
-        public ACStateController(IACStateControlService acStateControlService, IAuthService authService)
+        public ACStateController(IACStateControlService acStateControlService, IAuthService authService, ILogger<ACStateController> logger)
         {
             _acStateControlService = acStateControlService;
             _authService = authService;
+            _logger = logger;
         }
 
         //no authorization required, device state can be accesed by anyone
@@ -38,7 +41,7 @@ namespace ACCSApi.Controllers.Controllers
 
             catch (Exception ex)
             {
-                //todo: logging
+                _logger.LogError(ex, "500: Internal Server Error");
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }*/
 
@@ -56,7 +59,7 @@ namespace ACCSApi.Controllers.Controllers
 
             catch (Exception ex)
             {
-                //todo: logging
+                _logger.LogError(ex, "500: Internal Server Error");
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
@@ -86,7 +89,7 @@ namespace ACCSApi.Controllers.Controllers
 
             catch (Exception ex)
             {
-                //todo: logging
+                _logger.LogError(ex, "500: Internal Server Error");
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }*/
@@ -115,7 +118,7 @@ namespace ACCSApi.Controllers.Controllers
 
             catch (Exception ex)
             {
-                //todo: logging
+                _logger.LogError(ex, "500: Internal Server Error");
                 //return StatusCode(StatusCodes.Status500InternalServerError,"test error");
                 return BadRequest(ex.Message);
             }
