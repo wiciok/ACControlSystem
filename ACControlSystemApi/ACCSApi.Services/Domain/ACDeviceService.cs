@@ -86,7 +86,6 @@ namespace ACCSApi.Services.Domain
 
             dev.Brand = deviceDto.Brand;
             dev.Model = deviceDto.Model;
-            //todo: think about updating id
 
             _acDeviceRepository.Update(dev);
 

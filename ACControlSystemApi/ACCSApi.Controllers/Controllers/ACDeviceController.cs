@@ -193,7 +193,7 @@ namespace ACCSApi.Controllers.Controllers
                 {
                     return BadRequest(e);
                 }
-                return Ok(); //todo: nocontent may be better
+                return NoContent();
             }
 
             catch (Exception ex)

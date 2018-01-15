@@ -6,7 +6,6 @@
 
   <ItemGroup>
     <PackageReference Include="Autofac" Version="4.6.2" />
-    <PackageReference Include="MessagePack" Version="1.7.2" />
   </ItemGroup>
 
   <ItemGroup>
