@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using ACCSApi.Model.Dto;
 using ACCSApi.Model.Interfaces;
 
 namespace ACCSApi.Services.Interfaces
@@ -9,8 +10,8 @@ namespace ACCSApi.Services.Interfaces
         IEnumerable<IUserPublic> GetAllUsers();
         IUser FindUser(string email);
         void RemoveUser(int id);
-        void UpdateUserAuthData(IUserRegister user);
+        void UpdateUserAuthData(AuthData user);
         void UpdateUserPublicData(IUserPublic userData);
-        int AddUser(IUserRegister userData);   
+        int AddUser(AuthData userData);   
     }
 }

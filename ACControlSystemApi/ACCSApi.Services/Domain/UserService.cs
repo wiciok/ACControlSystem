@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using ACCSApi.Model;
+using ACCSApi.Model.Dto;
 using ACCSApi.Model.Interfaces;
 using ACCSApi.Repositories.Interfaces;
 using ACCSApi.Services.Interfaces;
@@ -12,24 +13,22 @@ namespace ACCSApi.Services.Domain
     public class UserService : IUserService
     {
         private readonly IUserRepository _userRepository;
-        private readonly IPasswordHashingService _passHashService;
 
-        public UserService(IUserRepository userRepository, IPasswordHashingService passHashService)
+        public UserService(IUserRepository userRepository)
         {
             _userRepository = userRepository;
-            _passHashService = passHashService;
         }
 
-        public int AddUser(IUserRegister userData)
+        public int AddUser(AuthData userData)
         {
             if (userData == null)
                 throw new ArgumentNullException();
-            if (_userRepository.Find(x => x.EmailAddress.Equals(userData.AuthenticationData.EmailAddress)).Any())
+            if (_userRepository.Find(x => x.EmailAddress.Equals(userData.EmailAddress)).Any())
                 throw new ItemAlreadyExistsException("User with given email address is already registered!");
 
             try
             {
-                new System.Net.Mail.MailAddress(userData.AuthenticationData.EmailAddress);
+                new System.Net.Mail.MailAddress(userData.EmailAddress);
             }
             catch(Exception)
             {
@@ -39,8 +38,8 @@ namespace ACCSApi.Services.Domain
             IUser user = new User()
             {
                 Id = 0,
-                EmailAddress = userData.AuthenticationData.EmailAddress,
-                PasswordHash = _passHashService.CreateHash(userData.AuthenticationData.Password),
+                EmailAddress = userData.EmailAddress,
+                PasswordHash = userData.PasswordHash,
                 RegistrationTimestamp = DateTime.Now
             };
 
@@ -78,18 +77,18 @@ namespace ACCSApi.Services.Domain
             _userRepository.Delete(id);
         }
 
-        public void UpdateUserAuthData(IUserRegister userData)
+        public void UpdateUserAuthData(AuthData userData)
         {
             if (userData == null)
                 throw new ArgumentNullException("UserRegister object is null!");
 
-            var user = _userRepository.Find(x => x.EmailAddress.Equals(userData.AuthenticationData.EmailAddress)).SingleOrDefault();
+            var user = _userRepository.Find(x => x.EmailAddress.Equals(userData.EmailAddress)).SingleOrDefault();
 
             if (user == null)
                 throw new ItemNotFoundException();
 
-            user.EmailAddress = userData.AuthenticationData.EmailAddress;
-            user.PasswordHash = _passHashService.CreateHash(userData.AuthenticationData.Password);
+            user.EmailAddress = userData.EmailAddress;
+            user.PasswordHash = userData.PasswordHash;
 
             _userRepository.Update(user);
         }

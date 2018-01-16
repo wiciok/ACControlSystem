@@ -3,23 +3,23 @@ using ACCSApi.Model.Dto;
 using ACCSApi.Model.Interfaces;
 using ACCSApi.Services.Interfaces;
 using ACCSApi.Services.Models.Exceptions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
 namespace ACCSApi.Controllers.Controllers
 {
+    [Authorize(AuthenticationSchemes = "Basic")]
     [Produces("application/json")]
     [Route("api/acsetting")]
     public class ACSettingController : Controller
     {
-        private readonly IAuthService _authService;
         private readonly IACSettingsService _acSettingsService;
         private readonly ILogger<ACSettingController> _logger;
 
-        public ACSettingController(IAuthService authService, IACSettingsService acSettingsService, ILogger<ACSettingController> logger)
+        public ACSettingController(IACSettingsService acSettingsService, ILogger<ACSettingController> logger)
         {
-            _authService = authService;
             _acSettingsService = acSettingsService;
             _logger = logger;
         }
@@ -30,14 +30,9 @@ namespace ACCSApi.Controllers.Controllers
         {
             try
             {
-                if (_authService.CheckAuthentication(token))
-                {
-                    var result = _acSettingsService.GetAll();
+                var result = _acSettingsService.GetAll();
 
-                    return Ok(result);
-                }
-                else
-                    return Unauthorized();
+                return Ok(result);
             }
 
             catch (Exception ex)
@@ -53,14 +48,9 @@ namespace ACCSApi.Controllers.Controllers
         {
             try
             {
-                if (_authService.CheckAuthentication(token))
-                {
-                    var result = _acSettingsService.GetAllOn();
+                var result = _acSettingsService.GetAllOn();
 
-                    return Ok(result);
-                }
-                else
-                    return Unauthorized();
+                return Ok(result);
             }
 
             catch (Exception ex)
@@ -76,20 +66,15 @@ namespace ACCSApi.Controllers.Controllers
         {
             try
             {
-                if (_authService.CheckAuthentication(token))
+                try
                 {
-                    try
-                    {
-                        _acSettingsService.Delete(guid);
-                    }
-                    catch (ItemNotFoundException e)
-                    {
-                        return NotFound(e.Message);
-                    }
-                    return Ok(); //todo: nocontent?
+                    _acSettingsService.Delete(guid);
                 }
-                else
-                    return Unauthorized();
+                catch (ItemNotFoundException e)
+                {
+                    return NotFound(e.Message);
+                }
+                return Ok(); //todo: nocontent?
             }
 
             catch (Exception ex)
@@ -106,13 +91,8 @@ namespace ACCSApi.Controllers.Controllers
         {
             try
             {
-                if (_authService.CheckAuthentication(token))
-                {
-                    var retVal = _acSettingsService.AddNec(acSettingAdd);
-                    return Ok(retVal);
-                }
-                else
-                    return Unauthorized();
+                var retVal = _acSettingsService.AddNec(acSettingAdd);
+                return Ok(retVal);
             }
             catch (Exception ex)
             {
@@ -126,13 +106,8 @@ namespace ACCSApi.Controllers.Controllers
         {
             try
             {
-                if (_authService.CheckAuthentication(token))
-                {
-                    var retVal = _acSettingsService.AddRaw(acSettingAdd);
-                    return Ok(retVal);
-                }
-                else
-                    return Unauthorized();
+                var retVal = _acSettingsService.AddRaw(acSettingAdd);
+                return Ok(retVal);
             }
             catch (Exception ex)
             {
@@ -148,13 +123,8 @@ namespace ACCSApi.Controllers.Controllers
         {
             try
             {
-                if (_authService.CheckAuthentication(token))
-                {
-                    var result = _acSettingsService.GetDefaultOn();
-                    return Ok(result);
-                }
-                else
-                    return Unauthorized();
+                var result = _acSettingsService.GetDefaultOn();
+                return Ok(result);
             }
 
             catch (ItemNotFoundException ex)
@@ -174,13 +144,8 @@ namespace ACCSApi.Controllers.Controllers
         {
             try
             {
-                if (_authService.CheckAuthentication(token))
-                {
-                    var result = _acSettingsService.GetDefaultOff();
-                    return Ok(result);
-                }
-                else
-                    return Unauthorized();
+                var result = _acSettingsService.GetDefaultOff();
+                return Ok(result);
             }
 
             catch (ItemNotFoundException ex)
@@ -200,24 +165,20 @@ namespace ACCSApi.Controllers.Controllers
         {
             try
             {
-                if (_authService.CheckAuthentication(token))
+
+                IACSetting result;
+                try
                 {
-                    IACSetting result;
-                    try
-                    {
-                        result = _acSettingsService.SetDefaultOn(guid);
-                    }
-                    catch (ItemNotFoundException e)
-                    {
-                        return NotFound(e.Message);
-                    }
-
-                    return Ok(result);
+                    result = _acSettingsService.SetDefaultOn(guid);
                 }
-                else
-                    return Unauthorized();
-            }
+                catch (ItemNotFoundException e)
+                {
+                    return NotFound(e.Message);
+                }
 
+                return Ok(result);
+
+            }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "500: Internal Server Error");
@@ -230,26 +191,21 @@ namespace ACCSApi.Controllers.Controllers
         {
             try
             {
-                if (_authService.CheckAuthentication(token))
+                IACSetting result;
+                try
                 {
-                    IACSetting result;
-                    try
-                    {
-                        result = _acSettingsService.SetDefaultOff(guid);
-                    }
-                    catch (ItemNotFoundException e)
-                    {
-                        return NotFound(e.Message);
-                    }
-                    catch (ArgumentException e)
-                    {
-                        return BadRequest(e.Message);
-                    }
-
-                    return Ok(result);
+                    result = _acSettingsService.SetDefaultOff(guid);
                 }
-                else
-                    return Unauthorized();
+                catch (ItemNotFoundException e)
+                {
+                    return NotFound(e.Message);
+                }
+                catch (ArgumentException e)
+                {
+                    return BadRequest(e.Message);
+                }
+
+                return Ok(result);
             }
 
             catch (Exception ex)

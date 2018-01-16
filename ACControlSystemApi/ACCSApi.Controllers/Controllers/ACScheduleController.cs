@@ -6,12 +6,14 @@ using ACCSApi.Model.Enums;
 using ACCSApi.Model.Interfaces;
 using ACCSApi.Services.Interfaces;
 using ACCSApi.Services.Models.Exceptions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
 namespace ACCSApi.Controllers.Controllers
 {
+    [Authorize(AuthenticationSchemes = "Basic")]
     [Produces("application/json")]
     [Route("api/acschedule")]
     public class ACScheduleController : Controller
@@ -29,16 +31,12 @@ namespace ACCSApi.Controllers.Controllers
 
         [HttpGet("{token}")]
         public IActionResult GetAll(string token)
-        {            
+        {
             try
             {
-                if (_authService.CheckAuthentication(token))
-                {
-                    var retVal = _scheduleService.GetAllSchedules();
+                var retVal = _scheduleService.GetAllSchedules();
 
-                    return Ok(retVal);
-                }
-                return Unauthorized();
+                return Ok(retVal);
             }
 
             catch (Exception ex)
@@ -53,20 +51,16 @@ namespace ACCSApi.Controllers.Controllers
         {
             try
             {
-                if (_authService.CheckAuthentication(token))
+                IACSchedule retVal;
+                try
                 {
-                    IACSchedule retVal;
-                    try
-                    {
-                        retVal = _scheduleService.GetSchedule(id);
-                    }
-                    catch (ItemNotFoundException e)
-                    {
-                        return NotFound();
-                    }
-                    return Ok(retVal);
+                    retVal = _scheduleService.GetSchedule(id);
                 }
-                return Unauthorized();
+                catch (ItemNotFoundException e)
+                {
+                    return NotFound();
+                }
+                return Ok(retVal);
             }
 
             catch (Exception ex)
@@ -81,28 +75,23 @@ namespace ACCSApi.Controllers.Controllers
         {
             try
             {
-                if (_authService.CheckAuthentication(token))
+                int createdScheduleId;
+                try
                 {
-                    int createdScheduleId;
-                    try
-                    {
-                        createdScheduleId = _scheduleService.AddNewSchedule(schedule);
-                    }
-
-                    catch (ArgumentException ex)
-                    {
-                        return BadRequest(ex.Message);
-                    }
-
-                    catch (ACScheduleNotAddedException ex)
-                    {
-                        return StatusCode(StatusCodes.Status409Conflict, ex.Message);
-                    }
-
-                    return Ok(createdScheduleId);
+                    createdScheduleId = _scheduleService.AddNewSchedule(schedule);
                 }
-                else
-                    return Unauthorized();
+
+                catch (ArgumentException ex)
+                {
+                    return BadRequest(ex.Message);
+                }
+
+                catch (ACScheduleNotAddedException ex)
+                {
+                    return StatusCode(StatusCodes.Status409Conflict, ex.Message);
+                }
+
+                return Ok(createdScheduleId);
             }
 
             catch (Exception ex)
@@ -117,21 +106,16 @@ namespace ACCSApi.Controllers.Controllers
         {
             try
             {
-                if (_authService.CheckAuthentication(token))
+                try
                 {
-                    try
-                    {
-                       _scheduleService.DeleteSchedule(id);
-                    }
-                    catch(ItemNotFoundException ex)
-                    {
-                        return BadRequest(ex.Message);
-                    }
-
-                    return NoContent();
+                    _scheduleService.DeleteSchedule(id);
                 }
-                else
-                    return Unauthorized();
+                catch (ItemNotFoundException ex)
+                {
+                    return BadRequest(ex.Message);
+                }
+
+                return NoContent();
             }
 
             catch (Exception ex)

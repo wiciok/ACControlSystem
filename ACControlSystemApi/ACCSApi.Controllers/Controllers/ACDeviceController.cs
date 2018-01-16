@@ -4,12 +4,14 @@ using ACCSApi.Model.Dto;
 using ACCSApi.Model.Interfaces;
 using ACCSApi.Services.Interfaces;
 using ACCSApi.Services.Models.Exceptions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
 namespace ACCSApi.Controllers.Controllers
 {
+    [Authorize(AuthenticationSchemes = "Basic")]
     [Route("api/ACDevice")]
     public class ACDeviceController : Controller
     {
@@ -29,9 +31,6 @@ namespace ACCSApi.Controllers.Controllers
         {
             try
             {
-                if (!_authService.CheckAuthentication(token))
-                    return Unauthorized();
-
                 var retVal = _acDeviceService.GetAllDevicesDtos();
                 
                 return Ok(retVal);
@@ -49,9 +48,6 @@ namespace ACCSApi.Controllers.Controllers
         {
             try
             {
-                if (!_authService.CheckAuthentication(token))
-                    return Unauthorized();
-
                 AcDeviceDto retVal;
                 try
                 {
@@ -76,9 +72,6 @@ namespace ACCSApi.Controllers.Controllers
         {
             try
             {
-                if (!_authService.CheckAuthentication(token))
-                   return Unauthorized();
-
                 AcDeviceDto retVal;
                 try
                 {
@@ -105,8 +98,6 @@ namespace ACCSApi.Controllers.Controllers
         {
             try
             {
-                if (!_authService.CheckAuthentication(token))
-                    return Unauthorized();
                 int retId;
                 try
                 {
@@ -131,9 +122,6 @@ namespace ACCSApi.Controllers.Controllers
         {
             try
             {
-                if (!_authService.CheckAuthentication(token))
-                    return Unauthorized();
-
                 try
                 {
                     device = _acDeviceService.UpdateDevice(device);
@@ -157,9 +145,6 @@ namespace ACCSApi.Controllers.Controllers
         {
             try
             {
-                if (!_authService.CheckAuthentication(token))
-                    return Unauthorized();
-
                 AcDeviceDto currentDevice;
                 try
                 {
@@ -184,9 +169,6 @@ namespace ACCSApi.Controllers.Controllers
         {
             try
             {
-                if (!_authService.CheckAuthentication(token))
-                    return Unauthorized();
-
                 try
                 {
                     _acDeviceService.DeleteDevice(id);

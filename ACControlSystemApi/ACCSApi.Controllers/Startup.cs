@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
+using ACCSApi.Controllers.Utils;
 using ACCSApi.Model;
 using ACCSApi.Repositories.Generic;
+using ACCSApi.Repositories.Interfaces;
 using ACCSApi.Repositories.Models;
 using ACCSApi.Services.Domain;
 using ACCSApi.Services.Models;
@@ -34,7 +37,13 @@ namespace ACCSApi.Controllers
                 var settings = options.SerializerSettings;
                 settings.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
             });
+
+            services
+                .AddAuthentication()
+                .AddBasicAuthentication<TokenCredentialsVerifier>();
+
             services.AddCors();
+            
 
             var builder = new ContainerBuilder();
             builder.Populate(services);
@@ -102,6 +111,7 @@ namespace ACCSApi.Controllers
                 .AllowAnyOrigin()
                 .AllowAnyMethod()
                 .AllowAnyHeader());
+            app.UseAuthentication();
             app.UseMvc();
         }
     }

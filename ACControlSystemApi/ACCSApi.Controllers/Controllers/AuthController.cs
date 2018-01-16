@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.CompilerServices;
 using ACCSApi.Model.Dto;
 using ACCSApi.Services.Interfaces;
 using ACCSApi.Services.Models.Exceptions;
@@ -22,14 +23,14 @@ namespace ACCSApi.Controllers.Controllers
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody]AuthPackage auth)
+        public IActionResult Post([FromBody]AuthData auth)
         {
             try
             {
-                var result = _authService.TryAuthenticate(auth);
+                var token = _authService.TryAuthenticate(auth);
 
-                if (result != null)
-                    return Ok(result);
+                if (token != null)
+                    return Ok(token);
                 return Unauthorized();
             }
 

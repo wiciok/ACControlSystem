@@ -1,30 +1,29 @@
 using System;
 using ACCSApi.Model;
-using ACCSApi.Model.Interfaces;
 using ACCSApi.Services.Interfaces;
 using ACCSApi.Services.Models.Exceptions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
 namespace ACCSApi.Controllers.Controllers
 {
+    [Authorize(AuthenticationSchemes = "Basic")]
     [Produces("application/json")]
-    [Route("api/ACState")]
+    [Route("api/acstate")]
     public class ACStateController : Controller
     {
         private readonly IACStateControlService _acStateControlService;
-        private readonly IAuthService _authService;
         private readonly ILogger<ACStateController> _logger;
 
-        public ACStateController(IACStateControlService acStateControlService, IAuthService authService, ILogger<ACStateController> logger)
+        public ACStateController(IACStateControlService acStateControlService, ILogger<ACStateController> logger)
         {
             _acStateControlService = acStateControlService;
-            _authService = authService;
             _logger = logger;
         }
 
-        //no authorization required, device state can be accesed by anyone
+        //[AllowAnonymous]
         [HttpGet]
         public IActionResult Get()   //gets current state of ACDevice
         {
@@ -53,21 +52,16 @@ namespace ACCSApi.Controllers.Controllers
         {
             try
             {
-                if (_authService.CheckAuthentication(token))
+                try
                 {
-                    try
-                    {
-                        _acStateControlService.SetCurrentState(state);
-                    }
-
-                    catch (ArgumentException ex)
-                    {
-                        return BadRequest(ex.Message);
-                    }
-                    return Ok();
+                    _acStateControlService.SetCurrentState(state);
                 }
-                else
-                    return Unauthorized();
+
+                catch (ArgumentException ex)
+                {
+                    return BadRequest(ex.Message);
+                }
+                return Ok();
             }
 
             catch (Exception ex)
