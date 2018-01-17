@@ -11,27 +11,21 @@ using ACCSApi.Services.Models.Exceptions;
 
 namespace ACCSApi.Services.Domain
 {
-    //todo: przemyslec usuwanie scheduli ktore nie sa juz aktualne
-    //todo: przy starcie aplikacji powinno sie dodawac wszystkie schedule do wykonania
-
     public class ACScheduleService : IACScheduleService
     {
         private readonly IACScheduleRepository _scheduleRepository;
         private readonly IACStateControlService _acStateControlService;
-        private readonly IACDeviceService _acDeviceService;
         private readonly IACDevice _currentDevice;
-        private readonly IACState _turnOffState;
+        private readonly IACState _turnOffState = new ACState { IsTurnOff = true };
         private static readonly IDictionary<IACSchedule, Tuple<Timer, Timer>> SchedulesTimersDict = new Dictionary<IACSchedule, Tuple<Timer, Timer>>();
         private static bool _isFirstInstance = true;
 
-        public ACScheduleService(IACScheduleRepository scheduleRepository, IACStateControlService stateControlService, IACDeviceRepository acDeviceRepository, IACDeviceService acDeviceService)
+        public ACScheduleService(IACScheduleRepository scheduleRepository, IACStateControlService stateControlService, IACDeviceService acDeviceService)
         {
             _acStateControlService = stateControlService;
-            _acDeviceService = acDeviceService;
             _scheduleRepository = scheduleRepository;
-            _currentDevice = _acDeviceService.GetCurrentDevice();
+            _currentDevice = acDeviceService.GetCurrentDevice();
 
-            _turnOffState = new ACState { IsTurnOff = true };
             if(_isFirstInstance)
                 RegisterAllSchedulesFromRepository();
             _isFirstInstance = false;

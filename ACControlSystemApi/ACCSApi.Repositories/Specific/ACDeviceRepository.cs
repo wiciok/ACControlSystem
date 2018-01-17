@@ -71,7 +71,6 @@ namespace ACCSApi.Repositories.Specific
             isDataGenerated = true;
         }
 
-        //todo: check if interface here is not causing any problems
         public IACDevice CurrentDevice
         {
             get => this.Get(GlobalConfig.CurrentAcDeviceId);

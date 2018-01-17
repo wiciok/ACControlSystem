@@ -25,8 +25,8 @@ namespace ACCSApi.Controllers.Controllers
         }
 
 
-        [HttpGet("{token}")]
-        public IActionResult GetAll(string token)
+        [HttpGet]
+        public IActionResult GetAll()
         {
             try
             {
@@ -43,8 +43,8 @@ namespace ACCSApi.Controllers.Controllers
         }
 
 
-        [HttpGet("{token}/allon")]
-        public IActionResult GetAllTurnOn(string token)
+        [HttpGet("allon")]
+        public IActionResult GetAllTurnOn()
         {
             try
             {
@@ -61,8 +61,8 @@ namespace ACCSApi.Controllers.Controllers
         }
 
 
-        [HttpDelete("{token}/{guid}")]
-        public IActionResult Delete(string token, Guid guid)
+        [HttpDelete("{guid}")]
+        public IActionResult Delete(Guid guid)
         {
             try
             {
@@ -74,7 +74,7 @@ namespace ACCSApi.Controllers.Controllers
                 {
                     return NotFound(e.Message);
                 }
-                return Ok(); //todo: nocontent?
+                return NoContent();
             }
 
             catch (Exception ex)
@@ -86,8 +86,8 @@ namespace ACCSApi.Controllers.Controllers
 
         //registering new codes:
 
-        [HttpPost("{token}/nec")]
-        public IActionResult AddNec(string token, [FromBody] AcSettingAdd acSettingAdd)
+        [HttpPost("nec")]
+        public IActionResult AddNec([FromBody] AcSettingAdd acSettingAdd)
         {
             try
             {
@@ -101,8 +101,8 @@ namespace ACCSApi.Controllers.Controllers
             }
         }
 
-        [HttpPost("{token}/raw")]
-        public IActionResult AddRaw(string token, [FromBody] AcSettingAdd acSettingAdd)
+        [HttpPost("raw")]
+        public IActionResult AddRaw([FromBody] AcSettingAdd acSettingAdd)
         {
             try
             {
@@ -118,8 +118,8 @@ namespace ACCSApi.Controllers.Controllers
 
         //default turn on/off settings related:
 
-        [HttpGet("{token}/defaultOn")]
-        public IActionResult GetDefaultOn(string token)
+        [HttpGet("defaultOn")]
+        public IActionResult GetDefaultOn()
         {
             try
             {
@@ -139,8 +139,8 @@ namespace ACCSApi.Controllers.Controllers
             }
         }
 
-        [HttpGet("{token}/defaultOff")]
-        public IActionResult GetDefaultOff(string token)
+        [HttpGet("defaultOff")]
+        public IActionResult GetDefaultOff()
         {
             try
             {
@@ -160,8 +160,8 @@ namespace ACCSApi.Controllers.Controllers
             }
         }
 
-        [HttpPost("{token}/defaultOn/{guid}")]
-        public IActionResult SetDefaultOn(string token, Guid guid)
+        [HttpPost("defaultOn/{guid}")]
+        public IActionResult SetDefaultOn(Guid guid)
         {
             try
             {
@@ -186,8 +186,8 @@ namespace ACCSApi.Controllers.Controllers
             }
         }
 
-        [HttpPost("{token}/defaultOff/{guid}")]
-        public IActionResult SetDefaultOff(string token, Guid guid)
+        [HttpPost("defaultOff/{guid}")]
+        public IActionResult SetDefaultOff(Guid guid)
         {
             try
             {

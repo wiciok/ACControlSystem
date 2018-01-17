@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using ACCSApi.Model.Dto;
-using ACCSApi.Model.Interfaces;
 using ACCSApi.Services.Interfaces;
 using ACCSApi.Services.Models.Exceptions;
 using Microsoft.AspNetCore.Authorization;
@@ -16,18 +14,16 @@ namespace ACCSApi.Controllers.Controllers
     public class ACDeviceController : Controller
     {
         private readonly IACDeviceService _acDeviceService;
-        private readonly IAuthService _authService;
         private readonly ILogger<ACDeviceController> _logger;
 
-        public ACDeviceController(IACDeviceService acDeviceService, IAuthService authService, ILogger<ACDeviceController> logger)
+        public ACDeviceController(IACDeviceService acDeviceService, ILogger<ACDeviceController> logger)
         {
             _acDeviceService = acDeviceService;
-            _authService = authService;
             _logger = logger;
         }
 
-        [HttpGet("{token}/all")]
-        public IActionResult GetAll(string token)
+        [HttpGet("all")]
+        public IActionResult GetAll()
         {
             try
             {
@@ -43,8 +39,8 @@ namespace ACCSApi.Controllers.Controllers
             }
         }
 
-        [HttpGet("{token}/{id}")]
-        public IActionResult Get(string token, int id)
+        [HttpGet("{id}")]
+        public IActionResult Get(int id)
         {
             try
             {
@@ -67,8 +63,8 @@ namespace ACCSApi.Controllers.Controllers
             }
         }
 
-        [HttpGet("{token}/current")]
-        public IActionResult GetCurrentDevice(string token)
+        [HttpGet("current")]
+        public IActionResult GetCurrentDevice()
         {
             try
             {
@@ -93,8 +89,8 @@ namespace ACCSApi.Controllers.Controllers
             }
         }
 
-        [HttpPost("{token}")]
-        public IActionResult Post(string token, [FromBody]AcDeviceDto device)
+        [HttpPost]
+        public IActionResult Post([FromBody]AcDeviceDto device)
         {
             try
             {
@@ -117,8 +113,8 @@ namespace ACCSApi.Controllers.Controllers
             }
         }
 
-        [HttpPut("{token}")]
-        public IActionResult Put(string token, [FromBody]AcDeviceDto device)
+        [HttpPut]
+        public IActionResult Put([FromBody]AcDeviceDto device)
         {
             try
             {
@@ -140,8 +136,8 @@ namespace ACCSApi.Controllers.Controllers
             }
         }
 
-        [HttpPut("{token}/current")]
-        public IActionResult PutCurrentDevice(string token, [FromBody]string id)
+        [HttpPut("current")]
+        public IActionResult PutCurrentDevice([FromBody]string id)
         {
             try
             {
@@ -164,8 +160,8 @@ namespace ACCSApi.Controllers.Controllers
             }
         }
 
-        [HttpDelete("{token}/{id}")]
-        public IActionResult Delete(string token, int id)
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
         {
             try
             {

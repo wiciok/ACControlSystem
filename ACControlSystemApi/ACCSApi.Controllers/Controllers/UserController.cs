@@ -26,8 +26,8 @@ namespace ACCSApi.Controllers.Controllers
             _logger = logger;
         }
 
-        [HttpGet("{token}/all")]
-        public IActionResult GetAll(string token)
+        [HttpGet("all")]
+        public IActionResult GetAll()
         {
             try
             {
@@ -42,8 +42,8 @@ namespace ACCSApi.Controllers.Controllers
         }
 
 
-        [HttpPost("{token}")]
-        public IActionResult Post(string token, [FromBody]AuthData userData)
+        [HttpPost]
+        public IActionResult Post([FromBody]AuthData userData)
         {
             try
             {
@@ -72,8 +72,8 @@ namespace ACCSApi.Controllers.Controllers
         }
 
         //edit authorization data (email, password)
-        [HttpPut("{token}")]
-        public IActionResult Put(string token, [FromBody]AuthData userData)
+        [HttpPut]
+        public IActionResult Put([FromBody]AuthData userData)
         {
             try
             {
@@ -100,8 +100,8 @@ namespace ACCSApi.Controllers.Controllers
         }
 
 
-        [HttpDelete("{token}/{id}")]
-        public IActionResult Delete(string token, int id)
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
         {
             try
             {

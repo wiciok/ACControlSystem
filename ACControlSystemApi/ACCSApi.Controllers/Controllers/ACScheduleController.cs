@@ -1,8 +1,5 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using ACCSApi.Model;
-using ACCSApi.Model.Enums;
 using ACCSApi.Model.Interfaces;
 using ACCSApi.Services.Interfaces;
 using ACCSApi.Services.Models.Exceptions;
@@ -19,18 +16,16 @@ namespace ACCSApi.Controllers.Controllers
     public class ACScheduleController : Controller
     {
         private readonly IACScheduleService _scheduleService;
-        private readonly IAuthService _authService;
         private readonly ILogger<ACScheduleController> _logger;
 
-        public ACScheduleController(IACScheduleService acScheduleService, IAuthService authService, ILogger<ACScheduleController> logger)
+        public ACScheduleController(IACScheduleService acScheduleService, ILogger<ACScheduleController> logger)
         {
             _scheduleService = acScheduleService;
-            _authService = authService;
             _logger = logger;
         }
 
-        [HttpGet("{token}")]
-        public IActionResult GetAll(string token)
+        [HttpGet]
+        public IActionResult GetAll()
         {
             try
             {
@@ -46,8 +41,8 @@ namespace ACCSApi.Controllers.Controllers
             }
         }
 
-        [HttpGet("{token}/{id}")]
-        public IActionResult Get(string token, int id)
+        [HttpGet("{id}")]
+        public IActionResult Get(int id)
         {
             try
             {
@@ -70,8 +65,8 @@ namespace ACCSApi.Controllers.Controllers
             }
         }
 
-        [HttpPost("{token}")]
-        public IActionResult Post(string token, [FromBody]ACSchedule schedule)
+        [HttpPost]
+        public IActionResult Post([FromBody]ACSchedule schedule)
         {
             try
             {
@@ -101,8 +96,8 @@ namespace ACCSApi.Controllers.Controllers
             }
         }
 
-        [HttpDelete("{token}/{id}")]
-        public IActionResult Delete(string token, int id)
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
         {
             try
             {

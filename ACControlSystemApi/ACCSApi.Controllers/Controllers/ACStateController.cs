@@ -23,7 +23,7 @@ namespace ACCSApi.Controllers.Controllers
             _logger = logger;
         }
 
-        //[AllowAnonymous]
+        [AllowAnonymous]
         [HttpGet]
         public IActionResult Get()   //gets current state of ACDevice
         {
@@ -47,8 +47,8 @@ namespace ACCSApi.Controllers.Controllers
         }
 
         // POST: api/ACControl
-        [HttpPost("{token}")]
-        public IActionResult Post(string token, [FromBody]ACState state) //manually on/off ACDevice
+        [HttpPost]
+        public IActionResult Post([FromBody]ACState state) //manually on/off ACDevice
         {
             try
             {
