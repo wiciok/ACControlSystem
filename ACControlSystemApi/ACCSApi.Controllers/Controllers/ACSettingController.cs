@@ -35,6 +35,12 @@ namespace ACCSApi.Controllers.Controllers
                 return Ok(result);
             }
 
+            catch (CurrentACDeviceNotSetException ex)
+            {
+                _logger.LogError(ex, "400: Bad request");
+                return BadRequest(ex);
+            }
+
             catch (Exception ex)
             {
                 _logger.LogError(ex, "500: Internal Server Error");
@@ -51,6 +57,12 @@ namespace ACCSApi.Controllers.Controllers
                 var result = _acSettingsService.GetAllOn();
 
                 return Ok(result);
+            }
+
+            catch (CurrentACDeviceNotSetException ex)
+            {
+                _logger.LogError(ex, "400: Bad request");
+                return BadRequest(ex);
             }
 
             catch (Exception ex)
@@ -77,6 +89,12 @@ namespace ACCSApi.Controllers.Controllers
                 return NoContent();
             }
 
+            catch (CurrentACDeviceNotSetException ex)
+            {
+                _logger.LogError(ex, "400: Bad request");
+                return BadRequest(ex);
+            }
+
             catch (Exception ex)
             {
                 _logger.LogError(ex, "500: Internal Server Error");
@@ -94,6 +112,13 @@ namespace ACCSApi.Controllers.Controllers
                 var retVal = _acSettingsService.AddNec(acSettingAdd);
                 return Ok(retVal);
             }
+
+            catch (CurrentACDeviceNotSetException ex)
+            {
+                _logger.LogError(ex, "400: Bad request");
+                return BadRequest(ex);
+            }
+
             catch (Exception ex)
             {
                 _logger.LogError(ex, "500: Internal Server Error");
@@ -109,6 +134,13 @@ namespace ACCSApi.Controllers.Controllers
                 var retVal = _acSettingsService.AddRaw(acSettingAdd);
                 return Ok(retVal);
             }
+
+            catch (CurrentACDeviceNotSetException ex)
+            {
+                _logger.LogError(ex, "400: Bad request");
+                return BadRequest(ex);
+            }
+
             catch (Exception ex)
             {
                 _logger.LogError(ex, "500: Internal Server Error");
@@ -132,6 +164,12 @@ namespace ACCSApi.Controllers.Controllers
                 return NotFound(ex.Message);
             }
 
+            catch (CurrentACDeviceNotSetException ex)
+            {
+                _logger.LogError(ex, "400: Bad request");
+                return BadRequest(ex);
+            }
+
             catch (Exception ex)
             {
                 _logger.LogError(ex, "500: Internal Server Error");
@@ -153,6 +191,12 @@ namespace ACCSApi.Controllers.Controllers
                 return NotFound(ex.Message);
             }
 
+            catch (CurrentACDeviceNotSetException ex)
+            {
+                _logger.LogError(ex, "400: Bad request");
+                return BadRequest(ex);
+            }
+
             catch (Exception ex)
             {
                 _logger.LogError(ex, "500: Internal Server Error");
@@ -171,6 +215,13 @@ namespace ACCSApi.Controllers.Controllers
                 {
                     result = _acSettingsService.SetDefaultOn(guid);
                 }
+
+                catch (CurrentACDeviceNotSetException ex)
+                {
+                    _logger.LogError(ex, "400: Bad request");
+                    return BadRequest(ex);
+                }
+
                 catch (ItemNotFoundException e)
                 {
                     return NotFound(e.Message);
@@ -200,6 +251,13 @@ namespace ACCSApi.Controllers.Controllers
                 {
                     return NotFound(e.Message);
                 }
+
+                catch (CurrentACDeviceNotSetException ex)
+                {
+                    _logger.LogError(ex, "400: Bad request");
+                    return BadRequest(ex);
+                }
+
                 catch (ArgumentException e)
                 {
                     return BadRequest(e.Message);

@@ -45,7 +45,7 @@ namespace ACCSApi.Repositories.Specific
             );
 
 
-            Add(new ACDevice[]
+            Add(new IACDevice[]
             {
                 new ACDevice()
                 {
@@ -62,7 +62,7 @@ namespace ACCSApi.Repositories.Specific
                         zeroPulseDuration: 410,
                         zeroGapDuration: 410,
                         sendTrailingPulse: true),
-                    AvailableSettings = new ACSetting[]{turnOff,defaultTurnOn},
+                    AvailableSettings = new IACSetting[]{turnOff,defaultTurnOn},
                     DefaultTurnOnSetting = defaultTurnOn,
                     TurnOffSetting = turnOff
                 }

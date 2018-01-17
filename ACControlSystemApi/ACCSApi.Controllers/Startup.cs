@@ -1,12 +1,8 @@
 ﻿using System;
 using System.Linq;
-using System.Threading.Tasks;
 using ACCSApi.Controllers.Utils;
-using ACCSApi.Model;
 using ACCSApi.Repositories.Generic;
-using ACCSApi.Repositories.Interfaces;
 using ACCSApi.Repositories.Models;
-using ACCSApi.Services.Domain;
 using ACCSApi.Services.Models;
 using ACCSApi.Services.Utils;
 using Autofac;
@@ -48,18 +44,14 @@ namespace ACCSApi.Controllers
             var builder = new ContainerBuilder();
             builder.Populate(services);
 
-            builder.RegisterGeneric(typeof(GenericJsonFileDao<>))
-                .As(typeof(IDao<>))
-                .InstancePerDependency();
+            //if not specified - InstanceForDependency() is default
 
-            builder.RegisterType<RaspberryPiDevice>()
-                .AsImplementedInterfaces();
+            builder.RegisterGeneric(typeof(GenericJsonFileDao<>))
+                .As(typeof(IDao<>));
 
             var modelAssembly = AppDomain.CurrentDomain.GetAssemblies().Single(x => x.FullName.StartsWith("ACCSApi.Model"));
-
             builder.RegisterAssemblyTypes(modelAssembly)
-                .AsImplementedInterfaces()
-                .InstancePerDependency();
+                .AsImplementedInterfaces();
 
             builder
                 .RegisterType(typeof(AuthService))
@@ -69,26 +61,19 @@ namespace ACCSApi.Controllers
             builder.RegisterTypes(typeof(TokenExpiringByTimeFactory), typeof(TokenExpiringByTime))
                 .AsImplementedInterfaces();
 
-            builder.RegisterType<ACScheduleService>()
-                .AsImplementedInterfaces()
-                .InstancePerRequest();
-
             builder.RegisterType<IRSlingerCsharp.IRSlingerCsharp>()
-                .AsImplementedInterfaces()
-                .InstancePerDependency();
+                .AsImplementedInterfaces();
 
             builder.RegisterAssemblyTypes(AppDomain.CurrentDomain.GetAssemblies())
                 .Where(t => t.Name.EndsWith("Repository"))
-                .AsImplementedInterfaces()
-                .InstancePerDependency();
+                .AsImplementedInterfaces();
 
             builder.RegisterAssemblyTypes(AppDomain.CurrentDomain.GetAssemblies())
                 .Where(t => t.Name.EndsWith("Service"))
-                .AsImplementedInterfaces()
-                .InstancePerDependency();
+                .AsImplementedInterfaces();
 
-            
             ApplicationContainer = builder.Build();
+
 
             GlobalConfig.Container = ApplicationContainer; //todo: do something with this shitty workaround
 

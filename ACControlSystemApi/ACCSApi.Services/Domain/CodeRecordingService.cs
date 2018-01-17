@@ -6,6 +6,7 @@ using System.Text;
 using ACCSApi.Model;
 using ACCSApi.Model.Interfaces;
 using ACCSApi.Services.Interfaces;
+using ACCSApi.Services.Models.Exceptions;
 using Unosquare.RaspberryIO;
 using Unosquare.RaspberryIO.Gpio;
 
@@ -15,20 +16,18 @@ namespace ACCSApi.Services.Domain
     {
         private const int ShortAndLongPulseBoundary = 1000;
         private const int MaxAcCommandLength = 10000;
-        private readonly IACDeviceService _acDeviceService;
-        private readonly IHostDeviceService _hostDeviceService;
         private readonly IACDevice _currentAcDevice;
         private readonly GpioPin _inputPin;
 
         public CodeRecordingService(IACDeviceService acDeviceService, IHostDeviceService hostDeviceService)
         {
-            _acDeviceService = acDeviceService;
-            _hostDeviceService = hostDeviceService;
-            _currentAcDevice = _acDeviceService.GetCurrentDevice();
-            var currentRaspberryPiDevice = _hostDeviceService.GetCurrentDevice();
+            _currentAcDevice = acDeviceService.GetCurrentDevice();
+            var currentRaspberryPiDevice = hostDeviceService.GetCurrentDevice();
 
-            _inputPin = Pi.Gpio.Pins.Single(x => x.HeaderPinNumber == currentRaspberryPiDevice.BoardInPin);
-            _inputPin.PinMode = GpioPinDriveMode.Input;
+            //todo: restore this after deploy to raspberry!
+            //temporary!!!
+            //_inputPin = Pi.Gpio.Pins.Single(x => x.HeaderPinNumber == currentRaspberryPiDevice.BoardInPin);
+            //_inputPin.PinMode = GpioPinDriveMode.Input;
         }
 
         private List<Tuple<byte, double>> RecordCode()
@@ -65,6 +64,9 @@ namespace ACCSApi.Services.Domain
 
         public void ResetCurrentAcDeviceNecCodeSettings()
         {
+            if (_currentAcDevice == null)
+                throw new CurrentACDeviceNotSetException();
+
             _currentAcDevice.NecCodeSettings = null;
         }
 
@@ -78,6 +80,9 @@ namespace ACCSApi.Services.Domain
 
         public NecCode RecordNecCode()
         {
+            if (_currentAcDevice == null)
+                throw new CurrentACDeviceNotSetException();
+
             var necCode = new NecCode();
             var pulseList = RecordCode();
 
@@ -99,8 +104,6 @@ namespace ACCSApi.Services.Domain
 
         private NecCodeSettings RegisterNecCodeSettings(List<Tuple<byte, double>> pulseList)
         {
-            var necLeadingPulseDuration = (int)pulseList[0].Item2;
-            var necLeadingGapDuration = (int)pulseList[1].Item2;
             bool necSendTrailingPulse;
 
             pulseList.RemoveRange(0, 2);
@@ -143,11 +146,13 @@ namespace ACCSApi.Services.Domain
             var necOnePulseDuration = averageShortPulse;
             var necZeroPulseDuration = averageShortPulse;
             var necZeroGapDuration = averageShortPulse;
+            var necLeadingPulseDuration = (int)pulseList[0].Item2;
+            var necLeadingGapDuration = (int)pulseList[1].Item2;
 
             var necCodeSettings = new NecCodeSettings
             (
-                leadingPulseDuration: (int)pulseList[0].Item2,
-                leadingGapDuration: (int)pulseList[1].Item2,
+                leadingPulseDuration: necLeadingPulseDuration,
+                leadingGapDuration: necLeadingGapDuration,
                 onePulseDuration: necOnePulseDuration,
                 oneGapDuration: necOneGapDuration,
                 zeroPulseDuration: necZeroPulseDuration,
@@ -172,16 +177,6 @@ namespace ACCSApi.Services.Domain
                 codeBuilder.Append(code[i + 1] >= threshold ? 1 : 0);
             }
             return codeBuilder.ToString();
-        }
-
-        private static string ConvertByteArrayToString(byte[] array)
-        {
-            var strBuilder = new StringBuilder();
-            foreach (var character in array)
-            {
-                strBuilder.Append(character);
-            }
-            return strBuilder.ToString();
         }
     }
 }

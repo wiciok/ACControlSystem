@@ -15,7 +15,7 @@ namespace ACCSApi.Services.Domain
     {
         private readonly IACScheduleRepository _scheduleRepository;
         private readonly IACStateControlService _acStateControlService;
-        private readonly IACDevice _currentDevice;
+        private readonly IACDevice _currentAcDevice;
         private readonly IACState _turnOffState = new ACState { IsTurnOff = true };
         private static readonly IDictionary<IACSchedule, Tuple<Timer, Timer>> SchedulesTimersDict = new Dictionary<IACSchedule, Tuple<Timer, Timer>>();
         private static bool _isFirstInstance = true;
@@ -24,7 +24,7 @@ namespace ACCSApi.Services.Domain
         {
             _acStateControlService = stateControlService;
             _scheduleRepository = scheduleRepository;
-            _currentDevice = acDeviceService.GetCurrentDevice();
+            _currentAcDevice = acDeviceService.GetCurrentDevice();
 
             if(_isFirstInstance)
                 RegisterAllSchedulesFromRepository();
@@ -79,9 +79,12 @@ namespace ACCSApi.Services.Domain
 
         private void RegisterSchedule(IACSchedule schedule)
         {
+            if (_currentAcDevice == null)
+                throw new CurrentACDeviceNotSetException();
+
             VerifySchedule(schedule);
 
-            var acSetting =_currentDevice.AvailableSettings.Single(x => x.UniqueId.Equals(schedule.ACSettingGuid));
+            var acSetting =_currentAcDevice.AvailableSettings.Single(x => x.UniqueId.Equals(schedule.ACSettingGuid));
 
             var timerCallback = new TimerCallback(ChangeACSettings);
             TimeSpan period;
@@ -187,7 +190,7 @@ namespace ACCSApi.Services.Domain
 
                     if (startTimeDayOfWeek.Equals(DateTime.Now.DayOfWeek))
                     {
-                        var acSetting = _currentDevice.AvailableSettings.Single(x => x.UniqueId.Equals(schedule.ACSettingGuid));
+                        var acSetting = _currentAcDevice.AvailableSettings.Single(x => x.UniqueId.Equals(schedule.ACSettingGuid));
                         _acStateControlService.ChangeACSetting(acSetting);
                     }
                        

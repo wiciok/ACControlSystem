@@ -23,6 +23,9 @@ namespace ACCSApi.Services.Domain
         //todo: think about changing it to one, chosen by some king of entry in globalSettings
         public Guid AddRaw(AcSettingAdd settingDto)
         {
+            if (_currentAcDevice == null)
+                throw new CurrentACDeviceNotSetException();
+
             var code = _codeRecordingService.RecordRawCode();
 
             var acSetting = new ACSetting
@@ -37,6 +40,9 @@ namespace ACCSApi.Services.Domain
 
         public Guid AddNec(AcSettingAdd settingDto)
         {
+            if (_currentAcDevice == null)
+                throw new CurrentACDeviceNotSetException();
+
             var code = _codeRecordingService.RecordNecCode();
 
             var acSetting = new ACSetting
@@ -51,6 +57,9 @@ namespace ACCSApi.Services.Domain
 
         public IACSetting Get(Guid guid)
         {
+            if (_currentAcDevice == null)
+                throw new CurrentACDeviceNotSetException();
+
             var acSetting = _currentAcDevice.AvailableSettings.SingleOrDefault(x => x.UniqueId.Equals(guid));
             if (acSetting == null)
                 throw new ItemNotFoundException("ACSetting with guid {guid} not found in current ACDevice available settings list");
@@ -59,16 +68,25 @@ namespace ACCSApi.Services.Domain
 
         public IEnumerable<IACSetting> GetAll()
         {
+            if (_currentAcDevice == null)
+                throw new CurrentACDeviceNotSetException();
+
             return _currentAcDevice.AvailableSettings;
         }
 
         public IEnumerable<IACSetting> GetAllOn()
         {
+            if (_currentAcDevice == null)
+                throw new CurrentACDeviceNotSetException();
+
             return _currentAcDevice.AvailableSettings.Where(x => x.IsTurnOff == false);
         }
 
         public void Delete(Guid guid)
         {
+            if (_currentAcDevice == null)
+                throw new CurrentACDeviceNotSetException();
+
             var acSetting = _currentAcDevice.AvailableSettings.SingleOrDefault(x => x.UniqueId.Equals(guid));
             if (acSetting == null)
                 throw new ItemNotFoundException("Cannot remove - ACSetting with guid {guid} not found in current ACDevice available settings list");
@@ -77,6 +95,9 @@ namespace ACCSApi.Services.Domain
 
         public IACSetting Update(IACSetting setting)
         {
+            if (_currentAcDevice == null)
+                throw new CurrentACDeviceNotSetException();
+
             var acSetting = _currentAcDevice.AvailableSettings.SingleOrDefault(x => x.UniqueId.Equals(setting.UniqueId));
             if (acSetting == null)
                 throw new ItemNotFoundException("Cannot update - ACSetting with guid {guid} not found in current ACDevice available settings list");
@@ -88,6 +109,9 @@ namespace ACCSApi.Services.Domain
 
         public IACSetting GetDefaultOn()
         {
+            if (_currentAcDevice == null)
+                throw new CurrentACDeviceNotSetException();
+
             var defOn = _currentAcDevice.DefaultTurnOnSetting;
             if (defOn == null)
                 throw new ItemNotFoundException("Default On Setting not set in ACDevice!");
@@ -96,6 +120,9 @@ namespace ACCSApi.Services.Domain
 
         public IACSetting GetDefaultOff()
         {
+            if (_currentAcDevice == null)
+                throw new CurrentACDeviceNotSetException();
+
             var defOff = _currentAcDevice.TurnOffSetting;
             if (defOff == null)
                 throw new ItemNotFoundException("Default Off Setting not set in ACDevice!");
@@ -104,6 +131,9 @@ namespace ACCSApi.Services.Domain
 
         public IACSetting SetDefaultOn(Guid defaultOnGuid)
         {
+            if (_currentAcDevice == null)
+                throw new CurrentACDeviceNotSetException();
+
             var defaultOn = _currentAcDevice.AvailableSettings.SingleOrDefault(x => x.UniqueId.Equals(defaultOnGuid));
             _currentAcDevice.DefaultTurnOnSetting = defaultOn ?? throw new ItemNotFoundException($"ACSetting with specified Guid {defaultOnGuid} doesnt exist and therefore cannot be set as default!");
             return defaultOn;
@@ -111,6 +141,9 @@ namespace ACCSApi.Services.Domain
 
         public IACSetting SetDefaultOff(Guid defaultOffGuid)
         {
+            if (_currentAcDevice == null)
+                throw new CurrentACDeviceNotSetException();
+
             var defaultOff = _currentAcDevice.AvailableSettings.SingleOrDefault(x => x.UniqueId.Equals(defaultOffGuid));
             _currentAcDevice.TurnOffSetting = defaultOff ?? throw new ItemNotFoundException($"ACSetting with specified Guid {defaultOffGuid} doesnt exist and therefore cannot be set as default!");
             return defaultOff;

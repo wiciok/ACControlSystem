@@ -1,4 +1,5 @@
 ﻿using System;
+using ACCSApi.Controllers.Utils;
 using ACCSApi.Model.Dto;
 using ACCSApi.Services.Interfaces;
 using ACCSApi.Services.Models.Exceptions;
@@ -10,7 +11,7 @@ using Microsoft.Extensions.Logging;
 namespace ACCSApi.Controllers.Controllers
 {
     [Authorize(AuthenticationSchemes = "Basic")]
-    [Route("api/ACDevice")]
+    [Route("api/acdevice")]
     public class ACDeviceController : Controller
     {
         private readonly IACDeviceService _acDeviceService;
@@ -28,7 +29,7 @@ namespace ACCSApi.Controllers.Controllers
             try
             {
                 var retVal = _acDeviceService.GetAllDevicesDtos();
-                
+
                 return Ok(retVal);
             }
 
@@ -72,7 +73,7 @@ namespace ACCSApi.Controllers.Controllers
                 try
                 {
                     retVal = _acDeviceService.GetCurrentDeviceDto();
-                    if(retVal==null)
+                    if (retVal == null)
                         throw new ItemNotFoundException("Current device not set!");
                 }
                 catch (ItemNotFoundException ex)

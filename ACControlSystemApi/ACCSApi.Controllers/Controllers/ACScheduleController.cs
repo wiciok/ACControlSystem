@@ -34,6 +34,12 @@ namespace ACCSApi.Controllers.Controllers
                 return Ok(retVal);
             }
 
+            catch (CurrentACDeviceNotSetException ex)
+            {
+                _logger.LogError(ex, "400: Bad request");
+                return BadRequest(ex);
+            }
+
             catch (Exception ex)
             {
                 _logger.LogError(ex, "500: Internal Server Error");
@@ -51,6 +57,13 @@ namespace ACCSApi.Controllers.Controllers
                 {
                     retVal = _scheduleService.GetSchedule(id);
                 }
+
+                catch (CurrentACDeviceNotSetException ex)
+                {
+                    _logger.LogError(ex, "400: Bad request");
+                    return BadRequest(ex);
+                }
+
                 catch (ItemNotFoundException e)
                 {
                     return NotFound();
@@ -81,6 +94,12 @@ namespace ACCSApi.Controllers.Controllers
                     return BadRequest(ex.Message);
                 }
 
+                catch (CurrentACDeviceNotSetException ex)
+                {
+                    _logger.LogError(ex, "400: Bad request");
+                    return BadRequest(ex);
+                }
+
                 catch (ACScheduleNotAddedException ex)
                 {
                     return StatusCode(StatusCodes.Status409Conflict, ex.Message);
@@ -108,6 +127,12 @@ namespace ACCSApi.Controllers.Controllers
                 catch (ItemNotFoundException ex)
                 {
                     return BadRequest(ex.Message);
+                }
+
+                catch (CurrentACDeviceNotSetException ex)
+                {
+                    _logger.LogError(ex, "400: Bad request");
+                    return BadRequest(ex);
                 }
 
                 return NoContent();

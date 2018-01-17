@@ -2,6 +2,7 @@
 using ACCSApi.Model;
 using ACCSApi.Model.Interfaces;
 using ACCSApi.Services.Interfaces;
+using ACCSApi.Services.Models.Exceptions;
 using IRSlingerCsharp;
 
 namespace ACCSApi.Services.Domain
@@ -10,7 +11,7 @@ namespace ACCSApi.Services.Domain
     {
         private readonly IIRSlingerCsharp _irService;
         private readonly IRaspberryPiDevice _hostDevice;
-        private readonly IACDevice _acDevice;
+        private readonly IACDevice _currentAcDevice;
         private readonly IACDeviceService _acDeviceService;
         private readonly IHostDeviceService _hostDeviceService;
 
@@ -21,28 +22,31 @@ namespace ACCSApi.Services.Domain
             _acDeviceService = acDeviceService;
             _hostDeviceService = hostDeviceService;
 
-            _acDevice = _acDeviceService.GetCurrentDevice();
+            _currentAcDevice = _acDeviceService.GetCurrentDevice();
             _hostDevice = _hostDeviceService.GetCurrentDevice();
         }
 
         public void SendMessage(ICode code)
         {
+            if (_currentAcDevice == null)
+                throw new CurrentACDeviceNotSetException();
+
             switch (code)
             {
                 case NecCode nc:
-                    if (_acDevice.NecCodeSettingsSaved)
+                    if (_currentAcDevice.NecCodeSettingsSaved)
                     {
                         _irService.SendNecMsg
                         (_hostDevice.BroadcomOutPin,
-                            _acDevice.ModulationFrequencyInHz,
-                            _acDevice.DutyCycle,
-                            _acDevice.NecCodeSettings.LeadingPulseDuration,
-                            _acDevice.NecCodeSettings.LeadingGapDuration,
-                            _acDevice.NecCodeSettings.OnePulseDuration,
-                            _acDevice.NecCodeSettings.ZeroPulseDuration,
-                            _acDevice.NecCodeSettings.OneGapDuration,
-                            _acDevice.NecCodeSettings.ZeroGapDuration,
-                            _acDevice.NecCodeSettings.SendTrailingPulse,
+                            _currentAcDevice.ModulationFrequencyInHz,
+                            _currentAcDevice.DutyCycle,
+                            _currentAcDevice.NecCodeSettings.LeadingPulseDuration,
+                            _currentAcDevice.NecCodeSettings.LeadingGapDuration,
+                            _currentAcDevice.NecCodeSettings.OnePulseDuration,
+                            _currentAcDevice.NecCodeSettings.ZeroPulseDuration,
+                            _currentAcDevice.NecCodeSettings.OneGapDuration,
+                            _currentAcDevice.NecCodeSettings.ZeroGapDuration,
+                            _currentAcDevice.NecCodeSettings.SendTrailingPulse,
                             nc.Code);
                     }
                     else
@@ -53,8 +57,8 @@ namespace ACCSApi.Services.Domain
                 case RawCode rc:
                     _irService.SendRawMsg
                     (_hostDevice.BroadcomOutPin,
-                        _acDevice.ModulationFrequencyInHz,
-                        _acDevice.DutyCycle,
+                        _currentAcDevice.ModulationFrequencyInHz,
+                        _currentAcDevice.DutyCycle,
                         rc.Code);
                     break;
                 default:

@@ -101,7 +101,6 @@ namespace ACCSApi.Services.Domain
 
             if (_currentDevice == null)
             {
-                //throw new ItemNotFoundException("Current deviceDto not set!");
                 return _currentDevice;
             }
                
