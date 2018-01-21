@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { NavLink } from 'react-router-dom';
+import { sha256 } from 'js-sha256';
 import EmailInput from '../content-components/user-manage/EmailInput';
 import PasswordInput from '../content-components/user-manage/PasswordInput';
 import ErrorMessageComponent from '../ErrorMessageComponent';
@@ -50,7 +51,7 @@ class LoginPage extends Component {
         let endpointAddress = `${window.apiAddress}/auth`;
         let authObj = {
             EmailAddress: this.email,
-            Password: this.password
+            PasswordHash: sha256(this.password)
         };
 
         let fetchObj = {
@@ -61,7 +62,7 @@ class LoginPage extends Component {
 
         fetch(endpointAddress, fetchObj).then(response => {
             if (response.status === 200) {
-                this.props.onLogin(this.email, this.password);
+                this.props.onLogin(this.email, sha256(this.password));
             }
             else if (response.status === 401) {
                 let error = new Error("Błąd logowania! Błędne hasło!");

@@ -22,7 +22,7 @@ class App extends Component {
 
         this.state = {
             userEmail: null,
-            userPassword: null
+            userPasswordHash: null
         };
     }
 
@@ -35,12 +35,12 @@ class App extends Component {
 
         this.setState({
             userEmail: cookies.get('userEmail') || null,
-            userPassword: cookies.get('userPassword') || null
+            userPasswordHash: cookies.get('userPasswordHash') || null
         });
     }
 
 
-    onLogin(email, pass) {
+    onLogin(email, passHash) {
         const { cookies } = this.props;
 
         let cookieOptions = {
@@ -49,11 +49,11 @@ class App extends Component {
         }
 
         cookies.set('userEmail', email, cookieOptions);
-        cookies.set('userPassword', pass, cookieOptions);
+        cookies.set('userPasswordHash', passHash, cookieOptions);
 
         this.setState({
             userEmail: email,
-            userPassword: pass
+            userPasswordHash: passHash
         });
     }
 
@@ -61,17 +61,17 @@ class App extends Component {
         const { cookies } = this.props;
 
         cookies.remove('userEmail');
-        cookies.remove('userPassword');
+        cookies.remove('userPasswordHash');
 
         this.setState({
             userEmail: null,
-            userPassword: null
+            userPasswordHash: null
         });
     }
 
     render() {
         let content;
-        if (!this.state.userEmail && !this.state.userPassword)
+        if (!this.state.userEmail && !this.state.userPasswordHash)
             content = <LoginPage onLogin={this.onLogin} />;
         else
             content =

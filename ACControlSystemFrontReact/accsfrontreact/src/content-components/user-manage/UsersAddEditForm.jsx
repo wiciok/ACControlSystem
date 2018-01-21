@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import EmailInput from './EmailInput';
+import { sha256 } from 'js-sha256';
 import 'bulma/css/bulma.css';
 import 'font-awesome/css/font-awesome.min.css'
 import PasswordInput from './PasswordInput';
@@ -46,14 +47,10 @@ class UserAddEditForm extends Component {
     }
 
     onSaveButtonClick() {
-        /*let userRegisterObject = {
-            emailAddress: this.emailInput.value,
-            passwordHash: this.PasswordInput.value
-        }*/
         let userRegisterObject = {
             authenticationData: {
                 EmailAddress: this.state.emailAddress,
-                Password: this.state.password
+                Password: sha256(this.state.password) 
             }
         }
 
