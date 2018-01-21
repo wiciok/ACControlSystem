@@ -40,7 +40,7 @@ class App extends Component {
     }
 
 
-    onLogin(email, passHash) {
+    onLogin(email, passHash, token) {
         const { cookies } = this.props;
 
         let cookieOptions = {
@@ -50,6 +50,7 @@ class App extends Component {
 
         cookies.set('userEmail', email, cookieOptions);
         cookies.set('userPasswordHash', passHash, cookieOptions);
+        cookies.set('token', token);
 
         this.setState({
             userEmail: email,
@@ -62,6 +63,7 @@ class App extends Component {
 
         cookies.remove('userEmail');
         cookies.remove('userPasswordHash');
+        cookies.remove('token');
 
         this.setState({
             userEmail: null,

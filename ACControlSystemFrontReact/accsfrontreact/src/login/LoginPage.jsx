@@ -62,7 +62,9 @@ class LoginPage extends Component {
 
         fetch(endpointAddress, fetchObj).then(response => {
             if (response.status === 200) {
-                this.props.onLogin(this.email, sha256(this.password));
+                response.json().then(token=>{
+                    this.props.onLogin(this.email, sha256(this.password), token);
+                })
             }
             else if (response.status === 401) {
                 let error = new Error("Błąd logowania! Błędne hasło!");
