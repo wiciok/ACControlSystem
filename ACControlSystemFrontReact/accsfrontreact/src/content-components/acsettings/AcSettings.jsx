@@ -4,9 +4,9 @@ import AcSettingsSelect from './AcSettingsSelect';
 import AcSettingTable from './AcSettingTable';
 import AcSettingAdd from './AcSettingAdd';
 import AcSettingsDefaultOnOffStatus from './AcSettingsDefaultOnOffStatus';
-import sendAuth from '../../sendAuth.js';
-import setApiFetchError from '../../setApiFetchError.js';
-import { headerAuthAndContentTypeJson, headerAuth } from '../../authenticationHeaders.js';
+import sendAuth from './../../utils/sendAuth.js';
+import setApiFetchError from './../../utils/setApiFetchError.js';
+import { headerAuthAndContentTypeJson, headerAuth } from './../../utils/authenticationHeaders.js';
 
 class AcSettings extends Component {
     constructor(props) {
@@ -114,7 +114,7 @@ class AcSettings extends Component {
 
         fetch(fullAddress, fetchObj)
             .then(response => {
-                
+
                 switch (response.status) {
                     case 200:
                         response.json().then(data => { this.setState({ defaultOn: data }); })

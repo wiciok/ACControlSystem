@@ -3,8 +3,8 @@ import ErrorMessageComponent from '../../ErrorMessageComponent';
 import UsersTable from './UsersTable';
 import UsersAddEditForm from './UsersAddEditForm';
 import 'bulma/css/bulma.css';
-import sendAuth from '../../sendAuth.js';
-import setApiFetchError from '../../setApiFetchError.js';
+import sendAuth from './../../utils/sendAuth.js';
+import setApiFetchError from './../../utils/setApiFetchError.js';
 
 
 class UserManage extends Component {

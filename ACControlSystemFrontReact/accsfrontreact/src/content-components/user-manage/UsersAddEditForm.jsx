@@ -4,7 +4,7 @@ import { sha256 } from 'js-sha256';
 import 'bulma/css/bulma.css';
 import 'font-awesome/css/font-awesome.min.css'
 import PasswordInput from './PasswordInput';
-import sendAuth from '../../sendAuth.js';
+import sendAuth from './../../utils/sendAuth.js';
 
 class UserAddEditForm extends Component {
     constructor(props) {

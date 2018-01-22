@@ -4,7 +4,7 @@ import { sha256 } from 'js-sha256';
 import EmailInput from '../content-components/user-manage/EmailInput';
 import PasswordInput from '../content-components/user-manage/PasswordInput';
 import ErrorMessageComponent from '../ErrorMessageComponent';
-import setApiFetchError from '../setApiFetchError.js';
+import setApiFetchError from './../utils/setApiFetchError.js';
 
 class LoginPage extends Component {
     constructor(props) {

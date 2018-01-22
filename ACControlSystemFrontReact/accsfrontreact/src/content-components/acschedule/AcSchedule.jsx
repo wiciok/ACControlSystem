@@ -2,9 +2,9 @@ import React, { Component, Fragment } from 'react';
 import ErrorMessageComponent from '../../ErrorMessageComponent';
 import AcScheduleTable from './AcScheduleTable';
 import AcScheduleAddForm from './AcScheduleAddForm';
-import sendAuth from '../../sendAuth.js';
-import setApiFetchError from '../../setApiFetchError.js';
-import { headerAuthAndContentTypeJson, headerAuth } from '../../authenticationHeaders.js';
+import sendAuth from './../../utils/sendAuth.js';
+import setApiFetchError from './../../utils/setApiFetchError.js';
+import { headerAuthAndContentTypeJson, headerAuth } from './../../utils/authenticationHeaders.js';
 
 class AcSchedule extends Component {
     constructor(props) {

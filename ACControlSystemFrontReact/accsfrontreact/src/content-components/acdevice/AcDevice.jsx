@@ -1,14 +1,14 @@
 import React, { Component, Fragment } from 'react';
 import 'bulma/css/bulma.css';
 
-import sendAuth from '../../sendAuth.js';
-import setApiFetchError from '../../setApiFetchError.js';
+import sendAuth from './../../utils/sendAuth.js';
+import setApiFetchError from './../../utils/setApiFetchError.js';
 
 import ErrorMessageComponent from '../../ErrorMessageComponent';
 import AcDevicesTable from './AcDevicesTable';
 import AcDeviceAddEditForm from './AcDeviceAddEditForm';
 import ActiveAcDeviceBox from './ActiveAcDeviceBox';
-import { headerAuth } from '../../authenticationHeaders.js';
+import { headerAuth } from './../../utils/authenticationHeaders.js';
 
 class AcDevice extends Component {
     constructor(props) {

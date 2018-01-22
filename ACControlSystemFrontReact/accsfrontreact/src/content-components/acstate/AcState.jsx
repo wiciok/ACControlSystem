@@ -4,9 +4,9 @@ import 'bulma/css/bulma.css';
 import CurrentStateTag from './current-state-tag/CurrentStateTag';
 import ToggleStateButton from './ToggleStateButton';
 import ErrorMessageComponent from '../../ErrorMessageComponent';
-import sendAuth from '../../sendAuth.js';
-import setApiFetchError from '../../setApiFetchError.js';
-import { headerAuth } from '../../authenticationHeaders.js';
+import sendAuth from './../../utils/sendAuth.js';
+import setApiFetchError from './../../utils/setApiFetchError.js';
+import { headerAuth } from './../../utils/authenticationHeaders.js';
 
 class AcState extends Component {
     constructor(props) {

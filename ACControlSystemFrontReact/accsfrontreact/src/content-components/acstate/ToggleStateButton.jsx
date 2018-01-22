@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import sendAuth from '../../sendAuth.js';
+import sendAuth from './../../utils/sendAuth.js';
 import 'bulma/css/bulma.css';
-import { headerAuthAndContentTypeJson } from '../../authenticationHeaders.js';
+import { headerAuthAndContentTypeJson } from './../../utils/authenticationHeaders.js';
 
 class ToggleStateButton extends Component {
     constructor(props) {

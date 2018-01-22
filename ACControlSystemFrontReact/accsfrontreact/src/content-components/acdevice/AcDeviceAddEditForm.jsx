@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
-import sendAuth from '../../sendAuth.js';
-import { headerAuthAndContentTypeJson, headerAuth } from '../../authenticationHeaders.js';
+import sendAuth from './../../utils/sendAuth.js';
+import { headerAuthAndContentTypeJson, headerAuth } from './../../utils/authenticationHeaders.js';
 
 class AcDeviceAddEditForm extends Component {
     constructor(props) {
