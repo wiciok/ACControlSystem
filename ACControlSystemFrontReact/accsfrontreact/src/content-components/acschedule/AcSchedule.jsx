@@ -3,8 +3,8 @@ import ErrorMessageComponent from '../../ErrorMessageComponent';
 import AcScheduleTable from './AcScheduleTable';
 import AcScheduleAddForm from './AcScheduleAddForm';
 import sendAuth from '../../sendAuth.js';
-import Cookies from 'js-cookie';
 import setApiFetchError from '../../setApiFetchError.js';
+import { headerAuthAndContentTypeJson, headerAuth } from '../../authenticationHeaders.js';
 
 class AcSchedule extends Component {
     constructor(props) {
@@ -48,7 +48,7 @@ class AcSchedule extends Component {
 
         let fetchObj = {
             method: 'get',
-            headers: new Headers({ "Authorization": 'Basic ' + btoa(":" + Cookies.get('token')) })
+            headers: headerAuth
         }
 
         fetch(fullAddress, fetchObj)
@@ -81,7 +81,7 @@ class AcSchedule extends Component {
     getAllSchedulesData() {
         let fetchObj = {
             method: 'get',
-            headers: new Headers({ "Authorization": 'Basic ' + btoa(":" + Cookies.get('token')) })
+            headers: headerAuth
         };
         this.doFetch(fetchObj, this.endpointAddress, this.changeAllSchedulesState, this.getAllSchedulesData);
     }
@@ -98,7 +98,7 @@ class AcSchedule extends Component {
 
         let fetchObj = {
             method: 'delete',
-            headers: new Headers({ "Authorization": 'Basic ' + btoa(":" + Cookies.get('token')) })
+            headers: headerAuth
         };
 
         this.doFetch(fetchObj, fullAddress, this.getAllSchedulesData, this.removeSchedule);
@@ -108,7 +108,7 @@ class AcSchedule extends Component {
         let fetchObj = {
             method: 'post',
             body: JSON.stringify(acSchedule),
-            headers: new Headers([["Content-Type", "application/json"], ["Authorization", 'Basic ' + btoa(":" + Cookies.get('token'))]])
+            headers: headerAuthAndContentTypeJson,
         };
 
         console.log(fetchObj);
@@ -121,7 +121,7 @@ class AcSchedule extends Component {
 
         let fetchObj = {
             method: 'get',
-            headers: new Headers({ "Authorization": 'Basic ' + btoa(":" + Cookies.get('token')) })
+            headers: headerAuth
         }
 
         let callback = (arg) =>

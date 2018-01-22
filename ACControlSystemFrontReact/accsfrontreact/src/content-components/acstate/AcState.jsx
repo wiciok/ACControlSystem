@@ -5,8 +5,8 @@ import CurrentStateTag from './current-state-tag/CurrentStateTag';
 import ToggleStateButton from './ToggleStateButton';
 import ErrorMessageComponent from '../../ErrorMessageComponent';
 import sendAuth from '../../sendAuth.js';
-import Cookies from 'js-cookie';
 import setApiFetchError from '../../setApiFetchError.js';
+import { headerAuth } from '../../authenticationHeaders.js';
 
 class AcState extends Component {
     constructor(props) {
@@ -41,7 +41,7 @@ class AcState extends Component {
 
         let fetchObj = {
             method: 'get',
-            headers: new Headers({ "Authorization": 'Basic ' + btoa(":" + Cookies.get('token')) })
+            headers: headerAuth
         }
 
         fetch(fullAddress, fetchObj)
@@ -73,7 +73,7 @@ class AcState extends Component {
 
         let fetchObj = {
             method: 'get',
-            headers: new Headers({ "Authorization": 'Basic ' + btoa(":" + Cookies.get('token')) })
+            headers: headerAuth
         }
 
         fetch(fullAddress, fetchObj)
@@ -102,10 +102,12 @@ class AcState extends Component {
 
     getCurrentAcState() {
         let endpointAddress = `${window.apiAddress}/acstate`;
+
         console.log("get " + endpointAddress);
+
         let fetchObj = {
             method: 'get',
-            headers: new Headers({ "Authorization": 'Basic ' + btoa(":" + Cookies.get('token')) })
+            headers: headerAuth
         }
 
         fetch(endpointAddress, fetchObj).then(response => {

@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import sendAuth from '../../sendAuth.js';
-import Cookies from 'js-cookie';
+import { headerAuthAndContentTypeJson, headerAuth } from '../../authenticationHeaders.js';
 
 class AcDeviceAddEditForm extends Component {
     constructor(props) {
@@ -33,7 +33,7 @@ class AcDeviceAddEditForm extends Component {
 
         let fetchObj = {
             body: JSON.stringify(acDeviceObj),
-            headers: new Headers([["Content-Type", "application/json"], ["Authorization", 'Basic ' + btoa(":" + Cookies.get('token'))]])
+            headers: headerAuthAndContentTypeJson,
         };
 
         if (this.props.isEdit) {
@@ -51,7 +51,7 @@ class AcDeviceAddEditForm extends Component {
     onDeleteButtonClick() {
         let fetchObj = {
             method: 'delete',
-            headers: { "Authorization": 'Basic ' + btoa(":" + Cookies.get('token')) }
+            headers: headerAuth
         }
         let fullAddress = this.endpointAddress.concat(`/${this.props.editedDeviceData.id}`);
 
@@ -59,7 +59,7 @@ class AcDeviceAddEditForm extends Component {
     }
 
     onSetActiveButtonClick() {
-        let headers = new Headers([["Content-Type", "application/json"], ["Authorization", 'Basic ' + btoa(":" + Cookies.get('token'))]]);
+        let headers = headerAuthAndContentTypeJson
 
         let fetchObj = {
             method: 'put',

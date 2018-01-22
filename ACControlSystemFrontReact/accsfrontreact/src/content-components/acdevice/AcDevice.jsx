@@ -1,5 +1,4 @@
 import React, { Component, Fragment } from 'react';
-import Cookies from 'js-cookie';
 import 'bulma/css/bulma.css';
 
 import sendAuth from '../../sendAuth.js';
@@ -9,6 +8,7 @@ import ErrorMessageComponent from '../../ErrorMessageComponent';
 import AcDevicesTable from './AcDevicesTable';
 import AcDeviceAddEditForm from './AcDeviceAddEditForm';
 import ActiveAcDeviceBox from './ActiveAcDeviceBox';
+import { headerAuth } from '../../authenticationHeaders.js';
 
 class AcDevice extends Component {
     constructor(props) {
@@ -48,7 +48,7 @@ class AcDevice extends Component {
 
         let fetchObj = {
             method: 'get',
-            headers: new Headers({ "Authorization": 'Basic ' + btoa(":" + Cookies.get('token')) })
+            headers: headerAuth
         }
 
         fetch(fullAddress, fetchObj)
@@ -89,7 +89,7 @@ class AcDevice extends Component {
 
         let fetchObj = {
             method: 'get',
-            headers: new Headers({ "Authorization": 'Basic ' + btoa(":" + Cookies.get('token')) })
+            headers: headerAuth
         }
         console.log("get " + fullAddress);
 

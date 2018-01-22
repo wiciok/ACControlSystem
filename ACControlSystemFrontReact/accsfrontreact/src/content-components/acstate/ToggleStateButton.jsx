@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import sendAuth from '../../sendAuth.js';
 import 'bulma/css/bulma.css';
-import Cookies from 'js-cookie';
+import { headerAuthAndContentTypeJson } from '../../authenticationHeaders.js';
 
 class ToggleStateButton extends Component {
     constructor(props) {
@@ -53,7 +53,7 @@ class ToggleStateButton extends Component {
 
         let fetchObj= {
             method: 'post',
-            headers: new Headers([[ "Content-Type", "application/json" ],[ "Authorization", 'Basic ' + btoa(":" + Cookies.get('token')) ]]),
+            headers: headerAuthAndContentTypeJson,
             body: JSON.stringify(acStateObj)
         }
 

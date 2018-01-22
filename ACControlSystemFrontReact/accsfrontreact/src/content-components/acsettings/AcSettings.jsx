@@ -5,8 +5,8 @@ import AcSettingTable from './AcSettingTable';
 import AcSettingAdd from './AcSettingAdd';
 import AcSettingsDefaultOnOffStatus from './AcSettingsDefaultOnOffStatus';
 import sendAuth from '../../sendAuth.js';
-import Cookies from 'js-cookie';
 import setApiFetchError from '../../setApiFetchError.js';
+import { headerAuthAndContentTypeJson, headerAuth } from '../../authenticationHeaders.js';
 
 class AcSettings extends Component {
     constructor(props) {
@@ -59,7 +59,7 @@ class AcSettings extends Component {
         let fullAddress = this.endpointAddress.concat(this.state.currentAcSetting.uniqueId);
         let fetchObj = {
             method: 'delete',
-            headers: new Headers({ "Authorization": 'Basic ' + btoa(":" + Cookies.get('token')) })
+            headers: headerAuth
         }
 
         this.doFetch(fetchObj, fullAddress, this.getAcSettings, this.removeButton, this.onDeleteButtonClick)
@@ -71,7 +71,7 @@ class AcSettings extends Component {
         let fullAddress = this.endpointAddress.concat(isOnOff).concat(this.state.currentAcSetting.uniqueId);
         let fetchObj = {
             method: 'post',
-            headers: new Headers({ "Authorization": 'Basic ' + btoa(":" + Cookies.get('token')) })
+            headers: headerAuth
         }
 
         this.doFetch(fetchObj, fullAddress, this.getAcSettings, this.setDefaultButton, this.onSetAsDefaultButtonClick)
@@ -84,7 +84,7 @@ class AcSettings extends Component {
         let fetchObj = {
             method: 'post',
             body: JSON.stringify(newObj),
-            headers: new Headers([["Content-Type", "application/json"], ["Authorization", 'Basic ' + btoa(":" + Cookies.get('token'))]])
+            headers: headerAuthAndContentTypeJson,
         }
 
         this.doFetch(fetchObj, fullAddress, this.getAcSettings, button, this.onAcSettingAddButtonClick)
@@ -94,7 +94,7 @@ class AcSettings extends Component {
     getAcSettings() {
         let fetchObj = {
             method: 'get',
-            headers: new Headers({ "Authorization": 'Basic ' + btoa(":" + Cookies.get('token')) })
+            headers: headerAuthAndContentTypeJson,
         };
 
         let successCallback = json => {
@@ -111,7 +111,7 @@ class AcSettings extends Component {
         let fullAddress = endpointAddress.concat("/defaultOn");
         let fetchObj = {
             method: 'get',
-            headers: new Headers({ "Authorization": 'Basic ' + btoa(":" + Cookies.get('token')) })
+            headers: headerAuth
         }
 
         fetch(fullAddress, fetchObj)
@@ -131,7 +131,7 @@ class AcSettings extends Component {
                     default:
                         break;
                 }
-            }).catch(err => { this.setApiFetchError(); })
+            }).catch(err => { this.setApiFetchError(err); })
 
         endpointAddress = `${window.apiAddress}/acsetting`;
         fullAddress = endpointAddress.concat("/defaultOff");
@@ -153,7 +153,7 @@ class AcSettings extends Component {
                     default:
                         break;
                 }
-            }).catch(err => { this.setApiFetchError(); })
+            }).catch(err => { this.setApiFetchError(err); })
     }
 
 
