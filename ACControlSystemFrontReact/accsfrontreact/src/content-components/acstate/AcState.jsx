@@ -6,6 +6,7 @@ import ToggleStateButton from './ToggleStateButton';
 import ErrorMessageComponent from '../../ErrorMessageComponent';
 import sendAuth from '../../sendAuth.js';
 import Cookies from 'js-cookie';
+import setApiFetchError from '../../setApiFetchError.js';
 
 class AcState extends Component {
     constructor(props) {
@@ -14,7 +15,7 @@ class AcState extends Component {
         this.getCurrentAcState = this.getCurrentAcState.bind(this);
         this.checkTurnOffSetting = this.checkTurnOffSetting.bind(this);
         this.checkTurnOnSetting = this.checkTurnOnSetting.bind(this);
-        this.setApiFetchError = this.setApiFetchError.bind(this);
+        this.setApiFetchError = setApiFetchError.bind(this);
 
         this.state = {
             isTurnOffSettingSet: true,
@@ -148,23 +149,6 @@ class AcState extends Component {
             }
         }).catch(err => {
             this.setApiFetchError(err);
-        });
-    }
-
-    setApiFetchError(error) {
-        let errorMessage = `${error.message}`;
-
-        if (error.statusCode)
-            errorMessage = `Błąd ${error.statusCode}: `.concat(errorMessage);
-
-        if (error.errorMessage)
-            errorMessage += "Dodatkowe informacje: " + error.errorMessage;
-
-        this.setState({
-            error: {
-                isError: true,
-                errorMessage: errorMessage
-            }
         });
     }
 

@@ -4,6 +4,7 @@ import { sha256 } from 'js-sha256';
 import EmailInput from '../content-components/user-manage/EmailInput';
 import PasswordInput from '../content-components/user-manage/PasswordInput';
 import ErrorMessageComponent from '../ErrorMessageComponent';
+import setApiFetchError from '../setApiFetchError.js';
 
 class LoginPage extends Component {
     constructor(props) {
@@ -12,6 +13,7 @@ class LoginPage extends Component {
         this.onEmailEntered = this.onEmailEntered.bind(this);
         this.onPasswordEntered = this.onPasswordEntered.bind(this);
         this.onLoginButtonClick = this.onLoginButtonClick.bind(this);
+        this.setApiFetchError = setApiFetchError.bind(this);
 
         this.state = {
             emailEntered: false,
@@ -87,22 +89,6 @@ class LoginPage extends Component {
                 this.setApiFetchError(error);
             }
         })
-    }
-
-    setApiFetchError(error) {
-        let errorMessage = `${error.message}`;
-        if (error.statusCode)
-            errorMessage = `Błąd ${error.statusCode}: `.concat(errorMessage).concat("\n");
-
-        if (error.errorMessage)
-            errorMessage += "Dodatkowe informacje: " + error.errorMessage;
-
-        this.setState({
-            error: {
-                isError: true,
-                errorMessage: errorMessage
-            }
-        });
     }
 
     render() {

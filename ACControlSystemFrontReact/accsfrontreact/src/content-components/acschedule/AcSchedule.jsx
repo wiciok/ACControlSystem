@@ -4,6 +4,7 @@ import AcScheduleTable from './AcScheduleTable';
 import AcScheduleAddForm from './AcScheduleAddForm';
 import sendAuth from '../../sendAuth.js';
 import Cookies from 'js-cookie';
+import setApiFetchError from '../../setApiFetchError.js';
 
 class AcSchedule extends Component {
     constructor(props) {
@@ -16,6 +17,7 @@ class AcSchedule extends Component {
         this.getAcSettings = this.getAcSettings.bind(this);
         this.changeAllSchedulesState = this.changeAllSchedulesState.bind(this);
         this.doFetch = this.doFetch.bind(this);
+        this.setApiFetchError = setApiFetchError.bind(this);
 
         this.endpointAddress = `${window.apiAddress}/acschedule`;
 
@@ -158,26 +160,6 @@ class AcSchedule extends Component {
                         }).catch(() => { this.setApiFetchError(error); });
                 }
             });
-    }
-
-
-    setApiFetchError(error) {
-        let errorMessage = `${error.message}`;
-        //console.log(error); console.log(error.statusCode);
-        if (error.statusCode) {
-            errorMessage = `Błąd ${error.statusCode}: `.concat(errorMessage);
-        }
-
-        if (error.errorMessage) {
-            errorMessage += "Dodatkowe informacje: " + error.errorMessage;
-        }
-
-        this.setState({
-            error: {
-                isError: true,
-                errorMessage: errorMessage
-            }
-        });
     }
 
     render() {

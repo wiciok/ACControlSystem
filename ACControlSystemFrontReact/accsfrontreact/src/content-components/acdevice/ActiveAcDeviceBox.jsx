@@ -5,13 +5,10 @@ class ActiveAcDeviceBox extends Component {
 
     render() {
         let activeAcDeviceSpan;
-        if (this.props.activeAcDevice) {
+        if (this.props.activeAcDevice)
             activeAcDeviceSpan = <span className="tag is-success is-medium">{`${this.props.activeAcDevice.brand} ${this.props.activeAcDevice.model} Id: ${this.props.activeAcDevice.id}`}</span>
-        }
-        else {
+        else 
             activeAcDeviceSpan = <span className="tag is-danger is-medium">Brak</span>
-        }
-
 
         return (
             <div className="box">

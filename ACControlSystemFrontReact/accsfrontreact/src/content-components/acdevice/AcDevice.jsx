@@ -3,6 +3,7 @@ import Cookies from 'js-cookie';
 import 'bulma/css/bulma.css';
 
 import sendAuth from '../../sendAuth.js';
+import setApiFetchError from '../../setApiFetchError.js';
 
 import ErrorMessageComponent from '../../ErrorMessageComponent';
 import AcDevicesTable from './AcDevicesTable';
@@ -16,7 +17,7 @@ class AcDevice extends Component {
         this.onRowSelected = this.onRowSelected.bind(this);
         this.getAllAcDevices = this.getAllAcDevices.bind(this);
         this.getActiveAcDevice=this.getActiveAcDevice.bind(this);
-        this.setApiFetchError = this.setApiFetchError.bind(this);
+        this.setApiFetchError = setApiFetchError.bind(this);
         this.refresh = this.refresh.bind(this);
 
         this.endpointAddress = `${window.apiAddress}/acdevice`;
@@ -129,23 +130,6 @@ class AcDevice extends Component {
             .catch(err => {
                 this.setApiFetchError(err);
             });
-    }
-
-    setApiFetchError(error) {
-        let errorMessage = `${error.message}`;
-
-        if (error.statusCode)
-            errorMessage = `Błąd ${error.statusCode}: `.concat(errorMessage);
-
-        if (error.errorMessage)
-            errorMessage += "Dodatkowe informacje: " + error.errorMessage;
-
-        this.setState({
-            error: {
-                isError: true,
-                errorMessage: errorMessage
-            }
-        });
     }
 
     onRowSelected(rowId) {

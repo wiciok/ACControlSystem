@@ -4,6 +4,7 @@ import UsersTable from './UsersTable';
 import UsersAddEditForm from './UsersAddEditForm';
 import 'bulma/css/bulma.css';
 import sendAuth from '../../sendAuth.js';
+import setApiFetchError from '../../setApiFetchError.js';
 
 
 class UserManage extends Component {
@@ -12,7 +13,7 @@ class UserManage extends Component {
 
         this.onRowSelected = this.onRowSelected.bind(this);
         this.getAllUsers = this.getAllUsers.bind(this);
-        this.setApiFetchError = this.setApiFetchError.bind(this);
+        this.setApiFetchError = setApiFetchError.bind(this);
 
         this.endpointAddress = `${window.apiAddress}/user`;
 
@@ -64,22 +65,6 @@ class UserManage extends Component {
         }).catch(err => {
             console.log(err);
             this.setApiFetchError(err);
-        });
-    }
-
-    setApiFetchError(error) {
-        let errorMessage = `${error.message}`;
-        if (error.statusCode)
-            errorMessage = `Błąd ${error.statusCode}: `.concat(errorMessage).concat("\n");
-
-        if (error.errorMessage)
-            errorMessage += "Dodatkowe informacje: " + error.errorMessage;
-
-        this.setState({
-            error: {
-                isError: true,
-                errorMessage: errorMessage
-            }
         });
     }
 

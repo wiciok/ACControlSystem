@@ -6,18 +6,20 @@ import AcSettingAdd from './AcSettingAdd';
 import AcSettingsDefaultOnOffStatus from './AcSettingsDefaultOnOffStatus';
 import sendAuth from '../../sendAuth.js';
 import Cookies from 'js-cookie';
+import setApiFetchError from '../../setApiFetchError.js';
 
 class AcSettings extends Component {
     constructor(props) {
         super(props);
 
         this.onSelectionChanged = this.onSelectionChanged.bind(this);
-        this.setApiFetchError = this.setApiFetchError.bind(this);
+        this.setApiFetchError = setApiFetchError.bind(this);
         this.onDeleteButtonClick = this.onDeleteButtonClick.bind(this);
         this.onSetAsDefaultButtonClick = this.onSetAsDefaultButtonClick.bind(this);
         this.onAcSettingAddButtonClick = this.onAcSettingAddButtonClick.bind(this);
         this.getTurnOnOffSetting = this.getTurnOnOffSetting.bind(this);
         this.doFetch = this.doFetch.bind(this);
+        this.getAcSettings = this.getAcSettings.bind(this);
 
         this.endpointAddress = `${window.apiAddress}/acsetting`;
 
@@ -93,15 +95,15 @@ class AcSettings extends Component {
         let fetchObj = {
             method: 'get',
             headers: new Headers({ "Authorization": 'Basic ' + btoa(":" + Cookies.get('token')) })
-        }
+        };
 
         let successCallback = json => {
             this.setState({
                 allAcSettings: json
             });
-        }
+        };
 
-        this.doFetch(fetchObj, this.endpointAddress, successCallback, null, this.getAcSettings)
+        this.doFetch(fetchObj, this.endpointAddress, successCallback, null, this.getAcSettings);
     }
 
     getTurnOnOffSetting() {
@@ -200,25 +202,6 @@ class AcSettings extends Component {
             button.classList.remove("is-loading");
             button.classList.add("is-primary");
         }
-    }
-
-    setApiFetchError(error) {
-        let errorMessage = `${error.message}`;
-        //console.log(error); console.log(error.statusCode);
-        if (error.statusCode) {
-            errorMessage = `Błąd ${error.statusCode}: `.concat(errorMessage);
-        }
-
-        if (error.errorMessage) {
-            errorMessage += "Dodatkowe informacje: " + error.errorMessage;
-        }
-
-        this.setState({
-            error: {
-                isError: true,
-                errorMessage: errorMessage
-            }
-        });
     }
 
 
