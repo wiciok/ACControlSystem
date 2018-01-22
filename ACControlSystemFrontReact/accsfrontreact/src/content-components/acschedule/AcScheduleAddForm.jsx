@@ -46,7 +46,6 @@ class AcScheduleAddForm extends Component {
                 saveButtonActive: false
             });
         }
-        console.log(this.state);
     }
 
     onValidStartDateOrTimeEntered(dateObj) {
@@ -75,9 +74,6 @@ class AcScheduleAddForm extends Component {
             scheduleType: this.state.selectedScheduleType,
             acSettingGuid: this.state.acSettingGuid
         }
-        console.log(this.state);
-        console.log(newAcScheduleObj);
-
         this.props.addCallback(newAcScheduleObj);
     }
 

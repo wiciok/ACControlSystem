@@ -23,18 +23,16 @@ class AcSettingAdd extends Component {
 
     onRadioChange(changeEvent) {
         let selectedOptionVal = changeEvent.target.value;
-        this.setState({
-            checkedRadio: selectedOptionVal
-        },()=>{ console.log(this.state.checkedRadio)});
+        this.setState({ checkedRadio: selectedOptionVal });
     }
 
     onRegisterButtonClick() {
-        let optionsObj={};
-        
+        let optionsObj = {};
+
         for (let index in this.optionsList.keys) {
             let key = this.optionsList.keys[index].value;
             let value = this.optionsList.values[index].value;
-            Object.defineProperty(optionsObj,key,{
+            Object.defineProperty(optionsObj, key, {
                 value: value,
                 writable: false,
                 enumerable: true
@@ -58,10 +56,10 @@ class AcSettingAdd extends Component {
     }
 
     registerRef(val, isKey) {
-        if(val==null)
+        if (val == null)
             return;
         if (isKey)
-            this.optionsList.keys.push(val); 
+            this.optionsList.keys.push(val);
         else
             this.optionsList.values.push(val);
     }
@@ -76,12 +74,12 @@ class AcSettingAdd extends Component {
             for (let i = 0; i < this.state.renderedOptionsNumber; i++) {
                 keys.push(
                     <div className='field' key={i}>
-                        <input className="input" type="text" placeholder="Nazwa opcji, np. Temperatura" ref={val => {this.registerRef(val, true)}} />
+                        <input className="input" type="text" placeholder="Nazwa opcji, np. Temperatura" ref={val => { this.registerRef(val, true) }} />
                     </div>);
 
                 values.push(
                     <div className='field' key={i}>
-                        <input className="input" type="text" placeholder="Wartość opcji, np. 25°C" ref={val => {this.registerRef(val, false)}} />
+                        <input className="input" type="text" placeholder="Wartość opcji, np. 25°C" ref={val => { this.registerRef(val, false) }} />
                     </div>);
             }
             options =

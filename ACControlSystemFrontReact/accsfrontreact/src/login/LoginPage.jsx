@@ -82,7 +82,6 @@ class LoginPage extends Component {
                 let error = new Error(response.statusText);
                 error.statusCode = response.status;
                 response.json().then(x => {
-                    console.log(x);
                     error.errorMessage = x;
                     this.setApiFetchError(error);
                 });

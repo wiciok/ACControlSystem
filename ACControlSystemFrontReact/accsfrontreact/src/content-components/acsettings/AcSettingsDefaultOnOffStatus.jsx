@@ -16,9 +16,6 @@ class AcSettingsDefaultOnOffStatus extends Component {
         else
             turnOffTag = <span className="tag is-danger is-medium">Brak!</span>
 
-
-        console.log(this.props.defaultOff, this.props.defaultOn);
-
         return (
             <Fragment>
                 <label>Ustawienie włączania:</label>&emsp;

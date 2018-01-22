@@ -53,8 +53,6 @@ class AcDevice extends Component {
 
         fetch(fullAddress, fetchObj)
             .then(response => {
-                console.log("get active ac device response: " + response.status);
-
                 let error = new Error(response.statusText);
                 error.statusCode = response.status;
 
@@ -73,7 +71,6 @@ class AcDevice extends Component {
                         break;
                     default:
                         response.json().then(data => {
-                            console.log(data);
                             error.errorMessage = data;
                             this.setApiFetchError(error);
                         }).catch(() => { this.setApiFetchError(error); });
@@ -91,14 +88,11 @@ class AcDevice extends Component {
             method: 'get',
             headers: headerAuth
         }
-        console.log("get " + fullAddress);
 
         fetch(fullAddress, fetchObj)
             .then(response => {
                 let error = new Error(response.statusText);
                 error.statusCode = response.status;
-
-                console.log(response.status);
 
                 switch (response.status) {
                     case 200:
@@ -121,7 +115,6 @@ class AcDevice extends Component {
                         break;
                     default:
                         response.json().then(data => {
-                            console.log(data);
                             error.errorMessage = data;
                             this.setApiFetchError(error);
                         }).catch(() => { this.setApiFetchError(error); });

@@ -9,7 +9,6 @@ class PasswordInput extends Component {
     }
 
     onChange() {
-        //console.log(this.emailInput.value)
         if (!this.passwordInput.value) {
             this.passwordInput.classList.remove("is-danger", "is-success");
             this.props.onPasswordEntered(null);
@@ -20,7 +19,6 @@ class PasswordInput extends Component {
             this.passwordInput.classList.remove("is-danger");
             this.passwordInput.classList.add("is-success");
             this.warningIcon.style.visibility = "hidden";
-            //console.log("onchange inside emailinput: ", this.emailInput.value);
             this.props.onPasswordEntered(this.passwordInput.value);
 
         }

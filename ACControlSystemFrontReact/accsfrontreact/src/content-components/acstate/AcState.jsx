@@ -46,7 +46,6 @@ class AcState extends Component {
 
         fetch(fullAddress, fetchObj)
             .then(response => {
-                console.log("check turn off response: " + response.status);
 
                 switch (response.status) {
                     case 200:
@@ -78,7 +77,6 @@ class AcState extends Component {
 
         fetch(fullAddress, fetchObj)
             .then(response => {
-                console.log("check turn on response: " + response.status);
 
                 switch (response.status) {
                     case 200:
@@ -103,15 +101,12 @@ class AcState extends Component {
     getCurrentAcState() {
         let endpointAddress = `${window.apiAddress}/acstate`;
 
-        console.log("get " + endpointAddress);
-
         let fetchObj = {
             method: 'get',
             headers: headerAuth
         }
 
         fetch(endpointAddress, fetchObj).then(response => {
-            console.log(response.status);
 
             switch (response.status) {
                 case 204:
@@ -120,7 +115,6 @@ class AcState extends Component {
                 case 200:
                     response.json()
                         .then(json => {
-                            console.log(json);
                             if (json.isTurnOff === true)
                                 this.setState({ currentAcState: "off" });
                             else
@@ -143,7 +137,6 @@ class AcState extends Component {
                     error.statusCode = response.status;
 
                     response.json().then(data => {
-                        console.log(data);
                         error.errorMessage = data;
                         this.setApiFetchError(error);
                     });

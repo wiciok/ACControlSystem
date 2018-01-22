@@ -9,7 +9,6 @@ class EmailInput extends Component {
     }
 
     onChange() {
-        //console.log(this.emailInput.value)
         if(!this.emailInput.value){
             this.emailInput.classList.remove("is-danger", "is-success");
             this.props.onEmailEntered(null);
@@ -20,7 +19,6 @@ class EmailInput extends Component {
             this.emailInput.classList.remove("is-danger");
             this.emailInput.classList.add("is-success");
             this.warningIcon.style.visibility = "hidden";
-            //console.log("onchange inside emailinput: ", this.emailInput.value);
             this.props.onEmailEntered(this.emailInput.value);
 
         }

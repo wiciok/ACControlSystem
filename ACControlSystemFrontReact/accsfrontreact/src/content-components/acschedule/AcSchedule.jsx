@@ -53,18 +53,14 @@ class AcSchedule extends Component {
 
         fetch(fullAddress, fetchObj)
             .then(response => {
-                console.log("check turn off response: " + response.status);
 
                 switch (response.status) {
                     case 200:
                         this.setState({ isTurnOffSettingSet: true })
                         break;
                     case 404:
-                        response.json().then(
-                            json => {
-                                console.log(json);
-                                this.setState({ isTurnOffSettingSet: false })
-                            })
+                        //response.json().then(json => {this.setState({ isTurnOffSettingSet: false })})
+                        this.setState({ isTurnOffSettingSet: false });
                         break;
                     case 401:
                         sendAuth(this.checkTurnOffSetting);
@@ -87,7 +83,6 @@ class AcSchedule extends Component {
     }
 
     changeAllSchedulesState(data) {
-        console.log(data);
         this.setState({
             allSchedulesData: data
         })
@@ -111,7 +106,6 @@ class AcSchedule extends Component {
             headers: headerAuthAndContentTypeJson,
         };
 
-        console.log(fetchObj);
         this.doFetch(fetchObj, this.endpointAddress, this.getAllSchedulesData, this.addNewSchedule);
     }
 
@@ -135,7 +129,6 @@ class AcSchedule extends Component {
     doFetch(fetchObj, fullAddress, successCallback, retryCallback) {
         fetch(fullAddress, fetchObj)
             .then(response => {
-                console.log("response: " + response.status);
 
                 switch (response.status) {
                     case 204:
@@ -154,7 +147,6 @@ class AcSchedule extends Component {
                         error.statusCode = response.status;
 
                         response.json().then(data => {
-                            console.log(data);
                             error.errorMessage = data;
                             this.setApiFetchError(error);
                         }).catch(() => { this.setApiFetchError(error); });

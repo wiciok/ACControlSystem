@@ -32,40 +32,27 @@ class UserManage extends Component {
     }
 
     getAllUsers() {
-        //let fullAddress = this.endpointAddress.concat("/all");
-        let fullAddress = this.endpointAddress.concat("/123temporaryfaketoken/all");
-        console.log("get " + fullAddress);
+        let fullAddress = this.endpointAddress.concat("/all");
 
         fetch(fullAddress).then(response => {
-            console.log(response.status);
             switch (response.status) {
                 case 200:
                     response.json()
-                        .then(json => {
-                            console.log(json);
-                            this.setState({
-                                allUsersData: json,
-                                selectedRow: 0
-                            })
-                        })
+                        .then(json => { this.setState({ allUsersData: json, selectedRow: 0 }) })
                         .catch(err => { this.setState({ error: { isError: true, errorMessage: "Blad deserializacji odpowiedzi serwera do formatu JSON" } }); });
                     break;
                 default:
-                    if(response.status===401)
+                    if (response.status === 401)
                         sendAuth(this.getAllUsers);
 
                     let error = new Error(response.statusText);
                     error.statusCode = response.status;
                     response.json().then(x => {
-                        console.log(x);
                         error.errorMessage = x;
                         this.setApiFetchError(error);
-                    }).catch(()=>{this.setApiFetchError(error);}); 
+                    }).catch(() => { this.setApiFetchError(error); });
             }
-        }).catch(err => {
-            console.log(err);
-            this.setApiFetchError(err);
-        });
+        }).catch(err => { this.setApiFetchError(err); });
     }
 
     onRowSelected(rowId) {

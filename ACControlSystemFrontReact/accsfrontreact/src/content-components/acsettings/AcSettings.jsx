@@ -50,9 +50,7 @@ class AcSettings extends Component {
             }
         }
 
-        this.setState({
-            currentAcSetting: currentAcSetting
-        }, () => { console.log(this.state); })
+        this.setState({ currentAcSetting: currentAcSetting })
     }
 
     onDeleteButtonClick() {
@@ -116,8 +114,7 @@ class AcSettings extends Component {
 
         fetch(fullAddress, fetchObj)
             .then(response => {
-                console.log("check turn on response: " + response.status);
-
+                
                 switch (response.status) {
                     case 200:
                         response.json().then(data => { this.setState({ defaultOn: data }); })
@@ -138,11 +135,10 @@ class AcSettings extends Component {
 
         fetch(fullAddress, fetchObj)
             .then(response => {
-                console.log("check turn off response: " + response.status);
 
                 switch (response.status) {
                     case 200:
-                        response.json().then(data => { this.setState({ defaultOff: data }, () => console.log(data)) })
+                        response.json().then(data => { this.setState({ defaultOff: data })});
                         break;
                     case 401:
                         sendAuth(this.getTurnOnOffSetting);
@@ -162,8 +158,6 @@ class AcSettings extends Component {
 
         fetch(fullAddress, fetchObj)
             .then(response => {
-                console.log("response: " + response.status);
-
                 this.changeButtonInProgress(false, button);
 
                 if (!response.ok) {
@@ -175,7 +169,6 @@ class AcSettings extends Component {
                     error.statusCode = response.status;
 
                     response.json().then(data => {
-                        console.log(data);
                         error.errorMessage = data;
                         this.setApiFetchError(error);
                     }).catch(() => { this.setApiFetchError(error); });

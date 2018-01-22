@@ -68,8 +68,6 @@ class AcDeviceAddEditForm extends Component {
         }
         let fullAddress = this.endpointAddress.concat("/current");
 
-        console.log(fetchObj.body);
-
         this.doFetch(fetchObj, fullAddress, this.setActiveButton, this.onSetActiveButtonClick);
     }
 
@@ -88,7 +86,6 @@ class AcDeviceAddEditForm extends Component {
 
         fetch(fullAddress, fetchObj)
             .then(response => {
-                console.log("response: " + response.status);
 
                 this.changeButtonInProgress(false, button);
 
@@ -101,7 +98,6 @@ class AcDeviceAddEditForm extends Component {
                     error.statusCode = response.status;
 
                     response.json().then(data => {
-                        console.log(data);
                         error.errorMessage = data;
                         this.props.errorCallback(error);
                     }).catch(() => { this.props.errorCallback(error); });
@@ -110,7 +106,6 @@ class AcDeviceAddEditForm extends Component {
                 this.props.refreshCallback();
             })
             .catch(err => {
-                //console.log("error in toggle state: "+err);
                 this.props.errorCallback(err);
             });
     }

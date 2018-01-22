@@ -31,7 +31,6 @@ class ToggleStateButton extends Component {
         this.changeInProgressAppeareance(true);
 
         let endpointAddress = `${window.apiAddress}/acstate`;
-        //console.log("post " + endpointAddress);
 
         let acStateObj;
         switch (this.props.actionType) {
@@ -51,19 +50,18 @@ class ToggleStateButton extends Component {
                 break;
         };
 
-        let fetchObj= {
+        let fetchObj = {
             method: 'post',
             headers: headerAuthAndContentTypeJson,
             body: JSON.stringify(acStateObj)
         }
 
-        fetch(endpointAddress,fetchObj).then(response => {
-            console.log("response: " + response.status);
+        fetch(endpointAddress, fetchObj).then(response => {
 
             this.changeInProgressAppeareance(false);
 
             if (!response.ok) {
-                if(response.status===401)
+                if (response.status === 401)
                     sendAuth(this.toggleStateFunc);
 
 
@@ -71,17 +69,14 @@ class ToggleStateButton extends Component {
                 error.statusCode = response.status;
 
                 response.json().then(data => {
-                    console.log(data);
                     error.errorMessage = data;
                     this.props.setErrorCallback(error);
-                });
-                this.props.setErrorCallback(error);
+                }).catch(() => { this.props.setErrorCallback(error); });
             }
             else
                 this.props.stateRefreshCallback();
-        }).catch(err => {
-            this.props.setErrorCallback(err);
-        });
+
+        }).catch(err => { this.props.setErrorCallback(err); });
     }
 
     changeInProgressAppeareance(isInProgress) {

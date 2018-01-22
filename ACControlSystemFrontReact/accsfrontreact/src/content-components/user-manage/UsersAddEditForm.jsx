@@ -51,7 +51,7 @@ class UserAddEditForm extends Component {
         let userRegisterObject = {
             authenticationData: {
                 EmailAddress: this.state.emailAddress,
-                Password: sha256(this.state.password) 
+                Password: sha256(this.state.password)
             }
         }
 
@@ -71,8 +71,6 @@ class UserAddEditForm extends Component {
         }
         fetchObj.headers = new Headers({ "Content-Type": "application/json" });
         let fullAddress = this.endpointAddress.concat("/123temporaryfaketoken");
-
-        console.log(fetchObj);
 
         this.doFetch(fetchObj, fullAddress, this.saveButton, this.onSaveButtonClick);
     }
@@ -102,19 +100,16 @@ class UserAddEditForm extends Component {
 
         fetch(fullAddress, fetchObj)
             .then(response => {
-                console.log("response: " + response.status);
-
                 this.changeButtonInProgress(false, button);
 
                 if (!response.ok) {
-                    if(response.status===401)
+                    if (response.status === 401)
                         sendAuth(retryCallback);
-                        
+
                     let error = new Error(response.statusText);
                     error.statusCode = response.status;
 
                     response.json().then(x => {
-                        console.log(x);
                         error.errorMessage = x;
                         this.props.errorCallback(error);
                     });
@@ -123,10 +118,7 @@ class UserAddEditForm extends Component {
 
                 this.props.refreshCallback();
             })
-            .catch(err => {
-                //console.log("error in toggle state: "+err);
-                this.props.errorCallback(err);
-            });
+            .catch(err => { this.props.errorCallback(err); });
     }
 
 
