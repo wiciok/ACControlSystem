@@ -1,11 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { BrowserRouter } from 'react-router-dom';
-
-import { instanceOf } from 'prop-types';
-import { withCookies, Cookies } from 'react-cookie';
-
+import Cookies from 'js-cookie';
 import '../node_modules/bulma/css/bulma.css';
-
 import Navbar from "./navbar/Navbar";
 import Footer from "./Footer";
 import ContentArea from "./ContentArea";
@@ -26,31 +22,24 @@ class App extends Component {
         };
     }
 
-    static propTypes = {
-        cookies: instanceOf(Cookies).isRequired
-    };
-
     componentWillMount() {
-        const { cookies } = this.props;
-
         this.setState({
-            userEmail: cookies.get('userEmail') || null,
-            userPasswordHash: cookies.get('userPasswordHash') || null
+            userEmail: Cookies.get('userEmail') || null,
+            userPasswordHash: Cookies.get('userPasswordHash') || null
         });
     }
 
 
     onLogin(email, passHash, token) {
-        const { cookies } = this.props;
-
+        let inHour = 1/24;
         let cookieOptions = {
             path: '/',
-            maxAge: 3600
+            expires: inHour
         }
 
-        cookies.set('userEmail', email, cookieOptions);
-        cookies.set('userPasswordHash', passHash, cookieOptions);
-        cookies.set('token', token);
+        Cookies.set('userEmail', email, cookieOptions);
+        Cookies.set('userPasswordHash', passHash, cookieOptions);
+        Cookies.set('token', token);
 
         this.setState({
             userEmail: email,
@@ -59,11 +48,9 @@ class App extends Component {
     }
 
     onLogout() {
-        const { cookies } = this.props;
-
-        cookies.remove('userEmail');
-        cookies.remove('userPasswordHash');
-        cookies.remove('token');
+        Cookies.remove('userEmail');
+        Cookies.remove('userPasswordHash');
+        Cookies.remove('token');
 
         this.setState({
             userEmail: null,
@@ -104,4 +91,4 @@ class App extends Component {
     }
 }
 
-export default withCookies(App);
+export default App;

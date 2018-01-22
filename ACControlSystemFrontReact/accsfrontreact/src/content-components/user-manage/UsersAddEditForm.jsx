@@ -1,10 +1,15 @@
 import React, { Component, Fragment } from 'react';
-import EmailInput from './EmailInput';
+
 import { sha256 } from 'js-sha256';
 import 'bulma/css/bulma.css';
 import 'font-awesome/css/font-awesome.min.css'
-import PasswordInput from './PasswordInput';
+
 import sendAuth from './../../utils/sendAuth.js';
+import { headerAuth } from './../../utils/authenticationHeaders.js';
+
+import EmailInput from './EmailInput';
+import PasswordInput from './PasswordInput';
+
 
 class UserAddEditForm extends Component {
     constructor(props) {
@@ -69,7 +74,7 @@ class UserAddEditForm extends Component {
                 body: JSON.stringify(userRegisterObject)
             }
         }
-        fetchObj.headers = new Headers({ "Content-Type": "application/json" });
+        fetchObj.headers = headerAuth
 
         this.doFetch(fetchObj, this.endpointAddress, this.saveButton, this.onSaveButtonClick);
     }
@@ -152,15 +157,10 @@ class UserAddEditForm extends Component {
 
         return (
             <Fragment>
-                <h4 className="title is-4">
-                    {captionText}
-                </h4>
-
+                <h4 className="title is-4">{captionText}</h4>
                 {this.props.isEdit ? idLabel : null}
-
                 {emailInput}
                 <PasswordInput initialValue={this.props.editedUserData} onPasswordEntered={this.onPasswordEntered} />
-
                 <div className="field is-grouped">
                     <div className="control">
                         {saveButton}
