@@ -1,4 +1,6 @@
 import React, { Component, Fragment } from 'react';
+import sendAuth from '../../sendAuth.js';
+import Cookies from 'js-cookie';
 
 class AcDeviceAddEditForm extends Component {
     constructor(props) {
@@ -29,49 +31,46 @@ class AcDeviceAddEditForm extends Component {
             model: this.modelInput.value
         }
 
-        let fetchObj;
+        let fetchObj = {
+            body: JSON.stringify(acDeviceObj),
+            headers: new Headers([["Content-Type", "application/json"], ["Authorization", 'Basic ' + btoa(":" + Cookies.get('token'))]])
+        };
+
         if (this.props.isEdit) {
             acDeviceObj.id = this.props.editedDeviceData.id;
-            fetchObj = {
-                method: 'put',
-                body: JSON.stringify(acDeviceObj)
-            }
+            fetchObj.method = 'put';
         }
         else {
             acDeviceObj.id = 0;
-            fetchObj = {
-                method: 'post',
-                body: JSON.stringify(acDeviceObj)
-            }
+            fetchObj.method = 'post';
         }
-        fetchObj.headers = new Headers({ "Content-Type": "application/json" });
-        let fullAddress = this.endpointAddress.concat("/123temporaryfaketoken");
 
-        this.doFetch(fetchObj, fullAddress, this.saveButton);
+        this.doFetch(fetchObj, this.endpointAddress, this.saveButton, this.onSaveButtonClick);
     }
 
     onDeleteButtonClick() {
         let fetchObj = {
-            method: 'delete'
+            method: 'delete',
+            headers: { "Authorization": 'Basic ' + btoa(":" + Cookies.get('token')) }
         }
-        let fullAddress = this.endpointAddress.concat("/123temporaryfaketoken").concat(`/${this.props.editedDeviceData.id}`);
+        let fullAddress = this.endpointAddress.concat(`/${this.props.editedDeviceData.id}`);
 
-        this.doFetch(fetchObj, fullAddress, this.removeButton);
+        this.doFetch(fetchObj, fullAddress, this.removeButton, this.onDeleteButtonClick);
     }
 
-    onSetActiveButtonClick(){
-        let headers = new Headers({ "Content-Type": "application/json" });
-        
+    onSetActiveButtonClick() {
+        let headers = new Headers([["Content-Type", "application/json"], ["Authorization", 'Basic ' + btoa(":" + Cookies.get('token'))]]);
+
         let fetchObj = {
             method: 'put',
             body: `${this.props.editedDeviceData.id}`,
             headers: headers
         }
-        let fullAddress = this.endpointAddress.concat("/123temporaryfaketoken").concat("/current");
+        let fullAddress = this.endpointAddress.concat("/current");
 
         console.log(fetchObj.body);
 
-        this.doFetch(fetchObj, fullAddress, this.setActiveButton);
+        this.doFetch(fetchObj, fullAddress, this.setActiveButton, this.onSetActiveButtonClick);
     }
 
     changeButtonInProgress(isInProgress, button) {
@@ -84,7 +83,7 @@ class AcDeviceAddEditForm extends Component {
         }
     }
 
-    doFetch(fetchObj, fullAddress, button) {
+    doFetch(fetchObj, fullAddress, button, retryCallback) {
         this.changeButtonInProgress(true, button);
 
         fetch(fullAddress, fetchObj)
@@ -94,6 +93,10 @@ class AcDeviceAddEditForm extends Component {
                 this.changeButtonInProgress(false, button);
 
                 if (!response.ok) {
+                    if (response.status === 401) {
+                        sendAuth(retryCallback);
+                    }
+
                     let error = new Error(response.statusText);
                     error.statusCode = response.status;
 
@@ -101,8 +104,7 @@ class AcDeviceAddEditForm extends Component {
                         console.log(data);
                         error.errorMessage = data;
                         this.props.errorCallback(error);
-                    });
-                    this.props.errorCallback(error);
+                    }).catch(() => { this.props.errorCallback(error); });
                 }
 
                 this.props.refreshCallback();
@@ -118,13 +120,13 @@ class AcDeviceAddEditForm extends Component {
         let idLabel = <label className="label">Id: {this.props.editedDeviceData ? this.props.editedDeviceData.id : null}</label>
 
         let setActiveButton = <div className="control">
-            <button className="button is-link is-success" onClick={this.onSetActiveButtonClick}  ref={setActiveButton => this.setActiveButton = setActiveButton}>
+            <button className="button is-link is-success" onClick={this.onSetActiveButtonClick} ref={setActiveButton => this.setActiveButton = setActiveButton}>
                 Ustaw jako aktywny
             </button>
         </div>
 
         let removeButton = <div className="control">
-            <button className="button is-link is-danger" onClick={this.onDeleteButtonClick}  ref={removeButton => this.removeButton = removeButton}>
+            <button className="button is-link is-danger" onClick={this.onDeleteButtonClick} ref={removeButton => this.removeButton = removeButton}>
                 Usuń
             </button>
         </div>

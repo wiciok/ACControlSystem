@@ -4,6 +4,7 @@ import { sha256 } from 'js-sha256';
 import 'bulma/css/bulma.css';
 import 'font-awesome/css/font-awesome.min.css'
 import PasswordInput from './PasswordInput';
+import sendAuth from '../../sendAuth.js';
 
 class UserAddEditForm extends Component {
     constructor(props) {
@@ -73,7 +74,7 @@ class UserAddEditForm extends Component {
 
         console.log(fetchObj);
 
-        this.doFetch(fetchObj, fullAddress, this.saveButton);
+        this.doFetch(fetchObj, fullAddress, this.saveButton, this.onSaveButtonClick);
     }
 
     onDeleteButtonClick() {
@@ -82,7 +83,7 @@ class UserAddEditForm extends Component {
         }
         let fullAddress = this.endpointAddress.concat("/123temporaryfaketoken").concat(`/${this.props.editedDeviceData.id}`);
 
-        this.doFetch(fetchObj, fullAddress, this.removeButton);
+        this.doFetch(fetchObj, fullAddress, this.removeButton, this.onDeleteButtonClick);
     }
 
 
@@ -96,7 +97,7 @@ class UserAddEditForm extends Component {
         }
     }
 
-    doFetch(fetchObj, fullAddress, button) {
+    doFetch(fetchObj, fullAddress, button, retryCallback) {
         this.changeButtonInProgress(true, button);
 
         fetch(fullAddress, fetchObj)
@@ -106,6 +107,9 @@ class UserAddEditForm extends Component {
                 this.changeButtonInProgress(false, button);
 
                 if (!response.ok) {
+                    if(response.status===401)
+                        sendAuth(retryCallback);
+                        
                     let error = new Error(response.statusText);
                     error.statusCode = response.status;
 

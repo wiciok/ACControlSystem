@@ -2,6 +2,8 @@ import React, { Component, Fragment } from 'react';
 import ErrorMessageComponent from '../../ErrorMessageComponent';
 import AcScheduleTable from './AcScheduleTable';
 import AcScheduleAddForm from './AcScheduleAddForm';
+import sendAuth from '../../sendAuth.js';
+import Cookies from 'js-cookie';
 
 class AcSchedule extends Component {
     constructor(props) {
@@ -40,28 +42,30 @@ class AcSchedule extends Component {
 
     checkTurnOffSetting() {
         let endpointAddress = `${window.apiAddress}/acsetting`;
-        let fullAddress = endpointAddress.concat("/123temporaryfaketoken").concat("/defaultOff");
+        let fullAddress = endpointAddress.concat("/defaultOff");
 
+        let fetchObj = {
+            method: 'get',
+            headers: new Headers({ "Authorization": 'Basic ' + btoa(":" + Cookies.get('token')) })
+        }
 
-        fetch(fullAddress)
+        fetch(fullAddress, fetchObj)
             .then(response => {
                 console.log("check turn off response: " + response.status);
 
                 switch (response.status) {
                     case 200:
-                        this.setState({
-                            isTurnOffSettingSet: true
-                        })
+                        this.setState({ isTurnOffSettingSet: true })
                         break;
                     case 404:
                         response.json().then(
                             json => {
                                 console.log(json);
-                                this.setState({
-                                    isTurnOffSettingSet: false
-                                })
-                            }
-                        )
+                                this.setState({ isTurnOffSettingSet: false })
+                            })
+                        break;
+                    case 401:
+                        sendAuth(this.checkTurnOffSetting);
                         break;
                     default:
                         break;
@@ -73,12 +77,11 @@ class AcSchedule extends Component {
 
 
     getAllSchedulesData() {
-        let fullAddress = this.endpointAddress.concat("/123temporaryfaketoken");
-
         let fetchObj = {
-            method: 'get'
+            method: 'get',
+            headers: new Headers({ "Authorization": 'Basic ' + btoa(":" + Cookies.get('token')) })
         };
-        this.doFetch(fetchObj, fullAddress, this.changeAllSchedulesState);
+        this.doFetch(fetchObj, this.endpointAddress, this.changeAllSchedulesState, this.getAllSchedulesData);
     }
 
     changeAllSchedulesState(data) {
@@ -89,33 +92,34 @@ class AcSchedule extends Component {
     }
 
     removeSchedule(id) {
-        let fullAddress = this.endpointAddress.concat("/123temporaryfaketoken").concat(`/${id}`);
+        let fullAddress = this.endpointAddress.concat(`/${id}`);
 
         let fetchObj = {
-            method: 'delete'
+            method: 'delete',
+            headers: new Headers({ "Authorization": 'Basic ' + btoa(":" + Cookies.get('token')) })
         };
 
-        this.doFetch(fetchObj, fullAddress, this.getAllSchedulesData);
+        this.doFetch(fetchObj, fullAddress, this.getAllSchedulesData, this.removeSchedule);
     }
 
     addNewSchedule(acSchedule) {
-        let fullAddress = this.endpointAddress.concat("/123temporaryfaketoken");
         let fetchObj = {
             method: 'post',
             body: JSON.stringify(acSchedule),
-            headers: new Headers({ "Content-Type": "application/json" })
+            headers: new Headers([["Content-Type", "application/json"], ["Authorization", 'Basic ' + btoa(":" + Cookies.get('token'))]])
         };
 
         console.log(fetchObj);
-        this.doFetch(fetchObj, fullAddress, this.getAllSchedulesData);
+        this.doFetch(fetchObj, this.endpointAddress, this.getAllSchedulesData, this.addNewSchedule);
     }
 
     getAcSettings() {
         let endpointAddress = `${window.apiAddress}/acsetting`;
-        let fullAddress = endpointAddress.concat("/123temporaryfaketoken").concat("/allon");
+        let fullAddress = endpointAddress.concat("/allon");
 
         let fetchObj = {
-            method: 'get'
+            method: 'get',
+            headers: new Headers({ "Authorization": 'Basic ' + btoa(":" + Cookies.get('token')) })
         }
 
         let callback = (arg) =>
@@ -123,46 +127,39 @@ class AcSchedule extends Component {
                 acSettings: arg
             });
 
-        this.doFetch(fetchObj, fullAddress, callback);
+        this.doFetch(fetchObj, fullAddress, callback, this.getAcSettings);
     }
 
-    doFetch(fetchObj, fullAddress, successCallback) {
+    doFetch(fetchObj, fullAddress, successCallback, retryCallback) {
         fetch(fullAddress, fetchObj)
             .then(response => {
                 console.log("response: " + response.status);
 
-                if (!response.ok) {
-                    let error = new Error(response.statusText);
-                    error.statusCode = response.status;
-
-                    response.json().then(data => {
-                        console.log(data);
-                        error.errorMessage = data;
-                        this.setApiFetchError(error);
-                    });
-                    this.setApiFetchError(error);
-                }
-                else {
-                    if (response.status === 204) {
+                switch (response.status) {
+                    case 204:
                         successCallback();
-                        return;
-                    }
+                        break;
+                    case 200:
+                        response.json()
+                            .then(json => successCallback(json))
+                            .catch(err => { this.setState({ error: { isError: true, errorMessage: "Blad deserializacji odpowiedzi serwera do formatu JSON" } }); })
+                        break;
+                    case 401:
+                        sendAuth(retryCallback)
+                        break;
+                    default:
+                        let error = new Error(response.statusText);
+                        error.statusCode = response.status;
 
-                    response.json()
-                        .then(json => successCallback(json))
-                        .catch(err => {
-                            this.setState({
-                                error: {
-                                    isError: true,
-                                    errorMessage: "Blad deserializacji odpowiedzi serwera do formatu JSON"
-                                }
-                            });
-                        })
+                        response.json().then(data => {
+                            console.log(data);
+                            error.errorMessage = data;
+                            this.setApiFetchError(error);
+                        }).catch(() => { this.setApiFetchError(error); });
                 }
-            }).catch(err => {
-                this.setApiFetchError(err);
-            })
+            });
     }
+
 
     setApiFetchError(error) {
         let errorMessage = `${error.message}`;

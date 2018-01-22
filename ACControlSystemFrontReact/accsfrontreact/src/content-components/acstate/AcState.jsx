@@ -4,6 +4,8 @@ import 'bulma/css/bulma.css';
 import CurrentStateTag from './current-state-tag/CurrentStateTag';
 import ToggleStateButton from './ToggleStateButton';
 import ErrorMessageComponent from '../../ErrorMessageComponent';
+import sendAuth from '../../sendAuth.js';
+import Cookies from 'js-cookie';
 
 class AcState extends Component {
     constructor(props) {
@@ -36,24 +38,25 @@ class AcState extends Component {
         let endpointAddress = `${window.apiAddress}/acsetting`;
         let fullAddress = endpointAddress.concat("/123temporaryfaketoken").concat("/defaultOff");
 
-        fetch(fullAddress)
+        let fetchObj = {
+            method: 'get',
+            headers: new Headers({ "Authorization": 'Basic ' + btoa(":" + Cookies.get('token')) })
+        }
+
+        fetch(fullAddress, fetchObj)
             .then(response => {
                 console.log("check turn off response: " + response.status);
 
                 switch (response.status) {
                     case 200:
-                        this.setState({
-                            isTurnOffSettingSet: true
-                        })
+                        this.setState({ isTurnOffSettingSet: true })
+                        break;
+                    case 401:
+                        sendAuth(this.checkTurnOffSetting);
                         break;
                     case 404:
-                        response.json().then(
-                            json => {
-                                this.setState({
-                                    isTurnOffSettingSet: false
-                                })
-                            }
-                        )
+                        //response.json().then(json => { this.setState({ isTurnOffSettingSet: false }) })
+                        this.setState({ isTurnOffSettingSet: false });
                         break;
                     default:
                         break;
@@ -67,24 +70,25 @@ class AcState extends Component {
         let endpointAddress = `${window.apiAddress}/acsetting`;
         let fullAddress = endpointAddress.concat("/123temporaryfaketoken").concat("/defaultOn");
 
-        fetch(fullAddress)
+        let fetchObj = {
+            method: 'get',
+            headers: new Headers({ "Authorization": 'Basic ' + btoa(":" + Cookies.get('token')) })
+        }
+
+        fetch(fullAddress, fetchObj)
             .then(response => {
                 console.log("check turn on response: " + response.status);
 
                 switch (response.status) {
                     case 200:
-                        this.setState({
-                            isTurnOnSettingSet: true
-                        })
+                        this.setState({ isTurnOnSettingSet: true })
+                        break;
+                    case 401:
+                        sendAuth(this.checkTurnOnSetting);
                         break;
                     case 404:
-                        response.json().then(
-                            json => {
-                                this.setState({
-                                    isTurnOnSettingSet: false
-                                })
-                            }
-                        )
+                        //response.json().then(json => { this.setState({ isTurnOnSettingSet: false }) })
+                        this.setState({ isTurnOnSettingSet: false });
                         break;
                     default:
                         break;
@@ -98,8 +102,12 @@ class AcState extends Component {
     getCurrentAcState() {
         let endpointAddress = `${window.apiAddress}/acstate`;
         console.log("get " + endpointAddress);
+        let fetchObj = {
+            method: 'get',
+            headers: new Headers({ "Authorization": 'Basic ' + btoa(":" + Cookies.get('token')) })
+        }
 
-        fetch(endpointAddress).then(response => {
+        fetch(endpointAddress, fetchObj).then(response => {
             console.log(response.status);
 
             switch (response.status) {
@@ -107,13 +115,12 @@ class AcState extends Component {
                     this.setState({ currentAcState: "unknown" });
                     break;
                 case 200:
-                    response
-                        .json()
+                    response.json()
                         .then(json => {
                             console.log(json);
-                            if (json.isTurnOff === true) 
+                            if (json.isTurnOff === true)
                                 this.setState({ currentAcState: "off" });
-                            else 
+                            else
                                 this.setState({ currentAcState: "on" });
                         })
                         .catch(err => {
@@ -124,6 +131,9 @@ class AcState extends Component {
                                 }
                             });
                         });
+                    break;
+                case 401:
+                    sendAuth(this.getCurrentAcState);
                     break;
                 default:
                     let error = new Error(response.statusText);
@@ -164,14 +174,14 @@ class AcState extends Component {
                 <ToggleStateButton
                     actionType="on"
                     stateRefreshCallback={this.getCurrentAcState}
-                    setErrorCallback={this.setApiFetchError} 
-                    />
+                    setErrorCallback={this.setApiFetchError}
+                />
                 &emsp;
                 <ToggleStateButton
                     actionType="off"
                     stateRefreshCallback={this.getCurrentAcState}
-                    setErrorCallback={this.setApiFetchError} 
-                    />
+                    setErrorCallback={this.setApiFetchError}
+                />
             </Fragment>
 
         let turnOnOffError =
@@ -181,7 +191,7 @@ class AcState extends Component {
                 </div>
                 <div className="message-body">
                     Nie można sterować ręcznie klimatyzatorem!<br />
-                    Ustawienie 
+                    Ustawienie
                     {!this.state.isTurnOffSettingSet ? ' wyłączające ' : null}
                     {!this.state.isTurnOffSettingSet && !this.state.isTurnOnSettingSet ? ' i ' : null}
                     {!this.state.isTurnOnSettingSet ? ' włączające ' : null}

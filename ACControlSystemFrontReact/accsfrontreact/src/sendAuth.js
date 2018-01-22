@@ -1,5 +1,4 @@
 import Cookies from 'js-cookie';
-import { sha256 } from 'js-sha256';
 
  let sendAuth = function (refreshCallback) {
     let endpointAddress = `${window.apiAddress}/auth`;

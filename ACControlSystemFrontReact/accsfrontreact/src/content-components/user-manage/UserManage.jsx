@@ -3,6 +3,7 @@ import ErrorMessageComponent from '../../ErrorMessageComponent';
 import UsersTable from './UsersTable';
 import UsersAddEditForm from './UsersAddEditForm';
 import 'bulma/css/bulma.css';
+import sendAuth from '../../sendAuth.js';
 
 
 class UserManage extends Component {
@@ -38,8 +39,7 @@ class UserManage extends Component {
             console.log(response.status);
             switch (response.status) {
                 case 200:
-                    response
-                        .json()
+                    response.json()
                         .then(json => {
                             console.log(json);
                             this.setState({
@@ -47,24 +47,19 @@ class UserManage extends Component {
                                 selectedRow: 0
                             })
                         })
-                        .catch(err => {
-                            this.setState({
-                                error: {
-                                    isError: true,
-                                    errorMessage: "Blad deserializacji odpowiedzi serwera do formatu JSON"
-                                }
-                            });
-                        });
+                        .catch(err => { this.setState({ error: { isError: true, errorMessage: "Blad deserializacji odpowiedzi serwera do formatu JSON" } }); });
                     break;
                 default:
+                    if(response.status===401)
+                        sendAuth(this.getAllUsers);
+
                     let error = new Error(response.statusText);
                     error.statusCode = response.status;
                     response.json().then(x => {
                         console.log(x);
                         error.errorMessage = x;
                         this.setApiFetchError(error);
-                    });
-                    this.setApiFetchError(error);
+                    }).catch(()=>{this.setApiFetchError(error);}); 
             }
         }).catch(err => {
             console.log(err);

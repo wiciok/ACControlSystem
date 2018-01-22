@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import UsersTableRow from './UsersTableRow';
 
 class UsersTable extends Component {
@@ -22,16 +22,14 @@ class UsersTable extends Component {
                                 data={item}
                                 key={item.id}
                                 isActive={this.props.selectedRow === item.id}
-                                onRowClicked={this
-                                .props
-                                .onRowClicked}/>)}
+                                onRowClicked={this.props.onRowClicked}
+                            />)}
                     </tbody>
                 </table>
             );
         } else {
             return <h4>Brak zapisanych użytkowników</h4>
         }
-
     }
 }
 

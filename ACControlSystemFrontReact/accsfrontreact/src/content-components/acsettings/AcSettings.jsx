@@ -4,6 +4,8 @@ import AcSettingsSelect from './AcSettingsSelect';
 import AcSettingTable from './AcSettingTable';
 import AcSettingAdd from './AcSettingAdd';
 import AcSettingsDefaultOnOffStatus from './AcSettingsDefaultOnOffStatus';
+import sendAuth from '../../sendAuth.js';
+import Cookies from 'js-cookie';
 
 class AcSettings extends Component {
     constructor(props) {
@@ -52,51 +54,45 @@ class AcSettings extends Component {
     }
 
     onDeleteButtonClick() {
-        let fullAddress = this.endpointAddress.concat("/123temporaryfaketoken/").concat(this.state.currentAcSetting.uniqueId);
+        let fullAddress = this.endpointAddress.concat(this.state.currentAcSetting.uniqueId);
         let fetchObj = {
-            method: 'delete'
+            method: 'delete',
+            headers: new Headers({ "Authorization": 'Basic ' + btoa(":" + Cookies.get('token')) })
         }
 
-        console.log(fetchObj);
-
-        this.doFetch(fetchObj, fullAddress, this.getAcSettings, this.removeButton)
+        this.doFetch(fetchObj, fullAddress, this.getAcSettings, this.removeButton, this.onDeleteButtonClick)
     }
 
     onSetAsDefaultButtonClick() {
         let isOnOff = this.state.currentAcSetting.isTurnOff ? "/defaultOff/" : "/defaultOn/"
 
-        let fullAddress = this.endpointAddress
-            .concat("/123temporaryfaketoken")
-            .concat(isOnOff)
-            .concat(this.state.currentAcSetting.uniqueId);
+        let fullAddress = this.endpointAddress.concat(isOnOff).concat(this.state.currentAcSetting.uniqueId);
         let fetchObj = {
-            method: 'post'
+            method: 'post',
+            headers: new Headers({ "Authorization": 'Basic ' + btoa(":" + Cookies.get('token')) })
         }
 
-        console.log(fetchObj);
-
-        this.doFetch(fetchObj, fullAddress, this.getAcSettings, this.setDefaultButton)
+        this.doFetch(fetchObj, fullAddress, this.getAcSettings, this.setDefaultButton, this.onSetAsDefaultButtonClick)
     }
 
     onAcSettingAddButtonClick(newObj, button) {
         let newSettingType = "/nec"; //or /raw
 
-        let fullAddress = this.endpointAddress.concat("/123temporaryfaketoken").concat(newSettingType);
+        let fullAddress = this.endpointAddress.concat(newSettingType);
         let fetchObj = {
             method: 'post',
             body: JSON.stringify(newObj),
-            headers: new Headers({ "Content-Type": "application/json" })
+            headers: new Headers([["Content-Type", "application/json"], ["Authorization", 'Basic ' + btoa(":" + Cookies.get('token'))]])
         }
-        console.log(fetchObj);
 
-        this.doFetch(fetchObj, fullAddress, this.getAcSettings, button)
+        this.doFetch(fetchObj, fullAddress, this.getAcSettings, button, this.onAcSettingAddButtonClick)
     }
 
 
     getAcSettings() {
-        let fullAddress = this.endpointAddress.concat("/123temporaryfaketoken");
         let fetchObj = {
-            method: 'get'
+            method: 'get',
+            headers: new Headers({ "Authorization": 'Basic ' + btoa(":" + Cookies.get('token')) })
         }
 
         let successCallback = json => {
@@ -105,67 +101,61 @@ class AcSettings extends Component {
             });
         }
 
-        this.doFetch(fetchObj, fullAddress, successCallback, null)
+        this.doFetch(fetchObj, this.endpointAddress, successCallback, null, this.getAcSettings)
     }
 
     getTurnOnOffSetting() {
         let endpointAddress = `${window.apiAddress}/acsetting`;
-        let fullAddress = endpointAddress.concat("/123temporaryfaketoken").concat("/defaultOn");
+        let fullAddress = endpointAddress.concat("/defaultOn");
+        let fetchObj = {
+            method: 'get',
+            headers: new Headers({ "Authorization": 'Basic ' + btoa(":" + Cookies.get('token')) })
+        }
 
-        fetch(fullAddress)
+        fetch(fullAddress, fetchObj)
             .then(response => {
                 console.log("check turn on response: " + response.status);
 
                 switch (response.status) {
                     case 200:
-                        response.json().then(data => {
-                            this.setState({
-                                defaultOn: data
-                            });
-                        })
+                        response.json().then(data => { this.setState({ defaultOn: data }); })
+                        break;
+                    case 401:
+                        sendAuth(this.getTurnOnOffSetting);
                         break;
                     case 404:
-                        this.setState({
-                            defaultOn: null
-                        });
+                        this.setState({ defaultOn: null });
                         break;
                     default:
                         break;
                 }
-            }).catch(err => {
-                this.setApiFetchError();
-            })
+            }).catch(err => { this.setApiFetchError(); })
 
         endpointAddress = `${window.apiAddress}/acsetting`;
-        fullAddress = endpointAddress.concat("/123temporaryfaketoken").concat("/defaultOff");
+        fullAddress = endpointAddress.concat("/defaultOff");
 
-        fetch(fullAddress)
+        fetch(fullAddress, fetchObj)
             .then(response => {
                 console.log("check turn off response: " + response.status);
 
                 switch (response.status) {
                     case 200:
-                        response.json().then(data => {
-                            this.setState({
-                                defaultOff: data
-                            },()=>console.log(data))
-                        })
+                        response.json().then(data => { this.setState({ defaultOff: data }, () => console.log(data)) })
+                        break;
+                    case 401:
+                        sendAuth(this.getTurnOnOffSetting);
                         break;
                     case 404:
-                        this.setState({
-                            defaultOff: null
-                        })
+                        this.setState({ defaultOff: null })
                         break;
                     default:
                         break;
                 }
-            }).catch(err => {
-                this.setApiFetchError();
-            })
+            }).catch(err => { this.setApiFetchError(); })
     }
 
 
-    doFetch(fetchObj, fullAddress, successCallback, button) {
+    doFetch(fetchObj, fullAddress, successCallback, button, retryCallback) {
         this.changeButtonInProgress(true, button);
 
         fetch(fullAddress, fetchObj)
@@ -175,6 +165,10 @@ class AcSettings extends Component {
                 this.changeButtonInProgress(false, button);
 
                 if (!response.ok) {
+
+                    if (response.status === 401)
+                        sendAuth(retryCallback);
+
                     let error = new Error(response.statusText);
                     error.statusCode = response.status;
 
@@ -182,13 +176,11 @@ class AcSettings extends Component {
                         console.log(data);
                         error.errorMessage = data;
                         this.setApiFetchError(error);
-                    });
-                    this.setApiFetchError(error);
+                    }).catch(() => { this.setApiFetchError(error); });
                 }
 
                 else {
-                    response
-                        .json()
+                    response.json()
                         .then(json => successCallback(json))
                         .catch(err => { this.setApiFetchError(err) });
                 }

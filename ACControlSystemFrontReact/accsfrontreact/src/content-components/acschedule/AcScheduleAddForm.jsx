@@ -95,11 +95,11 @@ class AcScheduleAddForm extends Component {
                 </button>
             : <button
                 className="button is-link"
-                onClick={this.onSaveButtonClick}
                 disabled
                 ref={saveButton => this.saveButton = saveButton}>
                 Zapisz
                 </button>
+
         return (
             <Fragment>
                 <label>Cykliczność reguły:</label>
