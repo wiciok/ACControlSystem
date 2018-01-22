@@ -70,16 +70,15 @@ class UserAddEditForm extends Component {
             }
         }
         fetchObj.headers = new Headers({ "Content-Type": "application/json" });
-        let fullAddress = this.endpointAddress.concat("/123temporaryfaketoken");
 
-        this.doFetch(fetchObj, fullAddress, this.saveButton, this.onSaveButtonClick);
+        this.doFetch(fetchObj, this.endpointAddress, this.saveButton, this.onSaveButtonClick);
     }
 
     onDeleteButtonClick() {
         let fetchObj = {
             method: 'delete'
         }
-        let fullAddress = this.endpointAddress.concat("/123temporaryfaketoken").concat(`/${this.props.editedDeviceData.id}`);
+        let fullAddress = this.endpointAddress.concat(`/${this.props.editedDeviceData.id}`);
 
         this.doFetch(fetchObj, fullAddress, this.removeButton, this.onDeleteButtonClick);
     }

@@ -1,22 +1,19 @@
-import React, {Component} from 'react';
+import React from 'react';
 import './AcDeviceTableRow.css'
 
-class AcDeviceTableRow extends Component {
-    
-
-    render() {
-        let rowCssClass="";
-        if(this.props.isActive){
-            rowCssClass="is-selected"
-        }
-        return (
-            <tr onClick={e=>this.props.onRowClicked(this.props.data.id)} className={rowCssClass}>
-                <th>{this.props.data.id}</th>
-                <td>{this.props.data.brand}</td>
-                <td>{this.props.data.model}</td>
-            </tr>
-        );
+const AcDeviceTableRow = (props) => {
+    let rowCssClass = "";
+    if (props.isActive) {
+        rowCssClass = "is-selected"
     }
+    return (
+        <tr onClick={e => props.onRowClicked(props.data.id)} className={rowCssClass}>
+            <th>{props.data.id}</th>
+            <td>{props.data.brand}</td>
+            <td>{props.data.model}</td>
+        </tr>
+    );
 }
 
 export default AcDeviceTableRow;
+

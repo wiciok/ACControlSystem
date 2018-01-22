@@ -4,10 +4,10 @@ import './AcScheduleTableRow.css'
 class AcScheduleTableRow extends Component {
     constructor(props) {
         super(props);
-        
-        this.onRowHover=this.onRowHover.bind(this);
-        this.onRowUnHover=this.onRowUnHover.bind(this);
-        this.getAcSettingString=this.getAcSettingString.bind(this);
+
+        this.onRowHover = this.onRowHover.bind(this);
+        this.onRowUnHover = this.onRowUnHover.bind(this);
+        this.getAcSettingString = this.getAcSettingString.bind(this);
     }
 
 
@@ -26,38 +26,37 @@ class AcScheduleTableRow extends Component {
         }
     }
 
-    onRowHover(){
+    onRowHover() {
         this.row1.classList.add("is-selected");
         this.row2.classList.add("is-selected");
     }
 
-    onRowUnHover(){
+    onRowUnHover() {
         this.row1.classList.remove("is-selected");
         this.row2.classList.remove("is-selected");
     }
 
-    getAcSettingString(){
+    getAcSettingString() {
         let currentAcSetting;
-        
-        for(let acSetting in this.props.acSettings){
-            if(acSetting.uniqueId===this.props.data.acSettingGuid){
-                currentAcSetting=acSetting;
+
+        for (let acSetting in this.props.acSettings) {
+            if (acSetting.uniqueId === this.props.data.acSettingGuid) {
+                currentAcSetting = acSetting;
                 break;
             }
         }
         let readableName = "";
-        if(!currentAcSetting){
-            readableName="Brak ustawienia o danym id!";
+        if (!currentAcSetting) {
+            readableName = "Brak ustawienia o danym id!";
             return readableName;
         }
-        
-        if (currentAcSetting.settings) {
+
+        if (currentAcSetting.settings)
             for (let key in currentAcSetting.settings) {
                 let value = currentAcSetting.settings[key];
                 readableName = readableName.concat(`${key} : ${value}`);
             }
-        }
-        else 
+        else
             readableName = readableName.concat("(Brak ustawień)");
         readableName = readableName.concat(`, id: ${currentAcSetting.uniqueId}`);
 
@@ -71,13 +70,13 @@ class AcScheduleTableRow extends Component {
 
         return (
             <Fragment>
-                <tr ref={row => this.row1=row} onMouseOver={this.onRowHover} onMouseLeave={this.onRowUnHover}>
+                <tr ref={row => this.row1 = row} onMouseOver={this.onRowHover} onMouseLeave={this.onRowUnHover}>
                     <th>{this.props.data.id}</th>
                     <td>{this.props.scheduleArray[this.props.data.scheduleType]}</td>
                     <td>{this.getDateFormatted(startDate, this.props.data.scheduleType)}</td>
                     <td>{this.getDateFormatted(endDate, this.props.data.scheduleType)}</td>
                 </tr>
-                <tr ref={row => this.row2=row} onMouseOver={this.onRowHover} onMouseLeave={this.onRowUnHover}>
+                <tr ref={row => this.row2 = row} onMouseOver={this.onRowHover} onMouseLeave={this.onRowUnHover}>
                     <td></td>
 
                     <td colSpan="2">
@@ -85,9 +84,9 @@ class AcScheduleTableRow extends Component {
                     </td>
                     <td>
                         <div className="control">
-                            <button 
-                                className="button is-link is-danger is-small" 
-                                onClick={e=>this.props.onDeleteButtonClick(this.props.data.id)} 
+                            <button
+                                className="button is-link is-danger is-small"
+                                onClick={e => this.props.onDeleteButtonClick(this.props.data.id)}
                                 ref={removeButton => this.removeButton = removeButton}>
                                 Usuń
                             </button>
@@ -98,5 +97,7 @@ class AcScheduleTableRow extends Component {
         );
     }
 }
+
+
 
 export default AcScheduleTableRow;

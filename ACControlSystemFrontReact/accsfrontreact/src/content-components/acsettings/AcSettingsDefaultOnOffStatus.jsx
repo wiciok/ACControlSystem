@@ -1,31 +1,28 @@
-import React, { Component, Fragment } from 'react';
+import React, { Fragment } from 'react';
 
-class AcSettingsDefaultOnOffStatus extends Component {
-    render() {
-        let turnOnTag;
-        let turnOffTag;
+const AcSettingsDefaultOnOffStatus = (props) => {
+    let turnOnTag, turnOffTag;
 
-        if (this.props.defaultOn)
-            turnOnTag = <span className="tag is-success is-medium">{this.props.defaultOn.uniqueId}</span>
-        else
-            turnOnTag = <span className="tag is-danger is-medium" >Brak!</span>
+    if (props.defaultOn)
+        turnOnTag = <span className="tag is-success is-medium">{props.defaultOn.uniqueId}</span>
+    else
+        turnOnTag = <span className="tag is-danger is-medium" >Brak!</span>
 
 
-        if (this.props.defaultOff) 
-            turnOffTag = <span className="tag is-success is-medium">{this.props.defaultOff.uniqueId}</span>
-        else
-            turnOffTag = <span className="tag is-danger is-medium">Brak!</span>
+    if (props.defaultOff)
+        turnOffTag = <span className="tag is-success is-medium">{props.defaultOff.uniqueId}</span>
+    else
+        turnOffTag = <span className="tag is-danger is-medium">Brak!</span>
 
-        return (
-            <Fragment>
-                <label>Ustawienie włączania:</label>&emsp;
-                {turnOnTag}
-                <br/><br/>
-                <label>Ustawienie wyłączania:</label>&emsp;
-                {turnOffTag}
-            </Fragment>
-        );
-    }
+    return (
+        <Fragment>
+            <label>Ustawienie włączania:</label>&emsp;
+            {turnOnTag}
+            <br /><br />
+            <label>Ustawienie wyłączania:</label>&emsp;
+            {turnOffTag}
+        </Fragment>
+    );
 }
 
 export default AcSettingsDefaultOnOffStatus;

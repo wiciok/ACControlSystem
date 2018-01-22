@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from 'react';
+
 import sendAuth from './../../utils/sendAuth.js';
 import { headerAuthAndContentTypeJson, headerAuth } from './../../utils/authenticationHeaders.js';
 
@@ -59,12 +60,10 @@ class AcDeviceAddEditForm extends Component {
     }
 
     onSetActiveButtonClick() {
-        let headers = headerAuthAndContentTypeJson
-
         let fetchObj = {
             method: 'put',
             body: `${this.props.editedDeviceData.id}`,
-            headers: headers
+            headers: headerAuthAndContentTypeJson
         }
         let fullAddress = this.endpointAddress.concat("/current");
 
@@ -90,9 +89,8 @@ class AcDeviceAddEditForm extends Component {
                 this.changeButtonInProgress(false, button);
 
                 if (!response.ok) {
-                    if (response.status === 401) {
+                    if (response.status === 401)
                         sendAuth(retryCallback);
-                    }
 
                     let error = new Error(response.statusText);
                     error.statusCode = response.status;
@@ -141,7 +139,8 @@ class AcDeviceAddEditForm extends Component {
                             className="input"
                             type="text"
                             placeholder="Wpisz tekst"
-                            ref={input => this.brandInput = input} />
+                            ref={input => this.brandInput = input}
+                        />
                     </div>
                 </div>
 
@@ -152,7 +151,8 @@ class AcDeviceAddEditForm extends Component {
                             className="input"
                             type="text"
                             placeholder="Wpisz tekst"
-                            ref={input => this.modelInput = input} />
+                            ref={input => this.modelInput = input}
+                        />
                     </div>
                 </div>
 
@@ -161,7 +161,9 @@ class AcDeviceAddEditForm extends Component {
                         <button
                             className="button is-link"
                             onClick={this.onSaveButtonClick}
-                            ref={saveButton => this.saveButton = saveButton}>Zapisz</button>
+                            ref={saveButton => this.saveButton = saveButton}>
+                            Zapisz
+                        </button>
                     </div>
                     {this.props.isEdit ? removeButton : null}
                     {this.props.isEdit ? setActiveButton : null}

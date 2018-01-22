@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import 'bulma/css/bulma.css';
 
+import { headerAuth } from './../../utils/authenticationHeaders.js';
 import sendAuth from './../../utils/sendAuth.js';
 import setApiFetchError from './../../utils/setApiFetchError.js';
 
@@ -8,7 +9,6 @@ import ErrorMessageComponent from '../../ErrorMessageComponent';
 import AcDevicesTable from './AcDevicesTable';
 import AcDeviceAddEditForm from './AcDeviceAddEditForm';
 import ActiveAcDeviceBox from './ActiveAcDeviceBox';
-import { headerAuth } from './../../utils/authenticationHeaders.js';
 
 class AcDevice extends Component {
     constructor(props) {
@@ -16,7 +16,7 @@ class AcDevice extends Component {
 
         this.onRowSelected = this.onRowSelected.bind(this);
         this.getAllAcDevices = this.getAllAcDevices.bind(this);
-        this.getActiveAcDevice=this.getActiveAcDevice.bind(this);
+        this.getActiveAcDevice = this.getActiveAcDevice.bind(this);
         this.setApiFetchError = setApiFetchError.bind(this);
         this.refresh = this.refresh.bind(this);
 
@@ -96,19 +96,9 @@ class AcDevice extends Component {
 
                 switch (response.status) {
                     case 200:
-                        response.json().then(json => {
-                            this.setState({
-                                allDevicesData: json,
-                                selectedRow: 0
-                            })
-                        }).catch(err => {
-                            this.setState({
-                                error: {
-                                    isError: true,
-                                    errorMessage: "Blad deserializacji odpowiedzi serwera do formatu JSON"
-                                }
-                            });
-                        });
+                        response.json()
+                            .then(json => { this.setState({ allDevicesData: json, selectedRow: 0 }) })
+                            .catch(err => { this.setState({ error: { isError: true, errorMessage: "Blad deserializacji odpowiedzi serwera do formatu JSON" } }); });
                         break;
                     case 401:
                         sendAuth(this.getAllAcDevices);
@@ -137,14 +127,7 @@ class AcDevice extends Component {
                 <ErrorMessageComponent
                     isVisible={this.state.error.isError}
                     bodyText={this.state.error.errorMessage}
-                    onChangeErrorState={e => {
-                        this.setState({
-                            error: {
-                                isError: false,
-                                errorMessage: null
-                            }
-                        })
-                    }} />
+                    onChangeErrorState={() => { this.setState({ error: { isError: false, errorMessage: null } }) }} />
 
                 <ActiveAcDeviceBox activeAcDevice={this.state.activeDevice} />
 
@@ -160,7 +143,7 @@ class AcDevice extends Component {
                                 onRowClicked={this.onRowSelected}
                             />
                             <div className="control">
-                                <button className="button is-link is-success" onClick={e => this.onRowSelected(0)}>Dodaj nowy</button>
+                                <button className="button is-link is-success" onClick={() => this.onRowSelected(0)}>Dodaj nowy</button>
                             </div>
                         </div>
                         <div className="column">

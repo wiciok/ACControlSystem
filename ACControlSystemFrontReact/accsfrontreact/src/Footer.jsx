@@ -1,20 +1,15 @@
-import React, {Component} from 'react';
+import React from 'react';
 import 'bulma/css/bulma.css';
 
-class Footer extends Component {
-    render() {
-        return (
-            <footer className="footer">
-                <div className="container">
-                    <div className="content has-text-centered">
-                        <p>
-                            Witold Karaś, 2017
+const Footer = () =>
+    <footer className="footer">
+        <div className="container">
+            <div className="content has-text-centered">
+                <p>
+                    Witold Karaś, 2017
                         </p>
-                    </div>
-                </div>
-            </footer>
-        );
-    }
-};
+            </div>
+        </div>
+    </footer>
 
 export default Footer;

@@ -37,7 +37,7 @@ class AcState extends Component {
 
     checkTurnOffSetting() {
         let endpointAddress = `${window.apiAddress}/acsetting`;
-        let fullAddress = endpointAddress.concat("/123temporaryfaketoken").concat("/defaultOff");
+        let fullAddress = endpointAddress.concat("/defaultOff");
 
         let fetchObj = {
             method: 'get',
@@ -68,7 +68,7 @@ class AcState extends Component {
 
     checkTurnOnSetting() {
         let endpointAddress = `${window.apiAddress}/acsetting`;
-        let fullAddress = endpointAddress.concat("/123temporaryfaketoken").concat("/defaultOn");
+        let fullAddress = endpointAddress.concat("/defaultOn");
 
         let fetchObj = {
             method: 'get',

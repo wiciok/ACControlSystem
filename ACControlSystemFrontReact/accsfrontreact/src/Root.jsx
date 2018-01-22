@@ -1,15 +1,11 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { CookiesProvider } from 'react-cookie';
 import App from './App';
 
-class Root extends Component {
-    render() {
-        return (
-            <CookiesProvider>
-                <App />
-            </CookiesProvider>
-        );
-    }
-}
+
+const Root = () =>
+    <CookiesProvider>
+        <App />
+    </CookiesProvider>
 
 export default Root;
