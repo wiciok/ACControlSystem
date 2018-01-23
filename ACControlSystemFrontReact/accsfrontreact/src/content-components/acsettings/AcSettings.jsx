@@ -120,7 +120,7 @@ class AcSettings extends Component {
                         response.json().then(data => { this.setState({ defaultOn: data }); })
                         break;
                     case 401:
-                        sendAuth(this.getTurnOnOffSetting);
+                        sendAuth(this.getTurnOnOffSetting, this.props.onLogout);
                         break;
                     case 404:
                         this.setState({ defaultOn: null });
@@ -141,7 +141,7 @@ class AcSettings extends Component {
                         response.json().then(data => { this.setState({ defaultOff: data })});
                         break;
                     case 401:
-                        sendAuth(this.getTurnOnOffSetting);
+                        sendAuth(this.getTurnOnOffSetting, this.props.onLogout);
                         break;
                     case 404:
                         this.setState({ defaultOff: null })
@@ -163,7 +163,7 @@ class AcSettings extends Component {
                 if (!response.ok) {
 
                     if (response.status === 401)
-                        sendAuth(retryCallback);
+                        sendAuth(retryCallback, this.props.onLogout);
 
                     let error = new Error(response.statusText);
                     error.statusCode = response.status;

@@ -10,7 +10,8 @@ const ContentArea = (props) =>
                 key={index}
                 exact
                 path={innerItem.link}
-                component={innerItem.componentType}
+                //component={innerItem.componentType}
+                render={()=><innerItem.componentType onLogout={props.onLogout}/>}
             />)))
         )}
     </Fragment>

@@ -1,6 +1,6 @@
 import Cookies from 'js-cookie';
 
- let sendAuth = function (refreshCallback) {
+ let sendAuth = function (refreshCallback, logoutCallback) {
     let endpointAddress = `${window.apiAddress}/auth`;
     let authObj = {
         EmailAddress: Cookies.get('userEmail') || null,
@@ -22,9 +22,7 @@ import Cookies from 'js-cookie';
             }) 
         }
         else if (response.status === 401) {
-            Cookies.remove('token');
-            Cookies.remove('userEmail');
-            Cookies.remove('userPasswordHash');
+            logoutCallback();
             console.log("logging out - server returned unauthorized")
         }
     })

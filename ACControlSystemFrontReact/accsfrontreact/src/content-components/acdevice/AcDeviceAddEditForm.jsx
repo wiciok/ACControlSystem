@@ -89,7 +89,7 @@ class AcDeviceAddEditForm extends Component {
 
                 if (!response.ok) {
                     if (response.status === 401)
-                        sendAuth(retryCallback);
+                        sendAuth(retryCallback, this.props.onLogout);
 
                     let error = new Error(response.statusText);
                     error.statusCode = response.status;

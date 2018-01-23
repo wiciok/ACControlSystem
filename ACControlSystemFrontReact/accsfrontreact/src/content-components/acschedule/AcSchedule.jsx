@@ -63,7 +63,7 @@ class AcSchedule extends Component {
                         this.setState({ isTurnOffSettingSet: false });
                         break;
                     case 401:
-                        sendAuth(this.checkTurnOffSetting);
+                        sendAuth(this.checkTurnOffSetting, this.props.onLogout);
                         break;
                     default:
                         break;
@@ -140,7 +140,7 @@ class AcSchedule extends Component {
                             .catch(err => { this.setState({ error: { isError: true, errorMessage: "Blad deserializacji odpowiedzi serwera do formatu JSON" } }); })
                         break;
                     case 401:
-                        sendAuth(retryCallback)
+                        sendAuth(retryCallback, this.props.onLogout);
                         break;
                     default:
                         let error = new Error(response.statusText);

@@ -52,7 +52,7 @@ class AcState extends Component {
                         this.setState({ isTurnOffSettingSet: true })
                         break;
                     case 401:
-                        sendAuth(this.checkTurnOffSetting);
+                        sendAuth(this.checkTurnOffSetting, this.props.onLogout);
                         break;
                     case 404:
                         //response.json().then(json => { this.setState({ isTurnOffSettingSet: false }) })
@@ -83,7 +83,7 @@ class AcState extends Component {
                         this.setState({ isTurnOnSettingSet: true })
                         break;
                     case 401:
-                        sendAuth(this.checkTurnOnSetting);
+                        sendAuth(this.checkTurnOnSetting, this.props.onLogout);
                         break;
                     case 404:
                         //response.json().then(json => { this.setState({ isTurnOnSettingSet: false }) })
@@ -130,7 +130,7 @@ class AcState extends Component {
                         });
                     break;
                 case 401:
-                    sendAuth(this.getCurrentAcState);
+                    sendAuth(this.getCurrentAcState, this.props.onLogout);
                     break;
                 default:
                     let error = new Error(response.statusText);
@@ -154,6 +154,7 @@ class AcState extends Component {
                     actionType="on"
                     stateRefreshCallback={this.getCurrentAcState}
                     setErrorCallback={this.setApiFetchError}
+                    onLogout={this.props.onLogout}
                 />
                 &emsp;
                 <ToggleStateButton

@@ -31,7 +31,7 @@ class App extends Component {
 
 
     onLogin(email, passHash, token) {
-        let inHour = 1/24;
+        let inHour = 1 / 24;
         let cookieOptions = {
             path: '/',
             expires: inHour
@@ -73,7 +73,10 @@ class App extends Component {
                         <MainMenu categories={(new MainMenuCategoriesAndItems()).menuCategoriesAndItems} />
                     </div>
                     <div className="column is-9">
-                        <ContentArea componentList={(new MainMenuCategoriesAndItems()).menuCategoriesAndItems.map((item) => item.contentComponentInfoList)} />
+                        <ContentArea
+                            componentList={(new MainMenuCategoriesAndItems()).menuCategoriesAndItems.map((item) => item.contentComponentInfoList)}
+                            onLogout={this.onLogout}
+                        />
                     </div>
                 </div>
 

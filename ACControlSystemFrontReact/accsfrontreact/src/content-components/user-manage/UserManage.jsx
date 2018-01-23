@@ -48,7 +48,7 @@ class UserManage extends Component {
                     break;
                 default:
                     if (response.status === 401)
-                        sendAuth(this.getAllUsers);
+                        sendAuth(this.getAllUsers, this.props.onLogout);
 
                     let error = new Error(response.statusText);
                     error.statusCode = response.status;
@@ -102,6 +102,7 @@ class UserManage extends Component {
                                 editedUserData={this.state.selectedRow ? this.state.allUsersData[this.state.selectedRow - 1] : null}
                                 refreshCallback={this.getAllUsers}
                                 errorCallback={this.setApiFetchError}
+                                onLogout={this.props.onLogout}
                             />
                         </div>
                     </div>

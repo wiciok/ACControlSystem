@@ -65,7 +65,7 @@ class AcDevice extends Component {
                     case 404:
                         return;
                     case 401:
-                        sendAuth(this.getActiveAcDevice);
+                        sendAuth(this.getActiveAcDevice, this.props.onLogout);
                         break;
                     default:
                         response.json().then(data => {
@@ -99,7 +99,7 @@ class AcDevice extends Component {
                             .catch(err => { this.setState({ error: { isError: true, errorMessage: "Blad deserializacji odpowiedzi serwera do formatu JSON" } }); });
                         break;
                     case 401:
-                        sendAuth(this.getAllAcDevices);
+                        sendAuth(this.getAllAcDevices, this.props.onLogout);
                         break;
                     default:
                         response.json().then(data => {
@@ -150,6 +150,7 @@ class AcDevice extends Component {
                                 editedDeviceData={this.state.selectedRow ? this.state.allDevicesData[this.state.selectedRow - 1] : null}
                                 refreshCallback={this.refresh}
                                 errorCallback={this.setApiFetchError}
+                                onLogout={this.props.onLogout}
                             />
                         </div>
                     </div>

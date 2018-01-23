@@ -62,8 +62,7 @@ class ToggleStateButton extends Component {
 
             if (!response.ok) {
                 if (response.status === 401)
-                    sendAuth(this.toggleStateFunc);
-
+                    sendAuth(this.toggleStateFunc, this.props.onLogout);
 
                 let error = new Error(response.statusText);
                 error.statusCode = response.status;
