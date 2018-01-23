@@ -4,7 +4,7 @@ import AcScheduleTable from './AcScheduleTable';
 import AcScheduleAddForm from './AcScheduleAddForm';
 import sendAuth from './../../utils/sendAuth.js';
 import setApiFetchError from './../../utils/setApiFetchError.js';
-import { headerAuthAndContentTypeJson, headerAuth } from './../../utils/authenticationHeaders.js';
+import { headerAuthAndContentTypeJsonFun, headerAuthFun } from './../../utils/authenticationHeaders.js';
 
 class AcSchedule extends Component {
     constructor(props) {
@@ -48,7 +48,7 @@ class AcSchedule extends Component {
 
         let fetchObj = {
             method: 'get',
-            headers: headerAuth
+            headers: headerAuthFun()
         }
 
         fetch(fullAddress, fetchObj)
@@ -77,7 +77,7 @@ class AcSchedule extends Component {
     getAllSchedulesData() {
         let fetchObj = {
             method: 'get',
-            headers: headerAuth
+            headers: headerAuthFun()
         };
         this.doFetch(fetchObj, this.endpointAddress, this.changeAllSchedulesState, this.getAllSchedulesData);
     }
@@ -93,7 +93,7 @@ class AcSchedule extends Component {
 
         let fetchObj = {
             method: 'delete',
-            headers: headerAuth
+            headers: headerAuthFun()
         };
 
         this.doFetch(fetchObj, fullAddress, this.getAllSchedulesData, this.removeSchedule);
@@ -103,7 +103,7 @@ class AcSchedule extends Component {
         let fetchObj = {
             method: 'post',
             body: JSON.stringify(acSchedule),
-            headers: headerAuthAndContentTypeJson,
+            headers: headerAuthAndContentTypeJsonFun(),
         };
 
         this.doFetch(fetchObj, this.endpointAddress, this.getAllSchedulesData, this.addNewSchedule);
@@ -115,7 +115,7 @@ class AcSchedule extends Component {
 
         let fetchObj = {
             method: 'get',
-            headers: headerAuth
+            headers: headerAuthFun()
         }
 
         let callback = (arg) =>

@@ -5,7 +5,7 @@ import 'bulma/css/bulma.css';
 import 'font-awesome/css/font-awesome.min.css'
 
 import sendAuth from './../../utils/sendAuth.js';
-import { headerAuth } from './../../utils/authenticationHeaders.js';
+import { headerAuthFun, headerAuthAndContentTypeJsonFun } from './../../utils/authenticationHeaders.js';
 
 import EmailInput from './EmailInput';
 import PasswordInput from './PasswordInput';
@@ -54,10 +54,8 @@ class UserAddEditForm extends Component {
 
     onSaveButtonClick() {
         let userRegisterObject = {
-            authenticationData: {
-                EmailAddress: this.state.emailAddress,
-                Password: sha256(this.state.password)
-            }
+            EmailAddress: this.state.emailAddress,
+            PasswordHash: sha256(this.state.password)
         }
 
         let fetchObj;
@@ -74,14 +72,15 @@ class UserAddEditForm extends Component {
                 body: JSON.stringify(userRegisterObject)
             }
         }
-        fetchObj.headers = headerAuth
+        fetchObj.headers = headerAuthAndContentTypeJsonFun()
 
         this.doFetch(fetchObj, this.endpointAddress, this.saveButton, this.onSaveButtonClick);
     }
 
     onDeleteButtonClick() {
         let fetchObj = {
-            method: 'delete'
+            method: 'delete',
+            headers: headerAuthFun()
         }
         let fullAddress = this.endpointAddress.concat(`/${this.props.editedDeviceData.id}`);
 

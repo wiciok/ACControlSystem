@@ -48,9 +48,13 @@ class App extends Component {
     }
 
     onLogout() {
-        Cookies.remove('userEmail');
-        Cookies.remove('userPasswordHash');
-        Cookies.remove('token');
+        let cookieOptions = {
+            path: '/'
+        }
+
+        Cookies.remove('userEmail', cookieOptions);
+        Cookies.remove('userPasswordHash', cookieOptions);
+        Cookies.remove('token', cookieOptions);
 
         this.setState({
             userEmail: null,

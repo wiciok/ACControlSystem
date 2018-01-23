@@ -6,7 +6,7 @@ import ToggleStateButton from './ToggleStateButton';
 import ErrorMessageComponent from '../../ErrorMessageComponent';
 import sendAuth from './../../utils/sendAuth.js';
 import setApiFetchError from './../../utils/setApiFetchError.js';
-import { headerAuth } from './../../utils/authenticationHeaders.js';
+import { headerAuthFun } from './../../utils/authenticationHeaders.js';
 
 class AcState extends Component {
     constructor(props) {
@@ -41,7 +41,7 @@ class AcState extends Component {
 
         let fetchObj = {
             method: 'get',
-            headers: headerAuth
+            headers: headerAuthFun()
         }
 
         fetch(fullAddress, fetchObj)
@@ -72,7 +72,7 @@ class AcState extends Component {
 
         let fetchObj = {
             method: 'get',
-            headers: headerAuth
+            headers: headerAuthFun()
         }
 
         fetch(fullAddress, fetchObj)
@@ -103,7 +103,7 @@ class AcState extends Component {
 
         let fetchObj = {
             method: 'get',
-            headers: headerAuth
+            headers: headerAuthFun()
         }
 
         fetch(endpointAddress, fetchObj).then(response => {

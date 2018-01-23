@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import 'bulma/css/bulma.css';
 
-import { headerAuth } from './../../utils/authenticationHeaders.js';
+import { headerAuthFun } from './../../utils/authenticationHeaders.js';
 import sendAuth from './../../utils/sendAuth.js';
 import setApiFetchError from './../../utils/setApiFetchError.js';
 
@@ -48,7 +48,7 @@ class AcDevice extends Component {
 
         let fetchObj = {
             method: 'get',
-            headers: headerAuth
+            headers: headerAuthFun()
         }
 
         fetch(fullAddress, fetchObj)
@@ -58,11 +58,9 @@ class AcDevice extends Component {
 
                 switch (response.status) {
                     case 200:
-                        response.json().then(json => {
-                            this.setState({
-                                activeDevice: json
-                            })
-                        }).catch(err => { error = new Error("Blad deserializacji odpowiedzi serwera do formatu JSON"); });
+                        response.json()
+                        .then(json => {this.setState({activeDevice: json})})
+                        .catch(err => { error = new Error("Blad deserializacji odpowiedzi serwera do formatu JSON"); });
                         break;
                     case 404:
                         return;
@@ -86,7 +84,7 @@ class AcDevice extends Component {
 
         let fetchObj = {
             method: 'get',
-            headers: headerAuth
+            headers: headerAuthFun()
         }
 
         fetch(fullAddress, fetchObj)

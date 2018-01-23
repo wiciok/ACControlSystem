@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 
 import sendAuth from './../../utils/sendAuth.js';
-import { headerAuthAndContentTypeJson, headerAuth } from './../../utils/authenticationHeaders.js';
+import { headerAuthAndContentTypeJsonFun, headerAuthFun } from './../../utils/authenticationHeaders.js';
 
 class AcDeviceAddEditForm extends Component {
     constructor(props) {
@@ -33,8 +33,7 @@ class AcDeviceAddEditForm extends Component {
         }
 
         let fetchObj = {
-            body: JSON.stringify(acDeviceObj),
-            headers: headerAuthAndContentTypeJson,
+            headers: headerAuthAndContentTypeJsonFun(),
         };
 
         if (this.props.isEdit) {
@@ -45,14 +44,14 @@ class AcDeviceAddEditForm extends Component {
             acDeviceObj.id = 0;
             fetchObj.method = 'post';
         }
-
+        fetchObj.body = JSON.stringify(acDeviceObj);
         this.doFetch(fetchObj, this.endpointAddress, this.saveButton, this.onSaveButtonClick);
     }
 
     onDeleteButtonClick() {
         let fetchObj = {
             method: 'delete',
-            headers: headerAuth
+            headers: headerAuthFun()
         }
         let fullAddress = this.endpointAddress.concat(`/${this.props.editedDeviceData.id}`);
 
@@ -63,7 +62,7 @@ class AcDeviceAddEditForm extends Component {
         let fetchObj = {
             method: 'put',
             body: `${this.props.editedDeviceData.id}`,
-            headers: headerAuthAndContentTypeJson
+            headers: headerAuthAndContentTypeJsonFun()
         }
         let fullAddress = this.endpointAddress.concat("/current");
 
@@ -94,7 +93,6 @@ class AcDeviceAddEditForm extends Component {
 
                     let error = new Error(response.statusText);
                     error.statusCode = response.status;
-
                     response.json().then(data => {
                         error.errorMessage = data;
                         this.props.errorCallback(error);

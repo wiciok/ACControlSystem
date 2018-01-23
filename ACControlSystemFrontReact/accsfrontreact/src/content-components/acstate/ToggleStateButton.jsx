@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import sendAuth from './../../utils/sendAuth.js';
 import 'bulma/css/bulma.css';
-import { headerAuthAndContentTypeJson } from './../../utils/authenticationHeaders.js';
+import { headerAuthAndContentTypeJsonFun } from './../../utils/authenticationHeaders.js';
 
 class ToggleStateButton extends Component {
     constructor(props) {
@@ -52,7 +52,7 @@ class ToggleStateButton extends Component {
 
         let fetchObj = {
             method: 'post',
-            headers: headerAuthAndContentTypeJson,
+            headers: headerAuthAndContentTypeJsonFun(),
             body: JSON.stringify(acStateObj)
         }
 

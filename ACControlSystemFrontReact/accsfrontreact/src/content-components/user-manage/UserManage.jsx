@@ -5,6 +5,7 @@ import UsersAddEditForm from './UsersAddEditForm';
 import 'bulma/css/bulma.css';
 import sendAuth from './../../utils/sendAuth.js';
 import setApiFetchError from './../../utils/setApiFetchError.js';
+import { headerAuthFun } from './../../utils/authenticationHeaders.js';
 
 
 class UserManage extends Component {
@@ -33,8 +34,12 @@ class UserManage extends Component {
 
     getAllUsers() {
         let fullAddress = this.endpointAddress.concat("/all");
+        let fetchObj = {
+            method: 'get',
+            headers: headerAuthFun()
+        }
 
-        fetch(fullAddress).then(response => {
+        fetch(fullAddress, fetchObj).then(response => {
             switch (response.status) {
                 case 200:
                     response.json()

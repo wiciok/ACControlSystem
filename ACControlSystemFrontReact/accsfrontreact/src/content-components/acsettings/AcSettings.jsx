@@ -6,7 +6,7 @@ import AcSettingAdd from './AcSettingAdd';
 import AcSettingsDefaultOnOffStatus from './AcSettingsDefaultOnOffStatus';
 import sendAuth from './../../utils/sendAuth.js';
 import setApiFetchError from './../../utils/setApiFetchError.js';
-import { headerAuthAndContentTypeJson, headerAuth } from './../../utils/authenticationHeaders.js';
+import { headerAuthAndContentTypeJsonFun, headerAuthFun } from './../../utils/authenticationHeaders.js';
 
 class AcSettings extends Component {
     constructor(props) {
@@ -57,7 +57,7 @@ class AcSettings extends Component {
         let fullAddress = this.endpointAddress.concat(this.state.currentAcSetting.uniqueId);
         let fetchObj = {
             method: 'delete',
-            headers: headerAuth
+            headers: headerAuthFun()
         }
 
         this.doFetch(fetchObj, fullAddress, this.getAcSettings, this.removeButton, this.onDeleteButtonClick)
@@ -69,7 +69,7 @@ class AcSettings extends Component {
         let fullAddress = this.endpointAddress.concat(isOnOff).concat(this.state.currentAcSetting.uniqueId);
         let fetchObj = {
             method: 'post',
-            headers: headerAuth
+            headers: headerAuthFun()
         }
 
         this.doFetch(fetchObj, fullAddress, this.getAcSettings, this.setDefaultButton, this.onSetAsDefaultButtonClick)
@@ -82,7 +82,7 @@ class AcSettings extends Component {
         let fetchObj = {
             method: 'post',
             body: JSON.stringify(newObj),
-            headers: headerAuthAndContentTypeJson,
+            headers: headerAuthAndContentTypeJsonFun(),
         }
 
         this.doFetch(fetchObj, fullAddress, this.getAcSettings, button, this.onAcSettingAddButtonClick)
@@ -92,7 +92,7 @@ class AcSettings extends Component {
     getAcSettings() {
         let fetchObj = {
             method: 'get',
-            headers: headerAuthAndContentTypeJson,
+            headers: headerAuthAndContentTypeJsonFun(),
         };
 
         let successCallback = json => {
@@ -109,7 +109,7 @@ class AcSettings extends Component {
         let fullAddress = endpointAddress.concat("/defaultOn");
         let fetchObj = {
             method: 'get',
-            headers: headerAuth
+            headers: headerAuthFun()
         }
 
         fetch(fullAddress, fetchObj)
