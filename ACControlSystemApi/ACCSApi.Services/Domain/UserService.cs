@@ -39,8 +39,7 @@ namespace ACCSApi.Services.Domain
             {
                 Id = 0,
                 EmailAddress = userData.EmailAddress,
-                PasswordHash = userData.PasswordHash,
-                RegistrationTimestamp = DateTime.Now
+                PasswordHash = userData.PasswordHash
             };
 
             _userRepository.Add(user);

@@ -125,7 +125,7 @@ namespace ACCSApi.Controllers.Controllers
                 }
                 catch (ItemNotFoundException e)
                 {
-                    return BadRequest(e);
+                    return BadRequest(e.Message);
                 }
                 return Ok(device);
             }
@@ -149,7 +149,7 @@ namespace ACCSApi.Controllers.Controllers
                 }
                 catch (ItemNotFoundException e)
                 {
-                    return BadRequest(e);
+                    return BadRequest(e.Message);
                 }
                 return Ok(currentDevice);
             }

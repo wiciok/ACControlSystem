@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections.Concurrent;
 using System.Linq;
 using ACCSApi.Model.Dto;
 using ACCSApi.Model.Interfaces;
@@ -11,7 +11,7 @@ namespace ACCSApi.Services.Utils
     {
         private readonly IUserService _userService;
         private readonly ITokenFactory _tokenFactory;
-        private static IDictionary<IUser, IToken> _tokensDictionary;
+        private static ConcurrentDictionary<IUser, IToken> _tokensDictionary;
 
         public AuthService(IUserService userService, ITokenFactory tokenFactory)
         {
@@ -19,7 +19,7 @@ namespace ACCSApi.Services.Utils
             _tokenFactory = tokenFactory;
 
             if (_tokensDictionary == null)
-                _tokensDictionary = new Dictionary<IUser, IToken>();
+                _tokensDictionary = new ConcurrentDictionary<IUser, IToken>();
         }
 
         public bool CheckAuthentication(string tokenString)
@@ -27,10 +27,13 @@ namespace ACCSApi.Services.Utils
             var tokenDictRecord = _tokensDictionary.SingleOrDefault(x => x.Value.TokenString.Equals(tokenString));
             if (tokenDictRecord.Value?.TokenString == null)
                 return false;
-            if (!tokenDictRecord.Value.IsExpired)
+            if (tokenDictRecord.Value.IsExpired)
+            {
+                _tokensDictionary.TryRemove(tokenDictRecord.Key, out var value);
+                return false;
+            }
+            else
                 return true;
-            _tokensDictionary.Remove(tokenDictRecord.Key);
-            return false;
         }
 
         public string TryAuthenticate(AuthData auth)
@@ -40,17 +43,28 @@ namespace ACCSApi.Services.Utils
             if (user == null)
                 throw new ItemNotFoundException("User with specified email address doesn't exist!");
 
-            if (_tokensDictionary.SingleOrDefault(x => x.Key.Equals(user)).Key != null)
-                _tokensDictionary.Remove(user);
+            if (!auth.PasswordHash.Equals(user.PasswordHash))
+                return null; //unauthorized
 
-            return auth.PasswordHash.Equals(user.PasswordHash) ? CreateToken(user) : null;
+            _tokensDictionary.TryGetValue(user, out var token);
+
+            if (token == null)
+                return CreateTokenOrReturnExisting(user);
+
+            if (!token.IsExpired)
+                return token.TokenString;
+
+            _tokensDictionary.TryRemove(user, out var value);
+            return CreateTokenOrReturnExisting(user);
         }
 
-        private string CreateToken(IUser user)
+        private string CreateTokenOrReturnExisting(IUser user)
         {
             var token = _tokenFactory.GenerateToken();
-            _tokensDictionary.Add(user, token);
-            return token.TokenString;
+            if (_tokensDictionary.TryAdd(user, token))
+                return token.TokenString;
+            _tokensDictionary.TryGetValue(user, out var tokenFromOtherThread);
+            return tokenFromOtherThread.TokenString; //if some weird worst-scenario concurrent things occures -> return null (unauthorized)
         }
     }
 }

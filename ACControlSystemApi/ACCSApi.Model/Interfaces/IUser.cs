@@ -6,7 +6,7 @@ namespace ACCSApi.Model.Interfaces
     {
         string EmailAddress { get; set; }
         string PasswordHash { get; set; }
-        DateTime RegistrationTimestamp { get; set; }
+        DateTime RegistrationTimestamp { get; }
 
         IUserPublic PublicData { get; }
     }
