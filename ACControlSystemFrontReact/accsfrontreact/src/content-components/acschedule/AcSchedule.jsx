@@ -83,9 +83,8 @@ class AcSchedule extends Component {
     }
 
     changeAllSchedulesState(data) {
-        this.setState({
-            allSchedulesData: data
-        })
+        if (data.length)
+            this.setState({ allSchedulesData: data })
     }
 
     removeSchedule(id) {
