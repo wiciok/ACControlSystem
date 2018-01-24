@@ -46,7 +46,7 @@ const AcSettingTable = (props) => {
         );
     }
     else 
-        return <h4>Brak ustawień do wyświetlenia!</h4>
+        return <h4>Brak opcji do wyświetlenia!</h4>
 }
 
 export default AcSettingTable;

@@ -59,10 +59,11 @@ class AcDevice extends Component {
                 switch (response.status) {
                     case 200:
                         response.json()
-                        .then(json => {this.setState({activeDevice: json})})
-                        .catch(err => { error = new Error("Blad deserializacji odpowiedzi serwera do formatu JSON"); });
+                            .then(json => { this.setState({ activeDevice: json }) })
+                            .catch(err => { error = new Error("Blad deserializacji odpowiedzi serwera do formatu JSON"); });
                         break;
                     case 404:
+                        this.setState({ activeDevice: null })
                         return;
                     case 401:
                         sendAuth(this.getActiveAcDevice, this.props.onLogout);

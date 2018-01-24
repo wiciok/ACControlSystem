@@ -52,7 +52,7 @@ class AcSettingsSelect extends Component {
 
         return (
             <Fragment>
-                {this.props.allAcSettings ? select : <div>Brak dostępnych ustawień!</div>}
+                {select || null}
             </Fragment>
         );
     }

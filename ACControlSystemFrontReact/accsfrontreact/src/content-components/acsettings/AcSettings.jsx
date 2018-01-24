@@ -86,12 +86,12 @@ class AcSettings extends Component {
             headers: headerAuthAndContentTypeJsonFun(),
         }
 
-        this.resetOptionsCallback=resetOptionsCallback;
+        this.resetOptionsCallback = resetOptionsCallback;
 
         this.doFetch(fetchObj, fullAddress, this.onAcSettingAdded, button, this.onAcSettingAddButtonClick)
     }
 
-    onAcSettingAdded(){
+    onAcSettingAdded() {
         this.resetOptionsCallback();
         this.getAcSettings();
     }
@@ -105,9 +105,10 @@ class AcSettings extends Component {
         };
 
         let successCallback = json => {
-            this.setState({
-                allAcSettings: json
-            });
+            if (json.length === 0)
+                this.setState({ allAcSettings: null });
+            else
+                this.setState({ allAcSettings: json });
         };
 
         this.doFetch(fetchObj, this.endpointAddress, successCallback, null, this.getAcSettings);
@@ -246,18 +247,22 @@ class AcSettings extends Component {
                         defaultOn={this.state.defaultOn}
                         defaultOff={this.state.defaultOff} />
                 </div>
-
                 <div className="box">
                     <h4 className="title is-4">Dostępne ustawienia:</h4>
-                    <AcSettingsSelect
-                        onChange={this.onSelectionChanged}
-                        allAcSettings={this.state.allAcSettings} />
-                    <br /><br />
-                    <AcSettingTable acSetting={this.state.currentAcSetting} />
-                    <span className="control">
-                        {removeButton}&emsp;
-                        {setAsDefaultOnOffSettingButton}
-                    </span>
+                    {this.state.allAcSettings
+                        ? <Fragment>
+                            <AcSettingsSelect
+                                onChange={this.onSelectionChanged}
+                                allAcSettings={this.state.allAcSettings} />
+                            <br /> <br />
+                            <AcSettingTable acSetting={this.state.currentAcSetting} />
+                            <span className="control">
+                                {removeButton}&emsp;
+                                {setAsDefaultOnOffSettingButton}
+                            </span>
+                        </Fragment>
+                        : <div>Brak dostępnych ustawień!</div>
+                    }
                 </div>
                 <div className="box">
                     <h4 className="title is-4">Zarejestruj nowe ustawienie:</h4>
