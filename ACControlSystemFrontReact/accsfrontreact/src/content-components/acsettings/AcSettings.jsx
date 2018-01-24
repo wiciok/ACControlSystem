@@ -18,6 +18,7 @@ class AcSettings extends Component {
         this.onSetAsDefaultButtonClick = this.onSetAsDefaultButtonClick.bind(this);
         this.onAcSettingAddButtonClick = this.onAcSettingAddButtonClick.bind(this);
         this.getTurnOnOffSetting = this.getTurnOnOffSetting.bind(this);
+        this.onAcSettingAdded = this.onAcSettingAdded.bind(this);
         this.doFetch = this.doFetch.bind(this);
         this.getAcSettings = this.getAcSettings.bind(this);
 
@@ -54,7 +55,7 @@ class AcSettings extends Component {
     }
 
     onDeleteButtonClick() {
-        let fullAddress = this.endpointAddress.concat(this.state.currentAcSetting.uniqueId);
+        let fullAddress = this.endpointAddress.concat('/' + this.state.currentAcSetting.uniqueId);
         let fetchObj = {
             method: 'delete',
             headers: headerAuthFun()
@@ -72,10 +73,10 @@ class AcSettings extends Component {
             headers: headerAuthFun()
         }
 
-        this.doFetch(fetchObj, fullAddress, this.getAcSettings, this.setDefaultButton, this.onSetAsDefaultButtonClick)
+        this.doFetch(fetchObj, fullAddress, this.getTurnOnOffSetting, this.setDefaultButton, this.onSetAsDefaultButtonClick)
     }
 
-    onAcSettingAddButtonClick(newObj, button) {
+    onAcSettingAddButtonClick(newObj, button, resetOptionsCallback) {
         let newSettingType = "/nec"; //or /raw
 
         let fullAddress = this.endpointAddress.concat(newSettingType);
@@ -85,8 +86,16 @@ class AcSettings extends Component {
             headers: headerAuthAndContentTypeJsonFun(),
         }
 
-        this.doFetch(fetchObj, fullAddress, this.getAcSettings, button, this.onAcSettingAddButtonClick)
+        this.resetOptionsCallback=resetOptionsCallback;
+
+        this.doFetch(fetchObj, fullAddress, this.onAcSettingAdded, button, this.onAcSettingAddButtonClick)
     }
+
+    onAcSettingAdded(){
+        this.resetOptionsCallback();
+        this.getAcSettings();
+    }
+
 
 
     getAcSettings() {
@@ -138,7 +147,7 @@ class AcSettings extends Component {
 
                 switch (response.status) {
                     case 200:
-                        response.json().then(data => { this.setState({ defaultOff: data })});
+                        response.json().then(data => { this.setState({ defaultOff: data }) });
                         break;
                     case 401:
                         sendAuth(this.getTurnOnOffSetting, this.props.onLogout);
@@ -177,7 +186,7 @@ class AcSettings extends Component {
                 else {
                     response.json()
                         .then(json => successCallback(json))
-                        .catch(err => { this.setApiFetchError(err) });
+                        .catch(() => { successCallback() });
                 }
             }).catch(err => {
                 this.setApiFetchError(err);

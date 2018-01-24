@@ -9,6 +9,7 @@ class AcSettingAdd extends Component {
         this.onRadioChange = this.onRadioChange.bind(this);
         this.onAddOptionButtonClick = this.onAddOptionButtonClick.bind(this);
         this.registerRef = this.registerRef.bind(this);
+        this.resetOptions=this.resetOptions.bind(this);
 
         this.optionsList = {
             keys: [],
@@ -44,7 +45,14 @@ class AcSettingAdd extends Component {
             settings: optionsObj
         }
 
-        this.props.onAddButtonClick(newObj, this.registerButton);
+        this.props.onAddButtonClick(newObj, this.registerButton, this.resetOptions);
+    }
+
+    resetOptions(){
+        this.setState({
+            checkedRadio: 'on',
+            renderedOptionsNumber: 0
+        })
     }
 
     onAddOptionButtonClick() {
