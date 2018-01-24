@@ -1,17 +1,23 @@
 ﻿using System;
 using ACCSApi.Model.Interfaces;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace ACCSApi.Model
 {
     public class ACSetting : IACSetting
     {
-        public ACSetting(JObject settings, ICode code, bool isTurnOff = false)
+        [JsonConstructor]
+        public ACSetting(JObject settings, ICode code, Guid uniqueId, bool isTurnOff = false)
         {
-            UniqueId = Guid.NewGuid();
             IsTurnOff = isTurnOff;
             Settings = settings;
             Code = code;
+            UniqueId = uniqueId;
+        }
+
+        public ACSetting(JObject settings, ICode code, bool isTurnOff = false) : this(settings, code, Guid.NewGuid(), isTurnOff)
+        {
         }
 
         public Guid UniqueId { get; }
