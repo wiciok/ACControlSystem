@@ -19,7 +19,9 @@ namespace ACCSApi.Controllers.Utils
 
         public Task<bool> Authenticate(string username, string password)
         {
+            //todo: restore this
             return Task.FromResult(_authService.CheckAuthentication(password));
+           // return Task.FromResult(true);
         }
     }
 }

@@ -38,7 +38,7 @@ namespace ACCSApi.Controllers.Controllers
             catch (CurrentACDeviceNotSetException ex)
             {
                 _logger.LogError(ex, "400: Bad request");
-                return BadRequest(ex);
+                return BadRequest("Current ACDevice not set");
             }
 
             catch (Exception ex)
@@ -62,7 +62,7 @@ namespace ACCSApi.Controllers.Controllers
             catch (CurrentACDeviceNotSetException ex)
             {
                 _logger.LogError(ex, "400: Bad request");
-                return BadRequest(ex);
+                return BadRequest("Current ACDevice not set");
             }
 
             catch (Exception ex)
@@ -92,7 +92,7 @@ namespace ACCSApi.Controllers.Controllers
             catch (CurrentACDeviceNotSetException ex)
             {
                 _logger.LogError(ex, "400: Bad request");
-                return BadRequest(ex);
+                return BadRequest("Current ACDevice not set");
             }
 
             catch (Exception ex)
@@ -116,7 +116,7 @@ namespace ACCSApi.Controllers.Controllers
             catch (CurrentACDeviceNotSetException ex)
             {
                 _logger.LogError(ex, "400: Bad request");
-                return BadRequest(ex);
+                return BadRequest("Current ACDevice not set");
             }
 
             catch (Exception ex)
@@ -138,7 +138,7 @@ namespace ACCSApi.Controllers.Controllers
             catch (CurrentACDeviceNotSetException ex)
             {
                 _logger.LogError(ex, "400: Bad request");
-                return BadRequest(ex);
+                return BadRequest("Current ACDevice not set");
             }
 
             catch (Exception ex)
@@ -167,7 +167,7 @@ namespace ACCSApi.Controllers.Controllers
             catch (CurrentACDeviceNotSetException ex)
             {
                 _logger.LogError(ex, "400: Bad request");
-                return BadRequest(ex);
+                return BadRequest("Current ACDevice not set!");
             }
 
             catch (Exception ex)
@@ -194,7 +194,7 @@ namespace ACCSApi.Controllers.Controllers
             catch (CurrentACDeviceNotSetException ex)
             {
                 _logger.LogError(ex, "400: Bad request");
-                return BadRequest(ex);
+                return BadRequest("Current ACDevice not set");
             }
 
             catch (Exception ex)
@@ -219,7 +219,7 @@ namespace ACCSApi.Controllers.Controllers
                 catch (CurrentACDeviceNotSetException ex)
                 {
                     _logger.LogError(ex, "400: Bad request");
-                    return BadRequest(ex);
+                    return BadRequest("Current ACDevice not set");
                 }
 
                 catch (ItemNotFoundException e)
@@ -255,7 +255,7 @@ namespace ACCSApi.Controllers.Controllers
                 catch (CurrentACDeviceNotSetException ex)
                 {
                     _logger.LogError(ex, "400: Bad request");
-                    return BadRequest(ex);
+                    return BadRequest("Current ACDevice not set");
                 }
 
                 catch (ArgumentException e)

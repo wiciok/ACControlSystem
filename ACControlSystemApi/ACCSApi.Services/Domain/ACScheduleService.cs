@@ -136,7 +136,7 @@ namespace ACCSApi.Services.Domain
             if (!CheckScheduleTimesValidity(schedule))
                 throw new ArgumentException("ACSchedule have incorrect Start and/or End Times!");
 
-            if (!CheckIfAddedScheduleOverlapsExisting(schedule))
+            if (CheckIfAddedScheduleOverlapsExisting(schedule))
                 throw new ArgumentException("Currently adding schedule overlaps some of existing schedules");
         }
 

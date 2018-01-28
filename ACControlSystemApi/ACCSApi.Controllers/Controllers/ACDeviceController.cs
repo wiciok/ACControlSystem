@@ -102,7 +102,7 @@ namespace ACCSApi.Controllers.Controllers
                 }
                 catch (ItemAlreadyExistsException e)
                 {
-                    return BadRequest(e);
+                    return BadRequest(e.Message);
                 }
                 return Ok(retId);
             }
@@ -172,7 +172,7 @@ namespace ACCSApi.Controllers.Controllers
                 }
                 catch (ItemNotFoundException e)
                 {
-                    return BadRequest(e);
+                    return BadRequest(e.Message);
                 }
                 return NoContent();
             }
