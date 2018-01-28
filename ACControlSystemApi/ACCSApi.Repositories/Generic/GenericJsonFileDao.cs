@@ -100,7 +100,8 @@ namespace ACCSApi.Repositories.Generic
                     var d = (IList)serializer.Deserialize(file, list.GetType());
                     _objectsList = d.Cast<T>().ToList();
                 }
-                _lastClassUniqueId = _objectsList.Select(x => x.Id).Max();
+                if(_objectsList.Count!=0)
+                    _lastClassUniqueId = _objectsList.Select(x => x.Id).Max();
             }
             catch (FileNotFoundException e)
             {
