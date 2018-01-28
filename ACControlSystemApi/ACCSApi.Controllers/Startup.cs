@@ -31,7 +31,7 @@ namespace ACCSApi.Controllers
             services.AddMvc().AddJsonOptions(options =>
             {
                 var settings = options.SerializerSettings;
-                settings.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
+                settings.DateTimeZoneHandling = DateTimeZoneHandling.Local;
             });
 
             services

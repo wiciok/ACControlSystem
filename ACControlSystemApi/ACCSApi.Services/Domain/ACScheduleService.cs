@@ -26,7 +26,7 @@ namespace ACCSApi.Services.Domain
             _scheduleRepository = scheduleRepository;
             _currentAcDevice = acDeviceService.GetCurrentDevice();
 
-            if(_isFirstInstance)
+            if (_isFirstInstance)
                 RegisterAllSchedulesFromRepository();
             _isFirstInstance = false;
         }
@@ -62,7 +62,7 @@ namespace ACCSApi.Services.Domain
 
         public void RegisterAllSchedulesFromRepository()
         {
-            var allSchedules = _scheduleRepository.GetAll();
+            var allSchedules = _scheduleRepository.GetAll().ToList();
             foreach (var sched in allSchedules)
             {
                 try
@@ -83,9 +83,11 @@ namespace ACCSApi.Services.Domain
                 throw new CurrentACDeviceNotSetException();
 
             VerifySchedule(schedule);
+            NormalizeDatesInSchedule(schedule);
 
-            var acSetting =_currentAcDevice.AvailableSettings.Single(x => x.UniqueId.Equals(schedule.ACSettingGuid));
-
+            var acSetting = _currentAcDevice.AvailableSettings.Single(x => x.UniqueId.Equals(schedule.ACSettingGuid));
+            if (acSetting == null)
+                throw new ArgumentException("AcSetting with specified Guid does not exist!");
             var timerCallback = new TimerCallback(ChangeACSettings);
             TimeSpan period;
             object timerStartCallbackArg = acSetting;
@@ -106,13 +108,13 @@ namespace ACCSApi.Services.Domain
                     break;
                 case ScheduleType.EveryDayOfWeek:
                     period = new TimeSpan(24, 0, 0);
-                    timerStartCallbackArg = new Tuple<IACSchedule, bool>(schedule, false);
-                    timerStopCallbackArg = new Tuple<IACSchedule, bool>(schedule, true);
+                    timerStartCallbackArg = (schedule, false);
+                    timerStopCallbackArg = (schedule, true);
                     //day of week logic is implemented in ChangeACSetting method
                     break;
             }
-
-            var timerStart = new Timer(timerCallback, timerStartCallbackArg, schedule.StartTime - DateTime.Now, period);
+            var dueTime = schedule.StartTime - DateTime.Now;
+            var timerStart = new Timer(timerCallback, timerStartCallbackArg, dueTime, period);
             var timerStop = new Timer(timerCallback, timerStopCallbackArg, schedule.EndTime - DateTime.Now, period);
 
             SchedulesTimersDict.Add(schedule, new Tuple<Timer, Timer>(timerStart, timerStop));
@@ -128,6 +130,47 @@ namespace ACCSApi.Services.Domain
             timerStop.Dispose();
         }
 
+        private static void NormalizeDatesInSchedule(IACSchedule schedule)
+        {
+            DateTime newStartTime, newEndTime;
+
+            switch (schedule.ScheduleType)
+            {
+                case ScheduleType.EveryHour:
+                    if (schedule.StartTime.Minute >= DateTime.Now.Minute)
+                    {
+                        newStartTime = DateTime.Today.AddHours(DateTime.Now.Hour).AddMinutes(schedule.StartTime.Minute);
+                        newEndTime = DateTime.Today.AddHours(DateTime.Now.Hour).AddMinutes(schedule.EndTime.Minute);
+                    }
+                    else
+                    {
+                        newStartTime = DateTime.Today.AddHours(DateTime.Now.Hour + 1).AddMinutes(schedule.StartTime.Minute);
+                        newEndTime = DateTime.Today.AddHours(DateTime.Now.Hour + 1).AddMinutes(schedule.EndTime.Minute);
+                    }
+
+                    break;
+
+                case ScheduleType.EveryDayOfWeek:
+                case ScheduleType.EveryDay:
+                    if (schedule.StartTime.Hour >= DateTime.Now.Hour)
+                    {
+                        newStartTime = DateTime.Today.AddHours(schedule.StartTime.Hour);
+                        newEndTime = DateTime.Today.AddHours(schedule.EndTime.Hour);
+                    }
+                    else
+                    {
+                        newStartTime = DateTime.Today.AddDays(1).AddHours(schedule.StartTime.Hour);
+                        newEndTime = DateTime.Today.AddDays(1).AddHours(schedule.EndTime.Hour);
+                    }
+                    break;
+                default:
+                    return;
+            }
+
+            schedule.StartTime = newStartTime;
+            schedule.EndTime = newEndTime;
+        }
+
         private void VerifySchedule(IACSchedule schedule)
         {
             if (schedule == null)
@@ -140,7 +183,7 @@ namespace ACCSApi.Services.Domain
                 throw new ArgumentException("Currently adding schedule overlaps some of existing schedules");
         }
 
-        private bool CheckScheduleTimesValidity(IACSchedule schedule)
+        private static bool CheckScheduleTimesValidity(IACSchedule schedule)
         {
             if (schedule.ScheduleType != ScheduleType.Single)
                 return true;
@@ -193,7 +236,7 @@ namespace ACCSApi.Services.Domain
                         var acSetting = _currentAcDevice.AvailableSettings.Single(x => x.UniqueId.Equals(schedule.ACSettingGuid));
                         _acStateControlService.ChangeACSetting(acSetting);
                     }
-                       
+
                     break;
                 default:
                     throw new ArgumentException("ChangeACSettings: argument is not of IACSetting type");
