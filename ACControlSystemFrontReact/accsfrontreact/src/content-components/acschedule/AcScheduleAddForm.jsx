@@ -20,7 +20,8 @@ class AcScheduleAddForm extends Component {
             selectedScheduleType: 0,
             startTime: null,
             endTime: null,
-            acSettingGuid: null
+            acSettingGuid: null,
+            acSettingsSelectRefresher: true
         };
     }
 
@@ -31,8 +32,12 @@ class AcScheduleAddForm extends Component {
             selectedScheduleType: Number.parseInt(value, 10),
             startTime: null,
             endTime: null,
-            acSettingGuid: null
-        }, () => { this.saveButtonActivate(); });
+            acSettingGuid: null,
+            acSettingsSelectRefresher: false
+        }, () => { 
+            this.saveButtonActivate(); 
+            this.setState({ acSettingsSelectRefresher: true }) 
+        });
     }
 
     saveButtonActivate() {
@@ -49,18 +54,21 @@ class AcScheduleAddForm extends Component {
     }
 
     onValidStartDateOrTimeEntered(dateObj) {
+        console.log("pre:" + dateObj);
         this.setState({
             startTime: dateObj
-        }, () => { this.saveButtonActivate(); });
+        }, () => { this.saveButtonActivate(); console.log(this.state) });
     }
 
     onValidEndDateOrTimeEntered(dateObj) {
+        console.log("pre:" + dateObj);
         this.setState({
             endTime: dateObj
-        }, () => { this.saveButtonActivate(); });
+        }, () => { this.saveButtonActivate(); console.log(this.state) });
     }
 
     onAcSettingsSelected(guid) {
+        console.log("pre:" + guid);
         this.setState({
             acSettingGuid: guid
         }, () => { this.saveButtonActivate(); });
@@ -124,11 +132,12 @@ class AcScheduleAddForm extends Component {
                         />
                     </div>
                 </div>
-                <label>Ustawienia klimatyzatora: </label>
+                <label>Ustawienia uruchamiania klimatyzatora: </label>
                 <br />
                 <AcSettingsSelect
                     onChange={this.onAcSettingsSelected}
                     allAcSettings={this.props.acSettings}
+                    dummyInitialValue={this.state.acSettingsSelectRefresher}
                 />
                 <br /><br />
                 {saveButton}

@@ -54,17 +54,17 @@ class AcSettings extends Component {
         this.setState({ currentAcSetting: currentAcSetting })
     }
 
-    onDeleteButtonClick() {
+    onDeleteButtonClick(e) {
         let fullAddress = this.endpointAddress.concat('/' + this.state.currentAcSetting.uniqueId);
         let fetchObj = {
             method: 'delete',
             headers: headerAuthFun()
         }
 
-        this.doFetch(fetchObj, fullAddress, this.getAcSettings, this.removeButton, this.onDeleteButtonClick)
+        this.doFetch(fetchObj, fullAddress, this.getAcSettings, e.target, this.onDeleteButtonClick)
     }
 
-    onSetAsDefaultButtonClick() {
+    onSetAsDefaultButtonClick(e) {
         let isOnOff = this.state.currentAcSetting.isTurnOff ? "/defaultOff/" : "/defaultOn/"
 
         let fullAddress = this.endpointAddress.concat(isOnOff).concat(this.state.currentAcSetting.uniqueId);
@@ -73,7 +73,7 @@ class AcSettings extends Component {
             headers: headerAuthFun()
         }
 
-        this.doFetch(fetchObj, fullAddress, this.getTurnOnOffSetting, this.setDefaultButton, this.onSetAsDefaultButtonClick)
+        this.doFetch(fetchObj, fullAddress, this.getTurnOnOffSetting, e.target, this.onSetAsDefaultButtonClick)
     }
 
     onAcSettingAddButtonClick(newObj, button, resetOptionsCallback) {
@@ -209,23 +209,6 @@ class AcSettings extends Component {
 
 
     render() {
-        let removeButton =
-            <button className="button is-link is-danger" onClick={this.onDeleteButtonClick} ref={removeButton => this.removeButton = removeButton}>
-                Usuń
-            </button>
-
-        let setAsDefaultOnOffSettingButton;
-        if (this.state.currentAcSetting && this.state.currentAcSetting.isTurnOff)
-            setAsDefaultOnOffSettingButton =
-                <button className="button is-link is-primary" onClick={this.onSetAsDefaultButtonClick} ref={setDefaultButton => this.setDefaultButton = setDefaultButton}>
-                    Ustaw jako domyślne ust. wyłączania
-                </button>
-        else
-            setAsDefaultOnOffSettingButton =
-                <button className="button is-link is-primary" onClick={this.onSetAsDefaultButtonClick} ref={setDefaultButton => this.setDefaultButton = setDefaultButton}>
-                    Ustaw jako domyślne ust. włączania
-                </button>
-
         return (
             <Fragment>
                 <h2 className="title is-2">Ustawienia</h2>
@@ -253,13 +236,15 @@ class AcSettings extends Component {
                         ? <Fragment>
                             <AcSettingsSelect
                                 onChange={this.onSelectionChanged}
-                                allAcSettings={this.state.allAcSettings} />
+                                allAcSettings={this.state.allAcSettings}
+                                dummyInitialValue={true}
+                            />
                             <br /> <br />
-                            <AcSettingTable acSetting={this.state.currentAcSetting} />
-                            <span className="control">
-                                {removeButton}&emsp;
-                                {setAsDefaultOnOffSettingButton}
-                            </span>
+                            <AcSettingTable
+                                acSetting={this.state.currentAcSetting}
+                                onDeleteButtonClick={this.onDeleteButtonClick}
+                                onSetAsDefaultButtonClick={this.onSetAsDefaultButtonClick}
+                            />
                         </Fragment>
                         : <div>Brak dostępnych ustawień!</div>
                     }

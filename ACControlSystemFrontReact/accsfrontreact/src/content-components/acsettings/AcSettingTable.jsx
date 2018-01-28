@@ -1,26 +1,42 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import "./AcSettingTable.css";
 
 const AcSettingTable = (props) => {
 
-    if (props.acSetting) {
-        let customSettings = [];
+    if (!props.acSetting)
+        return null;
+        
 
-        if (props.acSetting.settings) {
-            let i = 0;
-            for (let key in props.acSetting.settings) {
-                let value = props.acSetting.settings[key];
-                customSettings.push(
-                    <tr key={i++}>
-                        <td>{key}</td>
-                        <td>{value}</td>
-                    </tr>);
-            }
+    let customSettings = [];
+
+    if (props.acSetting.settings) {
+        let i = 0;
+        for (let key in props.acSetting.settings) {
+            let value = props.acSetting.settings[key];
+            customSettings.push(
+                <tr key={i++}>
+                    <td>{key}</td>
+                    <td>{value}</td>
+                </tr>);
         }
-        else
-            customSettings = null;
+    }
+    else
+        customSettings = null;
 
-        return (
+    let removeButton =
+        <button className="button is-link is-danger" onClick={props.onDeleteButtonClick}>
+            Usuń
+            </button>
+
+    let setAsDefaultOnOffSettingButton =
+        <button className="button is-link is-primary" onClick={props.onSetAsDefaultButtonClick}>
+            {props.acSetting.isTurnOff
+                ? "Ustaw jako domyślne ust. wyłączania"
+                : "Ustaw jako domyślne ust. włączania"}
+        </button>
+
+    return (
+        <Fragment>
             <div className="overflow">
                 <table className="table">
                     <thead>
@@ -43,10 +59,12 @@ const AcSettingTable = (props) => {
                     </tbody>
                 </table>
             </div>
-        );
-    }
-    else 
-        return <h4>Brak opcji do wyświetlenia!</h4>
+            <span className="control">
+                {removeButton}&emsp;
+                    {setAsDefaultOnOffSettingButton}
+            </span>
+        </Fragment>
+    );
 }
 
 export default AcSettingTable;

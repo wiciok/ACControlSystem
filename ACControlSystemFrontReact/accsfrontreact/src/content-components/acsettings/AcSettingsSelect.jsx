@@ -5,18 +5,11 @@ class AcSettingsSelect extends Component {
         super(props);
 
         this.onSelectionChanged = this.onSelectionChanged.bind(this);
-        this.initial = true;
     }
 
-    componentDidUpdate() {
-        if (this.initial)
-            this.onSelectionChanged();
-    }
-
-    onSelectionChanged() {
+    onSelectionChanged(event) {
         if (this.props.allAcSettings) {
-            let selectedItemGuid = this.select.value;
-            this.initial = false;
+            let selectedItemGuid = event.target.value;
             this.props.onChange(selectedItemGuid);
         }
     }
@@ -33,26 +26,35 @@ class AcSettingsSelect extends Component {
                         readableName = readableName.concat(`${key} : ${value}`);
                     }
                 }
-                else 
+                else
                     readableName = readableName.concat("(Brak opcji)");
-                
+
                 readableName = readableName.concat(`, id: ${object.uniqueId}`);
 
 
                 return <option key={index} value={object.uniqueId}>{readableName}</option>
             })
 
-            select = 
-            <div className="select">
-                <select id='test' ref={select => this.select = select} onChange={this.onSelectionChanged}>
-                    {options}
-                </select>
-            </div>
+            if(this.props.dummyInitialValue)
+                select =
+                    <div className="select">
+                        <select id='test' onChange={this.onSelectionChanged}>
+                            <option value={null} disabled selected>Wybierz ustawienie...</option>
+                            {options}
+                        </select>
+                    </div>
+            else
+                select =
+                <div className="select">
+                    <select id='test' onChange={this.onSelectionChanged}>
+                        {options}
+                    </select>
+                </div>
         }
 
         return (
             <Fragment>
-                {select || null}
+                {select || "Brak ustawień do wyboru!"}
             </Fragment>
         );
     }
