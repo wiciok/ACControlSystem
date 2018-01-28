@@ -1,0 +1,14 @@
+.schedule-table tbody tr {
+     cursor: auto; 
+}
+
+.schedule-table td.is-selected,
+.schedule-table th.is-selected {
+  background-color: #fafafa;
+  color: black;
+}
+
+.schedule-table tr.is-selected {
+  background-color: #fafafa;
+  color: black;
+}
