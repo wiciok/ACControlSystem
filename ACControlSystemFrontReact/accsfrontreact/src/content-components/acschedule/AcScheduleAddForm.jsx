@@ -34,14 +34,17 @@ class AcScheduleAddForm extends Component {
             endTime: null,
             acSettingGuid: null,
             acSettingsSelectRefresher: false
-        }, () => { 
-            this.saveButtonActivate(); 
-            this.setState({ acSettingsSelectRefresher: true }) 
+        }, () => {
+            this.saveButtonActivate();
+            this.setState({ acSettingsSelectRefresher: true })
         });
     }
 
     saveButtonActivate() {
-        if (this.state.startTime !== null && this.state.endTime !== null && this.state.acSettingGuid !== null) {
+        if (this.state.startTime !== null
+            && this.state.endTime !== null
+            && this.state.acSettingGuid !== null
+            && this.state.startTime < this.state.endTime) {
             this.setState({
                 saveButtonActive: true
             });
