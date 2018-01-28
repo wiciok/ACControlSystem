@@ -57,21 +57,18 @@ class AcScheduleAddForm extends Component {
     }
 
     onValidStartDateOrTimeEntered(dateObj) {
-        console.log("pre:" + dateObj);
         this.setState({
             startTime: dateObj
-        }, () => { this.saveButtonActivate(); console.log(this.state) });
+        }, () => { this.saveButtonActivate();});
     }
 
     onValidEndDateOrTimeEntered(dateObj) {
-        console.log("pre:" + dateObj);
         this.setState({
             endTime: dateObj
-        }, () => { this.saveButtonActivate(); console.log(this.state) });
+        }, () => { this.saveButtonActivate();});
     }
 
     onAcSettingsSelected(guid) {
-        console.log("pre:" + guid);
         this.setState({
             acSettingGuid: guid
         }, () => { this.saveButtonActivate(); });
