@@ -18,7 +18,7 @@ class MainMenuCategoriesAndItems {
         {
             id: 1,
             name: "System",
-            contentComponentInfoList: [new ContentComponentInfo("Strona główna", "/index.html", Home)]
+            contentComponentInfoList: [new ContentComponentInfo("Strona główna", "/index", Home)]
         }, {
             id: 2,
             name: "Sterowanie klimatyzatorem",

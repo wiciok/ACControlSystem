@@ -1,4 +1,5 @@
 import React from 'react';
+import { NavLink } from 'react-router-dom';
 import 'bulma/css/bulma.css';
 
 const Navbar = (props) => {
@@ -16,8 +17,11 @@ const Navbar = (props) => {
             <div className="container">
                 <div className="navbar-brand">
                     <a className="navbar-item is-tab" href="index.html" >
-                        System sterowania klimatyzacją
+                        
                     </a>
+                    <NavLink to="/index" className="navbar-item is-tab">
+                        System sterowania klimatyzacją
+                    </NavLink>
                 </div>
                 {menu}
             </div>

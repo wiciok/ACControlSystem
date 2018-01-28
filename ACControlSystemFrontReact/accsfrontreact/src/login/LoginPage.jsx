@@ -109,7 +109,7 @@ class LoginPage extends Component {
                     <aside className="menu">
                         <p className="menu-label">Logowanie</p>
                         <ul className="menu-list">
-                            <NavLink to='/login' activeClassName="is-active">
+                            <NavLink to='/index' activeClassName="is-active">
                                 Logowanie
                             </NavLink>
                         </ul>
