@@ -38,8 +38,8 @@ class AcScheduleTableRow extends Component {
 
     getAcSettingString() {
         let currentAcSetting;
-
-        for (let acSetting in this.props.acSettings) {
+        for (let index in this.props.acSettings) {
+            let acSetting = this.props.acSettings[index];
             if (acSetting.uniqueId === this.props.data.acSettingGuid) {
                 currentAcSetting = acSetting;
                 break;
