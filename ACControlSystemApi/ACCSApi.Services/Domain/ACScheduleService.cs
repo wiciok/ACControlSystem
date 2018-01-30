@@ -167,8 +167,8 @@ namespace ACCSApi.Services.Domain
                     return;
             }
 
-            schedule.StartTime = newStartTime;
-            schedule.EndTime = newEndTime;
+            var newSchedule = new ACSchedule(schedule, newStartTime, newEndTime);
+            schedule = newSchedule;
         }
 
         private void VerifySchedule(IACSchedule schedule)

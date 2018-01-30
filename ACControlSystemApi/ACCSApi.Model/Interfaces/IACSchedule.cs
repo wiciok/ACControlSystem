@@ -5,8 +5,8 @@ namespace ACCSApi.Model.Interfaces
 {
     public interface IACSchedule: IACCSSerializable
     {
-        DateTime StartTime { get; set; }
-        DateTime EndTime { get; set; }
+        DateTime StartTime { get;  }
+        DateTime EndTime { get;  }
         Guid? ACSettingGuid { get; }
         ScheduleType ScheduleType { get;}
     }
