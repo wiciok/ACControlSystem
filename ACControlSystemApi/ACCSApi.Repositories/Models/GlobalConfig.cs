@@ -11,8 +11,8 @@ namespace ACCSApi.Repositories.Models
 
         //repositories:
 
-        public static int CurrentRaspberryPiDeviceId = 1;
-        public static int CurrentAcDeviceId = 1;
+        public static int CurrentRaspberryPiDeviceId = 0;
+        public static int CurrentAcDeviceId = 0;
 
         //Utils:
         public static TokenExpirationType TokenExpirationType = TokenExpirationType.ByTime;

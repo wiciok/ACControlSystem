@@ -29,7 +29,7 @@ namespace ACCSApi.Controllers.Controllers
         {
             try
             {
-                var retVal = _scheduleService.GetAllSchedules();
+                var retVal = _scheduleService.GetAllCurrentDeviceSchedules();
 
                 return Ok(retVal);
             }

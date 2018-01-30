@@ -10,7 +10,7 @@ using ACCSApi.Services.Models.Exceptions;
 
 namespace ACCSApi.Services.Domain
 {
-    public class ACDeviceService: IACDeviceService
+    public class ACDeviceService : IACDeviceService
     {
         private readonly IACDeviceRepository _acDeviceRepository;
         private IACDevice _currentDevice;
@@ -31,7 +31,7 @@ namespace ACCSApi.Services.Domain
 
             return AddDevice(device);
         }
-    
+
         private int AddDevice(IACDevice device)
         {
             if (device == null)
@@ -103,7 +103,7 @@ namespace ACCSApi.Services.Domain
             {
                 return _currentDevice;
             }
-               
+
             _currentDevice.OnChanged += _currentDevice_OnChanged;
             return _currentDevice;
         }
@@ -118,7 +118,8 @@ namespace ACCSApi.Services.Domain
         {
             var newDevice = _acDeviceRepository.Find(x => x.Id.Equals(id)).SingleOrDefault();
             _acDeviceRepository.CurrentDevice = newDevice ?? throw new ItemNotFoundException($"AcDevice with id {id} not found!");
-            _currentDevice.OnChanged -= _currentDevice_OnChanged;
+            if (_currentDevice != null)
+                _currentDevice.OnChanged -= _currentDevice_OnChanged;
             _currentDevice = newDevice;
             return new AcDeviceDto(_currentDevice);
         }

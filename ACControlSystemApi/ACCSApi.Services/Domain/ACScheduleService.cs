@@ -26,9 +26,13 @@ namespace ACCSApi.Services.Domain
             _scheduleRepository = scheduleRepository;
             _currentAcDevice = acDeviceService.GetCurrentDevice();
 
-            if (_isFirstInstance)
-                RegisterAllSchedulesFromRepository();
-            _isFirstInstance = false;
+            try
+            {
+                if (_isFirstInstance)
+                    RegisterAllSchedulesFromRepository();
+                _isFirstInstance = false;
+            }
+            catch (CurrentACDeviceNotSetException) { }          
         }
 
 
@@ -47,9 +51,17 @@ namespace ACCSApi.Services.Domain
             _scheduleRepository.Delete(scheduleToDel);
         }
 
-        public IEnumerable<IACSchedule> GetAllSchedules()
+        public IEnumerable<IACSchedule> GetAllCurrentDeviceSchedules()
         {
-            return _scheduleRepository.GetAll().ToList();
+            if (_currentAcDevice == null)
+                return new List<IACSchedule>();
+
+            var allCurrentDeviceSettingsGuidsStrings = _currentAcDevice.AvailableSettings.Select(x => x.UniqueId.ToString());
+            var allSchedules = _scheduleRepository.GetAll().ToList();
+            var allCurrentDeviceSchedules = allSchedules.Where(x =>
+                allCurrentDeviceSettingsGuidsStrings.Contains(x.ACSettingGuid?.ToString()));
+
+            return allCurrentDeviceSchedules.ToList();
         }
 
         public IACSchedule GetSchedule(int id)
@@ -62,8 +74,7 @@ namespace ACCSApi.Services.Domain
 
         public void RegisterAllSchedulesFromRepository()
         {
-            var allSchedules = _scheduleRepository.GetAll().ToList();
-            foreach (var sched in allSchedules)
+            foreach (var sched in GetAllCurrentDeviceSchedules())
             {
                 try
                 {
