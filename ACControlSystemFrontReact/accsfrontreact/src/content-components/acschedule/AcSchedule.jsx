@@ -94,8 +94,9 @@ class AcSchedule extends Component {
             method: 'delete',
             headers: headerAuthFun()
         };
+        let retryCallback = () => { this.removeSchedule(id) };
 
-        this.doFetch(fetchObj, fullAddress, this.getAllSchedulesData, this.removeSchedule);
+        this.doFetch(fetchObj, fullAddress, this.getAllSchedulesData, retryCallback);
     }
 
     addNewSchedule(acSchedule) {
@@ -104,8 +105,9 @@ class AcSchedule extends Component {
             body: JSON.stringify(acSchedule),
             headers: headerAuthAndContentTypeJsonFun(),
         };
-
-        this.doFetch(fetchObj, this.endpointAddress, this.getAllSchedulesData, this.addNewSchedule);
+        let retryCallback = () => { this.addNewSchedule(acSchedule) }
+        
+        this.doFetch(fetchObj, this.endpointAddress, this.getAllSchedulesData, retryCallback);
     }
 
     getAcSettings() {
