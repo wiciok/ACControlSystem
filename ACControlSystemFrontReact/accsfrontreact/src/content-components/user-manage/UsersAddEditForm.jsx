@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-
+import Cookies from 'js-cookie';
 import { sha256 } from 'js-sha256';
 import 'bulma/css/bulma.css';
 import 'font-awesome/css/font-awesome.min.css'
@@ -82,9 +82,22 @@ class UserAddEditForm extends Component {
             method: 'delete',
             headers: headerAuthFun()
         }
-        let fullAddress = this.endpointAddress.concat(`/${this.props.editedDeviceData.id}`);
+        let fullAddress = this.endpointAddress.concat(`/${this.props.editedUserData.id}`);
 
-        this.doFetch(fetchObj, fullAddress, this.removeButton, this.onDeleteButtonClick);
+
+        let loggedUserEmail = Cookies.get('userEmail');
+        if (loggedUserEmail === this.props.editedUserData.emailAddress && this.deleteCurrentUserAdditionalActivities())
+            this.doFetch(fetchObj, fullAddress, this.removeButton, this.onDeleteButtonClick);
+    }
+
+    deleteCurrentUserAdditionalActivities() {
+        if (window.confirm('Czy na pewno chcesz usunąć swoje konto?')) {
+            Cookies.remove('userEmail', { path: '/' });
+            Cookies.remove('userPasswordHash', { path: '/' });
+            Cookies.remove('token', { path: '/' });
+            return true;
+        } else
+            return false;
     }
 
 
@@ -115,8 +128,7 @@ class UserAddEditForm extends Component {
                     response.json().then(x => {
                         error.errorMessage = x;
                         this.props.errorCallback(error);
-                    });
-                    this.props.errorCallback(error);
+                    }).catch(() => { this.props.errorCallback(error); });
                 }
 
                 this.props.refreshCallback();
