@@ -81,7 +81,6 @@ namespace ACCSApi.Controllers
         }
 
 
-
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
@@ -92,7 +91,6 @@ namespace ACCSApi.Controllers
 
             app.UseCors(
                 opt => opt
-                //.WithOrigins("http://localhost:3000")
                 .AllowAnyOrigin()
                 .AllowAnyMethod()
                 .AllowAnyHeader());

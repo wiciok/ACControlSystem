@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using ACCSApi.Services.GlobalConfig;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using NLog.Web;
@@ -25,10 +24,6 @@ namespace ACCSApi.Controllers
                 logger.Error(e, "Stopped program because of exception");
                 throw;
             }
-
-            //var configPersister = new GlobalConfigPersister();
-            //configPersister.GenerateConfigFile();
-            //configPersister.LoadGlobalConfigFromFile();
         }
 
         public static IWebHost BuildWebHost(string[] args) =>
