@@ -16,7 +16,7 @@ namespace ACCSApi.Repositories.Models
 
         //Utils:
         public static TokenExpirationType TokenExpirationType = TokenExpirationType.ByTime;
-        public static int TokenExpirationTimeInSeconds = 10;
+        public static int TokenExpirationTimeInSeconds = 600;
 
         //Other, shouldnt be serializable
         public static IContainer Container;
