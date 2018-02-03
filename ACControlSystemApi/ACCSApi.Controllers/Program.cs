@@ -26,13 +26,17 @@ namespace ACCSApi.Controllers
                 throw;
             }
 
-            var configPersister = new GlobalConfigPersister();
+            //var configPersister = new GlobalConfigPersister();
             //configPersister.GenerateConfigFile();
-            configPersister.LoadGlobalConfigFromFile();
+            //configPersister.LoadGlobalConfigFromFile();
         }
 
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
+                .UseKestrel()
+                .UseUrls("http://*:5001")
+                .UseContentRoot(Directory.GetCurrentDirectory())
+                .UseIISIntegration()
                 .UseStartup<Startup>()
                 .UseNLog()
                 .Build();

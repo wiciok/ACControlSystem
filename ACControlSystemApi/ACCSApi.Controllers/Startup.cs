@@ -75,7 +75,7 @@ namespace ACCSApi.Controllers
             ApplicationContainer = builder.Build();
 
 
-            GlobalConfig.Container = ApplicationContainer; //todo: do something with this shitty workaround
+            GlobalConfig.Container = ApplicationContainer;
 
             return new AutofacServiceProvider(ApplicationContainer);
         }
