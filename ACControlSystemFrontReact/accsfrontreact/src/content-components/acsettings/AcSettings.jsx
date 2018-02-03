@@ -105,7 +105,7 @@ class AcSettings extends Component {
         };
 
         let successCallback = json => {
-            if (json.length === 0)
+            if (!json && json.length === 0)
                 this.setState({ allAcSettings: null });
             else
                 this.setState({ allAcSettings: json });
