@@ -7,6 +7,7 @@ using ACCSApi.Model;
 using ACCSApi.Model.Interfaces;
 using ACCSApi.Services.Interfaces;
 using ACCSApi.Services.Models.Exceptions;
+using Microsoft.Extensions.Logging;
 using Unosquare.RaspberryIO;
 using Unosquare.RaspberryIO.Gpio;
 
@@ -18,16 +19,25 @@ namespace ACCSApi.Services.Domain
         private const int MaxAcCommandLength = 10000;
         private readonly IACDevice _currentAcDevice;
         private readonly GpioPin _inputPin;
+        private readonly ILogger<CodeRecordingService> _logger;
 
-        public CodeRecordingService(IACDeviceService acDeviceService, IHostDeviceService hostDeviceService)
+        public CodeRecordingService(IACDeviceService acDeviceService, IHostDeviceService hostDeviceService, ILogger<CodeRecordingService> logger)
         {
+            _logger = logger;
             _currentAcDevice = acDeviceService.GetCurrentDevice();
             var currentRaspberryPiDevice = hostDeviceService.GetCurrentDevice();
 
-            //todo: restore this after deploy to raspberry!
-            //temporary!!!
-            //_inputPin = Pi.Gpio.Pins.Single(x => x.HeaderPinNumber == currentRaspberryPiDevice.BoardInPin);
-            //_inputPin.PinMode = GpioPinDriveMode.Input;
+            try
+            {
+                _inputPin = Pi.Gpio.Pins.Single(x => x.HeaderPinNumber == currentRaspberryPiDevice.BoardInPin);
+                _inputPin.PinMode = GpioPinDriveMode.Input;
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e.Message);
+                _logger.LogError(e.InnerException.InnerException.Message);
+            }
+
         }
 
         private List<Tuple<byte, double>> RecordCode()

@@ -71,11 +71,11 @@ namespace ACCSApi.Services.Domain
             if (_currentDevice != null)
                 return _currentDevice;
 
-            if (_currentDevice == null)
+            /*if (_currentDevice == null)
             {
                 //throw new ItemNotFoundException("Current device not set!");
                 return _currentDevice;
-            }               
+            }  */             
             _currentDevice = _raspberryPiDeviceRepository.CurrentDevice;
             _currentDevice.OnChanged += _currentDevice_OnChanged;
 
@@ -86,7 +86,9 @@ namespace ACCSApi.Services.Domain
         {
             var newDevice = _raspberryPiDeviceRepository.Find(x => x.Id.Equals(id)).SingleOrDefault();
             _raspberryPiDeviceRepository.CurrentDevice = newDevice ?? throw new ItemNotFoundException($"RaspberryPiDevice with id {id} not found!");
-           
+
+            if (_currentDevice != null)
+                _currentDevice.OnChanged -= _currentDevice_OnChanged;
             _currentDevice = newDevice;
             return _currentDevice;
         }

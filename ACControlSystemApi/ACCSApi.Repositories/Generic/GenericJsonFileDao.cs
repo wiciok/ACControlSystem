@@ -6,6 +6,7 @@ using System.Linq;
 using ACCSApi.Model.Interfaces;
 using ACCSApi.Repositories.Models;
 using Autofac;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
 namespace ACCSApi.Repositories.Generic
@@ -15,9 +16,11 @@ namespace ACCSApi.Repositories.Generic
         private List<T> _objectsList;
         private static readonly string pathToFile = GlobalConfig.PathToKeepFilesWithData + typeof(T).Name + ".json";
         private int _lastClassUniqueId = 0;
+        private readonly ILogger<GenericJsonFileDao<T>> _logger;
 
-        public GenericJsonFileDao()
+        public GenericJsonFileDao(ILogger<GenericJsonFileDao<T>> logger)
         {
+            _logger = logger;
             _objectsList = new List<T>();
             Initialize();
         }
@@ -105,7 +108,7 @@ namespace ACCSApi.Repositories.Generic
             }
             catch (FileNotFoundException e)
             {
-                //todo: logging
+                _logger.LogWarning(e.Message);
             }
         }
         #endregion private methods

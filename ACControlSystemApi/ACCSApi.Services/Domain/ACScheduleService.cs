@@ -8,6 +8,7 @@ using ACCSApi.Model.Interfaces;
 using ACCSApi.Repositories.Interfaces;
 using ACCSApi.Services.Interfaces;
 using ACCSApi.Services.Models.Exceptions;
+using Microsoft.Extensions.Logging;
 
 namespace ACCSApi.Services.Domain
 {
@@ -19,10 +20,12 @@ namespace ACCSApi.Services.Domain
         private readonly IACState _turnOffState = new ACState { IsTurnOff = true };
         private static readonly IDictionary<IACSchedule, Tuple<Timer, Timer>> SchedulesTimersDict = new Dictionary<IACSchedule, Tuple<Timer, Timer>>();
         private static bool _isFirstInstance = true;
+        private readonly ILogger<ACScheduleService> _logger;
 
-        public ACScheduleService(IACScheduleRepository scheduleRepository, IACStateControlService stateControlService, IACDeviceService acDeviceService)
+        public ACScheduleService(IACScheduleRepository scheduleRepository, IACStateControlService stateControlService, IACDeviceService acDeviceService, ILogger<ACScheduleService> logger)
         {
             _acStateControlService = stateControlService;
+            _logger = logger;
             _scheduleRepository = scheduleRepository;
             _currentAcDevice = acDeviceService.GetCurrentDevice();
 
@@ -83,7 +86,7 @@ namespace ACCSApi.Services.Domain
                 catch (ArgumentException e)
                 {
                     _scheduleRepository.Delete(sched.Id);
-                    //todo: logging
+                    _logger.LogWarning(e.Message);
                 }
             }
         }
