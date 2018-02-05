@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using ACCSApi.Model.Interfaces;
+﻿using ACCSApi.Model.Interfaces;
 
 namespace ACCSApi.Model.Dto
 {

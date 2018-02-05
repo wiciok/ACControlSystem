@@ -3,9 +3,7 @@
     public class AuthData
     {
         public AuthData()
-        {
-            
-        }
+        {}
 
         public AuthData(string email, string pass)
         {

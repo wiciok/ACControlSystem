@@ -37,7 +37,6 @@ namespace ACCSApi.Services.Domain
                 _logger.LogError(e.Message);
                 _logger.LogError(e.InnerException.InnerException.Message);
             }
-
         }
 
         private List<Tuple<byte, double>> RecordCode()
@@ -83,7 +82,7 @@ namespace ACCSApi.Services.Domain
         public RawCode RecordRawCode()
         {
             var pulseList = RecordCode();
-            var rawCode = new RawCode { Code = pulseList.Select(x => (int)x.Item2).ToArray() };
+            var rawCode = new RawCode(pulseList.Select(x => (int) x.Item2).ToArray());
 
             return rawCode;
         }
@@ -93,19 +92,19 @@ namespace ACCSApi.Services.Domain
             if (_currentAcDevice == null)
                 throw new CurrentACDeviceNotSetException();
 
-            var necCode = new NecCode();
+            NecCode necCode;
             var pulseList = RecordCode();
 
             if (_currentAcDevice.NecCodeSettingsSaved)
             {
                 pulseList.RemoveRange(0, 2);
                 pulseList.Remove(pulseList.Last());
-                necCode.Code = BuildStringCode(pulseList, ShortAndLongPulseBoundary);
+                necCode = new NecCode(BuildStringCode(pulseList, ShortAndLongPulseBoundary));
             }
             else
             {
                 var necCodeSettings = RegisterNecCodeSettings(pulseList);
-                necCode.Code = BuildStringCode(pulseList, ShortAndLongPulseBoundary);
+                necCode = new NecCode(BuildStringCode(pulseList, ShortAndLongPulseBoundary));
 
                 SaveNecCodeSettingsToAcDeviceObject(necCodeSettings);
             }

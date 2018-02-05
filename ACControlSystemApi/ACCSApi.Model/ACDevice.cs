@@ -129,7 +129,6 @@ namespace ACCSApi.Model
             }
         }
 
-        //[JsonIgnore]
         public IACState CurrentState
         {
             get => _currentState;

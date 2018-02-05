@@ -1,5 +1,4 @@
 using System;
-using System.Runtime.CompilerServices;
 using ACCSApi.Model.Dto;
 using ACCSApi.Services.Interfaces;
 using ACCSApi.Services.Models.Exceptions;
@@ -7,7 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
-namespace ACCSApi.Controllers.Controllers
+namespace ACCSApi.Api.Controllers
 {
     [Produces("application/json")]
     [Route("api/auth")]

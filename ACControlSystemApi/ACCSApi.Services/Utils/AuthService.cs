@@ -32,8 +32,8 @@ namespace ACCSApi.Services.Utils
                 _tokensDictionary.TryRemove(tokenDictRecord.Key, out var value);
                 return false;
             }
-            else
-                return true;
+
+            return true;
         }
 
         public string TryAuthenticate(AuthData auth)

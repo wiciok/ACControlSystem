@@ -1,5 +1,4 @@
 ﻿using System;
-using ACCSApi.Controllers.Utils;
 using ACCSApi.Model.Dto;
 using ACCSApi.Services.Interfaces;
 using ACCSApi.Services.Models.Exceptions;
@@ -8,7 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
-namespace ACCSApi.Controllers.Controllers
+namespace ACCSApi.Api.Controllers
 {
     [Authorize(AuthenticationSchemes = "Basic")]
     [Route("api/acdevice")]

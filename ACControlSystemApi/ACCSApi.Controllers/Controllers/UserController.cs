@@ -1,8 +1,5 @@
 using System;
-using System.Collections.Generic;
-using ACCSApi.Model;
 using ACCSApi.Model.Dto;
-using ACCSApi.Model.Interfaces;
 using ACCSApi.Services.Interfaces;
 using ACCSApi.Services.Models.Exceptions;
 using Microsoft.AspNetCore.Authorization;
@@ -10,7 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
-namespace ACCSApi.Controllers.Controllers
+namespace ACCSApi.Api.Controllers
 {
     [Authorize(AuthenticationSchemes = "Basic")]
     [Produces("application/json")]

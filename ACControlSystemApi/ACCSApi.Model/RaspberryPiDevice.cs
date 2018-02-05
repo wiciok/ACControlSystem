@@ -13,8 +13,7 @@ namespace ACCSApi.Model
         private uint _inBoardPin;
 
         public RaspberryPiDevice()
-        {
-        }
+        {}
 
         public RaspberryPiDevice(string name, IDictionary<uint, uint> validPins)
         {

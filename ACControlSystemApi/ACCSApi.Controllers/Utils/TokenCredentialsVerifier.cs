@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using ACCSApi.Repositories.Interfaces;
+﻿using System.Threading.Tasks;
 using ACCSApi.Services.Interfaces;
 using Bazinga.AspNetCore.Authentication.Basic;
 
-namespace ACCSApi.Controllers.Utils
+namespace ACCSApi.Api.Utils
 {
     public class TokenCredentialsVerifier : IBasicCredentialVerifier
     {

@@ -6,13 +6,12 @@ namespace ACCSApi.Repositories.Generic
 {
     public class BaseRepository<T>: IRepository<T> where T: class, IACCSSerializable
     {
-        private IDao<T> _dao;
+        private readonly IDao<T> _dao;
 
         public BaseRepository(IDao<T> dao)
         {
             _dao = dao;
         }
-
 
         public int Add(T obj)
         {
@@ -62,6 +61,5 @@ namespace ACCSApi.Repositories.Generic
             _dao.Update(obj);
             _dao.SaveData();
         }
-
     }
 }

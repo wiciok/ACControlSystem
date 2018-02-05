@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using ACCSApi.Controllers.Utils;
+using ACCSApi.Api.Utils;
 using ACCSApi.Repositories.Generic;
 using ACCSApi.Repositories.Models;
 using ACCSApi.Services.Models;
@@ -13,7 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 
-namespace ACCSApi.Controllers
+namespace ACCSApi.Api
 {
     public class Startup
     {

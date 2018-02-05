@@ -4,7 +4,7 @@ using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using NLog.Web;
 
-namespace ACCSApi.Controllers
+namespace ACCSApi.Api
 {
     public class Program
     {

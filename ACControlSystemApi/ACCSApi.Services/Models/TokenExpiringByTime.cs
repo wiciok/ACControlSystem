@@ -14,13 +14,7 @@ namespace ACCSApi.Services.Models
         }
 
         public string TokenString { get; }
-        public bool IsExpired
-        {
-            get
-            {
-                return DateTime.Now >= ExpirationTime;
-            }
-        }
+        public bool IsExpired => DateTime.Now >= ExpirationTime;
 
         public DateTime CreationDate { get; }
         public DateTime ExpirationTime { get; }

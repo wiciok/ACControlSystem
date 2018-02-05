@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using ACCSApi.Model.Interfaces;
+﻿using ACCSApi.Model.Interfaces;
 
 namespace ACCSApi.Services.Interfaces
 {

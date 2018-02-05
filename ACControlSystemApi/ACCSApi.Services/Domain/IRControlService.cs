@@ -12,18 +12,14 @@ namespace ACCSApi.Services.Domain
         private readonly IIRSlingerCsharp _irService;
         private readonly IRaspberryPiDevice _hostDevice;
         private readonly IACDevice _currentAcDevice;
-        private readonly IACDeviceService _acDeviceService;
-        private readonly IHostDeviceService _hostDeviceService;
 
 
         public IRControlService(IIRSlingerCsharp irService, IACDeviceService acDeviceService, IHostDeviceService hostDeviceService)
         {
             _irService = irService;
-            _acDeviceService = acDeviceService;
-            _hostDeviceService = hostDeviceService;
 
-            _currentAcDevice = _acDeviceService.GetCurrentDevice();
-            _hostDevice = _hostDeviceService.GetCurrentDevice();
+            _currentAcDevice = acDeviceService.GetCurrentDevice();
+            _hostDevice = hostDeviceService.GetCurrentDevice();
         }
 
         public void SendMessage(ICode code)

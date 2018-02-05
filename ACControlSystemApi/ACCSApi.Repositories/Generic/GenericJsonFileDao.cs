@@ -30,7 +30,6 @@ namespace ACCSApi.Repositories.Generic
             ReadFromFile();
         }
 
-
         public int Add(T obj)
         {
             if (obj.Id == 0)
@@ -78,10 +77,9 @@ namespace ACCSApi.Repositories.Generic
             SaveToFile();
         }
 
-        #region private methods
         private void SaveToFile()
         {
-            using (StreamWriter file = File.CreateText(pathToFile))
+            using (var file = File.CreateText(pathToFile))
             {
                 var serializer = JsonSerializer.Create(new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.Objects });
                 serializer.Serialize(file, _objectsList);
@@ -92,7 +90,7 @@ namespace ACCSApi.Repositories.Generic
         {
             var t = GlobalConfig.Container.Resolve(typeof(T)).GetType();
 
-            Type genericListType = typeof(List<>).MakeGenericType(t);
+            var genericListType = typeof(List<>).MakeGenericType(t);
             var list = (IList)Activator.CreateInstance(genericListType);
 
             try
@@ -103,7 +101,7 @@ namespace ACCSApi.Repositories.Generic
                     var d = (IList)serializer.Deserialize(file, list.GetType());
                     _objectsList = d.Cast<T>().ToList();
                 }
-                if(_objectsList.Count!=0)
+                if (_objectsList.Count != 0)
                     _lastClassUniqueId = _objectsList.Select(x => x.Id).Max();
             }
             catch (FileNotFoundException e)
@@ -111,6 +109,5 @@ namespace ACCSApi.Repositories.Generic
                 _logger.LogWarning(e.Message);
             }
         }
-        #endregion private methods
     }
 }

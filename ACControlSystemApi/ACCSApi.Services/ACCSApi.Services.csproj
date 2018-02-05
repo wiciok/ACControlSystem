@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Unosquare.Raspberry.IO" Version="0.12.0" />
+    <PackageReference Include="Unosquare.Raspberry.IO" Version="0.13.0" />
   </ItemGroup>
 
   <ItemGroup>

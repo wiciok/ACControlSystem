@@ -8,9 +8,7 @@ namespace ACCSApi.Model
     public class ACSchedule : IACSchedule
     {
         public ACSchedule()
-        {
-
-        }
+        {}
 
         [JsonConstructor]
         public ACSchedule(int id, DateTime startTime, DateTime endTime, Guid? acSettingGuid, ScheduleType scheduleType)

@@ -9,11 +9,11 @@ namespace ACCSApi.Repositories.Specific
 {
     public class ACDeviceRepository : BaseRepository<IACDevice>, IACDeviceRepository
     {
-        private static bool isDataGenerated = false;
+        private static bool _isDataGenerated = false;
 
         public ACDeviceRepository(IDao<IACDevice> deviceDao) : base(deviceDao)
         {
-            if (GlobalConfig.GenerateInitialData && !isDataGenerated)
+            if (GlobalConfig.GenerateInitialData && !_isDataGenerated)
                 CreateInitialDataTemp();
         }
 
@@ -62,7 +62,7 @@ namespace ACCSApi.Repositories.Specific
                 }
             });
 
-            isDataGenerated = true;
+            _isDataGenerated = true;
         }
 
         public IACDevice CurrentDevice

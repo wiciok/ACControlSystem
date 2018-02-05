@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
-namespace ACCSApi.Controllers.Controllers
+namespace ACCSApi.Api.Controllers
 {
     [Authorize(AuthenticationSchemes = "Basic")]
     [Produces("application/json")]
@@ -52,7 +52,6 @@ namespace ACCSApi.Controllers.Controllers
 
         }
 
-        // POST: api/ACControl
         [HttpPost]
         public IActionResult Post([FromBody]ACState state) //manually on/off ACDevice
         {

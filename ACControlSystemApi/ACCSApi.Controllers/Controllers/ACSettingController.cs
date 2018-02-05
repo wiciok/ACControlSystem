@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
-namespace ACCSApi.Controllers.Controllers
+namespace ACCSApi.Api.Controllers
 {
     [Authorize(AuthenticationSchemes = "Basic")]
     [Produces("application/json")]

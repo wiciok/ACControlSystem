@@ -25,8 +25,7 @@ namespace IRSlingerCsharp
 
             if (retCode == 0)
                 return;
-            else
-                throw new InvalidOperationException("pigpio sending nec pulse error!");
+            throw new InvalidOperationException("pigpio sending nec pulse error!");
         }
 
         [DllImport("irslinger_start.so", 
@@ -58,11 +57,10 @@ namespace IRSlingerCsharp
             int[] codes
         )
         {
-            int retCode = SendRaw(broadcomOutPin, frequency, dutyCycle, codes);
+            var retCode = SendRaw(broadcomOutPin, frequency, dutyCycle, codes);
             if (retCode == 0)
                 return;
-            else
-                throw new InvalidOperationException("pigpio sending raw pulse error!");
+            throw new InvalidOperationException("pigpio sending raw pulse error!");
         }
 
         [DllImport("irslinger_start.so", EntryPoint = "SendRaw", CallingConvention = CallingConvention.StdCall)]
