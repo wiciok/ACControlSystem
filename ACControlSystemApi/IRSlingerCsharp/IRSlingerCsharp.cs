@@ -3,53 +3,8 @@ using System.Runtime.InteropServices;
 
 namespace IRSlingerCsharp
 {
-    public interface IIRSlingerCsharp
-    {
-        void SendNecMsg
-        (
-            UInt32 broadcomOutPin,
-            int frequency,
-            double dutyCycle,
-            int leadingPulseDuration,
-            int leadingGapDuration,
-            int onePulse,
-            int zeroPulse,
-            int oneGap,
-            int zeroGap,
-            bool sendTrailingPulse,
-            string codes
-         );
-
-        void SendRawMsg
-        (
-            UInt32 broadcomOutPin,
-            int frequency,
-            double dutyCycle,
-            int[] codes
-        );
-    }
-
-
     public class IRSlingerCsharp: IIRSlingerCsharp
     {
-        [DllImport("irslinger_start.so", CharSet = CharSet.Auto, EntryPoint = "SendNec")] //todo: dopasować rozszerzenie pliku, itp.
-        private static extern int SendNec
-        (
-            UInt32 outPin,
-            int frequency,
-            double dutyCycle,
-            int leadingPulseDuration,
-            int leadingGapDuration,
-            int onePulse,
-            int zeroPulse,
-            int oneGap,
-            int zeroGap,
-            int sendTrailingPulse,
-            [MarshalAs(UnmanagedType.LPStr)]string codes
-        );
-
-
-
         public void SendNecMsg
         (
             UInt32 broadcomOutPin,
@@ -74,15 +29,26 @@ namespace IRSlingerCsharp
                 throw new InvalidOperationException("pigpio sending nec pulse error!");
         }
 
-        [DllImport("irslinger_start.so", EntryPoint = "SendRaw")] //todo: dopasować rozszerzenie pliku, itp.
-        private static extern int SendRaw
+        [DllImport("irslinger_start.so", 
+            CharSet = CharSet.Ansi, 
+            EntryPoint = "SendNec", 
+            CallingConvention = CallingConvention.StdCall, 
+            BestFitMapping = true,
+            ThrowOnUnmappableChar = true)] 
+        private static extern int SendNec
         (
             UInt32 outPin,
             int frequency,
             double dutyCycle,
-            int[] codes
+            int leadingPulseDuration,
+            int leadingGapDuration,
+            int onePulse,
+            int zeroPulse,
+            int oneGap,
+            int zeroGap,
+            int sendTrailingPulse,
+            [MarshalAs(UnmanagedType.LPStr)]string codes
         );
-
 
         public void SendRawMsg
         (
@@ -98,5 +64,14 @@ namespace IRSlingerCsharp
             else
                 throw new InvalidOperationException("pigpio sending raw pulse error!");
         }
+
+        [DllImport("irslinger_start.so", EntryPoint = "SendRaw", CallingConvention = CallingConvention.StdCall)]
+        private static extern int SendRaw
+        (
+            UInt32 outPin,
+            int frequency,
+            double dutyCycle,
+            int[] codes
+        );
     }
 }
