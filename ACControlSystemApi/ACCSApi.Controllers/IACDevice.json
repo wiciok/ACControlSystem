@@ -1,1 +1,128 @@
-[{"$type":"ACCSApi.Model.ACDevice, ACCSApi.Model","Id":1,"Model":"","Brand":"Fujitsu","ModulationFrequencyInHz":38,"DutyCycle":0.5,"NecCodeSettings":{"$type":"ACCSApi.Model.NecCodeSettings, ACCSApi.Model","LeadingPulseDuration":3200,"LeadingGapDuration":1600,"OnePulseDuration":410,"ZeroPulseDuration":410,"OneGapDuration":1200,"ZeroGapDuration":410,"SendTrailingPulse":true},"NecCodeSettingsSaved":true,"AvailableSettings":[{"$type":"ACCSApi.Model.ACSetting, ACCSApi.Model","UniqueId":"631357c4-cb5b-488f-b14a-a8c8e548e999","IsTurnOff":true,"Settings":null,"Code":{"$type":"ACCSApi.Model.NecCode, ACCSApi.Model","Code":"00101000 11000110 00000000 00001000 00001000 01000000 00111111"}},{"$type":"ACCSApi.Model.ACSetting, ACCSApi.Model","UniqueId":"bd23e2aa-65c2-4fd6-a295-619b5d47df1a","IsTurnOff":false,"Settings":{"Mode":"Cool"},"Code":{"$type":"ACCSApi.Model.NecCode, ACCSApi.Model","Code":"00101000 11000110 00000000 00001000 00001000 01111111 10010000 00001100 10001010 10000000 00001100 00000000 00000000 00000000 00000100 01110100"}}],"TurnOffSetting":{"$type":"ACCSApi.Model.ACSetting, ACCSApi.Model","UniqueId":"5f2ca216-6b17-4ccd-9f3f-60723b650e24","IsTurnOff":true,"Settings":null,"Code":{"$type":"ACCSApi.Model.NecCode, ACCSApi.Model","Code":"00101000 11000110 00000000 00001000 00001000 01000000 00111111"}},"DefaultTurnOnSetting":{"$type":"ACCSApi.Model.ACSetting, ACCSApi.Model","UniqueId":"dd959f4e-1244-4c6d-bfb0-51d721221de8","IsTurnOff":false,"Settings":{"Mode":"Cool"},"Code":{"$type":"ACCSApi.Model.NecCode, ACCSApi.Model","Code":"00101000 11000110 00000000 00001000 00001000 01111111 10010000 00001100 10001010 10000000 00001100 00000000 00000000 00000000 00000100 01110100"}}}]
+[
+    {
+        "$type": "ACCSApi.Model.ACDevice, ACCSApi.Model",
+        "Id": 1,
+        "Model": "",
+        "Brand": "Fujitsu",
+        "ModulationFrequencyInHz": 38000,
+        "DutyCycle": 0.5,
+        "NecCodeSettings": {
+            "$type": "ACCSApi.Model.NecCodeSettings, ACCSApi.Model",
+            "LeadingPulseDuration": 3200,
+            "LeadingGapDuration": 1600,
+            "OnePulseDuration": 410,
+            "ZeroPulseDuration": 410,
+            "OneGapDuration": 1200,
+            "ZeroGapDuration": 410,
+            "SendTrailingPulse": true
+        },
+        "NecCodeSettingsSaved": true,
+        "AvailableSettings": [
+            {
+                "$type": "ACCSApi.Model.ACSetting, ACCSApi.Model",
+                "UniqueId": "0a270d75-3900-4c4e-a5d0-cfa26fb1ef6b",
+                "IsTurnOff": false,
+                "Settings": {
+                    "Mode": "Cool"
+                },
+                "Code": {
+                    "$type": "ACCSApi.Model.NecCode, ACCSApi.Model",
+                    "Code": "00101000 11000110 00000000 00001000 00001000 01111111 10010000 00001100 10001010 10000000 00001100 00000000 00000000 00000000 00000100 01110100"
+                }
+            },
+            {
+                "$type": "ACCSApi.Model.ACSetting, ACCSApi.Model",
+                "UniqueId": "b1d4d286-45a7-4483-a8e7-abbe0c76dddc",
+                "IsTurnOff": true,
+                "Settings": null,
+                "Code": {
+                    "$type": "ACCSApi.Model.NecCode, ACCSApi.Model",
+                    "Code": "00101000 11000110 00000000 00001000 00001000 01000000 00111111"
+                }
+            }
+        ],
+        "TurnOffSetting": {
+            "$type": "ACCSApi.Model.ACSetting, ACCSApi.Model",
+            "UniqueId": "b1d4d286-45a7-4483-a8e7-abbe0c76dddc",
+            "IsTurnOff": true,
+            "Settings": null,
+            "Code": {
+                "$type": "ACCSApi.Model.NecCode, ACCSApi.Model",
+                "Code": "00101000 11000110 00000000 00001000 00001000 01000000 00111111"
+            }
+        },
+        "DefaultTurnOnSetting": {
+            "$type": "ACCSApi.Model.ACSetting, ACCSApi.Model",
+            "UniqueId": "0a270d75-3900-4c4e-a5d0-cfa26fb1ef6b",
+            "IsTurnOff": false,
+            "Settings": {
+                "Mode": "Cool"
+            },
+            "Code": {
+                "$type": "ACCSApi.Model.NecCode, ACCSApi.Model",
+                "Code": "00101000 11000110 00000000 00001000 00001000 01111111 10010000 00001100 10001010 10000000 00001100 00000000 00000000 00000000 00000100 01110100"
+            }
+        }
+    },
+    {
+        "$type": "ACCSApi.Model.ACDevice, ACCSApi.Model",
+        "Id": 2,
+        "Model": "dekoderTestowy",
+        "Brand": "Korr",
+        "ModulationFrequencyInHz": 38000,
+        "DutyCycle": 0.5,
+        "NecCodeSettings": {
+            "$type": "ACCSApi.Model.NecCodeSettings, ACCSApi.Model",
+            "LeadingPulseDuration": 8800,
+            "LeadingGapDuration": 4500,
+            "OnePulseDuration": 550,
+            "ZeroPulseDuration": 550,
+            "OneGapDuration": 1700,
+            "ZeroGapDuration": 550,
+            "SendTrailingPulse": true
+        },
+        "NecCodeSettingsSaved": true,
+        "AvailableSettings": [
+            {
+                "$type": "ACCSApi.Model.ACSetting, ACCSApi.Model",
+                "UniqueId": "84e68708-fc10-43a8-8c49-eaff84ac94ee",
+                "IsTurnOff": false,
+                "Settings": {},
+                "Code": {
+                    "$type": "ACCSApi.Model.NecCode, ACCSApi.Model",
+                    "Code": "00000000111111111000001001111101"
+                }
+            },
+            {
+                "$type": "ACCSApi.Model.ACSetting, ACCSApi.Model",
+                "UniqueId": "f4c75eb1-6eae-484d-a8ac-d5f55721e7f6",
+                "IsTurnOff": true,
+                "Settings": {},
+                "Code": {
+                    "$type": "ACCSApi.Model.NecCode, ACCSApi.Model",
+                    "Code": "00000000111111111000001001111101"
+                }
+            }
+        ],
+        "TurnOffSetting": {
+            "$type": "ACCSApi.Model.ACSetting, ACCSApi.Model",
+            "UniqueId": "f4c75eb1-6eae-484d-a8ac-d5f55721e7f6",
+            "IsTurnOff": true,
+            "Settings": {},
+            "Code": {
+                "$type": "ACCSApi.Model.NecCode, ACCSApi.Model",
+                "Code": "00000000111111111000001001111101"
+            }
+        },
+        "DefaultTurnOnSetting": {
+            "$type": "ACCSApi.Model.ACSetting, ACCSApi.Model",
+            "UniqueId": "84e68708-fc10-43a8-8c49-eaff84ac94ee",
+            "IsTurnOff": false,
+            "Settings": {},
+            "Code": {
+                "$type": "ACCSApi.Model.NecCode, ACCSApi.Model",
+                "Code": "00000000111111111000001001111101"
+            }
+        }
+    }
+]

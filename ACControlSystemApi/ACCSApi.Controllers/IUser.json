@@ -1,0 +1,16 @@
+[
+    {
+        "$type": "ACCSApi.Model.User, ACCSApi.Model",
+        "Id": 1,
+        "EmailAddress": "test@test.com",
+        "PasswordHash": "65e84be33532fb784c48129675f9eff3a682b27168c0ea744b2cf58ee02337c5",
+        "RegistrationTimestamp": "2018-01-21T18:39:28.1182729+01:00"
+    },
+    {
+        "$type": "ACCSApi.Model.User, ACCSApi.Model",
+        "Id": 2,
+        "EmailAddress": "test2@test2.com",
+        "PasswordHash": "5a9571d56975e81e4ec0147a6984499cd8da31d4a6fec0eea892de827174c9fb",
+        "RegistrationTimestamp": "2018-01-23T21:21:32.3103463+01:00"
+    }
+]

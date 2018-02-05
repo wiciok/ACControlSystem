@@ -1,0 +1,10 @@
+[
+    {
+        "$type": "ACCSApi.Model.ACSchedule, ACCSApi.Model",
+        "Id": 1,
+        "StartTime": "2018-02-09T00:00:00+01:00",
+        "EndTime": "2018-02-10T00:00:00+01:00",
+        "ACSettingGuid": "0a270d75-3900-4c4e-a5d0-cfa26fb1ef6b",
+        "ScheduleType": 0
+    }
+]
