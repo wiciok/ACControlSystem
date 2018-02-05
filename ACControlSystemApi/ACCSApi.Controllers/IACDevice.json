@@ -62,7 +62,8 @@
                 "$type": "ACCSApi.Model.NecCode, ACCSApi.Model",
                 "Code": "00101000 11000110 00000000 00001000 00001000 01111111 10010000 00001100 10001010 10000000 00001100 00000000 00000000 00000000 00000100 01110100"
             }
-        }
+        },
+        "CurrentState": null
     },
     {
         "$type": "ACCSApi.Model.ACDevice, ACCSApi.Model",
@@ -123,6 +124,7 @@
                 "$type": "ACCSApi.Model.NecCode, ACCSApi.Model",
                 "Code": "00000000111111111000001001111101"
             }
-        }
+        },
+        "CurrentState": null
     }
 ]

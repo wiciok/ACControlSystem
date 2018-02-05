@@ -44,7 +44,7 @@ namespace ACCSApi.Services.Domain
             if (_currentAcDevice == null)
                 throw new CurrentACDeviceNotSetException();
 
-            var code = _codeRecordingService.RecordNecCode();
+            var (code, necSettings) = _codeRecordingService.RecordNecCode();
 
             var acSetting = new ACSetting
             (
@@ -53,6 +53,8 @@ namespace ACCSApi.Services.Domain
                 isTurnOff: settingDto.IsTurnOff
             );
             _currentAcDevice.AvailableSettings.Add(acSetting);
+            if (necSettings != null)
+                _currentAcDevice.NecCodeSettings = necSettings;
             return acSetting.UniqueId;
         }
 

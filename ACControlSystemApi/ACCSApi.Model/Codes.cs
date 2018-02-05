@@ -30,6 +30,14 @@ namespace ACCSApi.Model
         public int OneGapDuration { get; }
         public int ZeroGapDuration { get;}
         public bool SendTrailingPulse { get; }
+
+        public override string ToString()
+        {
+            return $"LeadingPulseDuration: {LeadingPulseDuration}, LeadingGapDuration: {LeadingGapDuration}, " +
+                   $"OnePulseDuration: {OnePulseDuration}, OneGapDuration: {OneGapDuration}, " +
+                   $"ZeroPulseDuration: {ZeroPulseDuration}, ZeroGapDuration: {ZeroGapDuration}," +
+                   $"SendTrailingPulse: {SendTrailingPulse}";
+        }
     }
 
     public class NecCode : ICode

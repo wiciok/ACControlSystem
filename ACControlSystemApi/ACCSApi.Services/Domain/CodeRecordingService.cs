@@ -71,14 +71,6 @@ namespace ACCSApi.Services.Domain
             return pulseList;
         }
 
-        public void ResetCurrentAcDeviceNecCodeSettings()
-        {
-            if (_currentAcDevice == null)
-                throw new CurrentACDeviceNotSetException();
-
-            _currentAcDevice.NecCodeSettings = null;
-        }
-
         public RawCode RecordRawCode()
         {
             var pulseList = RecordCode();
@@ -87,7 +79,7 @@ namespace ACCSApi.Services.Domain
             return rawCode;
         }
 
-        public NecCode RecordNecCode()
+        public (NecCode, NecCodeSettings) RecordNecCode()
         {
             if (_currentAcDevice == null)
                 throw new CurrentACDeviceNotSetException();
@@ -100,20 +92,23 @@ namespace ACCSApi.Services.Domain
                 pulseList.RemoveRange(0, 2);
                 pulseList.Remove(pulseList.Last());
                 necCode = new NecCode(BuildStringCode(pulseList, ShortAndLongPulseBoundary));
+                return (necCode, null);
             }
             else
             {
                 var necCodeSettings = RegisterNecCodeSettings(pulseList);
                 necCode = new NecCode(BuildStringCode(pulseList, ShortAndLongPulseBoundary));
 
-                SaveNecCodeSettingsToAcDeviceObject(necCodeSettings);
+                return (necCode, necCodeSettings);
             }
-            return necCode;
         }
 
         private NecCodeSettings RegisterNecCodeSettings(List<Tuple<byte, double>> pulseList)
         {
             bool necSendTrailingPulse;
+
+            var necLeadingPulseDuration = (int)pulseList[0].Item2;
+            var necLeadingGapDuration = (int)pulseList[1].Item2;
 
             pulseList.RemoveRange(0, 2);
 
@@ -155,8 +150,6 @@ namespace ACCSApi.Services.Domain
             var necOnePulseDuration = averageShortPulse;
             var necZeroPulseDuration = averageShortPulse;
             var necZeroGapDuration = averageShortPulse;
-            var necLeadingPulseDuration = (int)pulseList[0].Item2;
-            var necLeadingGapDuration = (int)pulseList[1].Item2;
 
             var necCodeSettings = new NecCodeSettings
             (
@@ -168,14 +161,10 @@ namespace ACCSApi.Services.Domain
                 zeroGapDuration: necZeroGapDuration,
                 sendTrailingPulse: necSendTrailingPulse
             );
-
+            Console.WriteLine(necCodeSettings);
             return necCodeSettings;
         }
 
-        private void SaveNecCodeSettingsToAcDeviceObject(NecCodeSettings settings)
-        {
-            _currentAcDevice.NecCodeSettings = settings;
-        }
 
         private static string BuildStringCode(IEnumerable<Tuple<byte, double>> pulseList, int threshold)
         {
