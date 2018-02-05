@@ -60,7 +60,7 @@ namespace ACCSApi.Services.Domain
             if (_currentAcDevice == null)
                 throw new CurrentACDeviceNotSetException();
 
-            var acSetting = _currentAcDevice.AvailableSettings.SingleOrDefault(x => x.UniqueId.Equals(guid));
+            var acSetting = _currentAcDevice.AvailableSettings?.SingleOrDefault(x => x.UniqueId.Equals(guid));
             if (acSetting == null)
                 throw new ItemNotFoundException("ACSetting with guid {guid} not found in current ACDevice available settings list");
             return acSetting;
@@ -79,7 +79,7 @@ namespace ACCSApi.Services.Domain
             if (_currentAcDevice == null)
                 throw new CurrentACDeviceNotSetException();
 
-            return _currentAcDevice.AvailableSettings.Where(x => x.IsTurnOff == false);
+            return _currentAcDevice.AvailableSettings?.Where(x => x.IsTurnOff == false) ?? new List<IACSetting>();
         }
 
         public void Delete(Guid guid)
@@ -87,7 +87,7 @@ namespace ACCSApi.Services.Domain
             if (_currentAcDevice == null)
                 throw new CurrentACDeviceNotSetException();
 
-            var acSetting = _currentAcDevice.AvailableSettings.SingleOrDefault(x => x.UniqueId.Equals(guid));
+            var acSetting = _currentAcDevice.AvailableSettings?.SingleOrDefault(x => x.UniqueId.Equals(guid));
             if (acSetting == null)
                 throw new ItemNotFoundException("Cannot remove - ACSetting with guid {guid} not found in current ACDevice available settings list");
             _currentAcDevice.AvailableSettings.Remove(acSetting);
@@ -98,7 +98,7 @@ namespace ACCSApi.Services.Domain
             if (_currentAcDevice == null)
                 throw new CurrentACDeviceNotSetException();
 
-            var acSetting = _currentAcDevice.AvailableSettings.SingleOrDefault(x => x.UniqueId.Equals(setting.UniqueId));
+            var acSetting = _currentAcDevice.AvailableSettings?.SingleOrDefault(x => x.UniqueId.Equals(setting.UniqueId));
             if (acSetting == null)
                 throw new ItemNotFoundException("Cannot update - ACSetting with guid {guid} not found in current ACDevice available settings list");
             acSetting = setting;
@@ -134,7 +134,7 @@ namespace ACCSApi.Services.Domain
             if (_currentAcDevice == null)
                 throw new CurrentACDeviceNotSetException();
 
-            var defaultOn = _currentAcDevice.AvailableSettings.SingleOrDefault(x => x.UniqueId.Equals(defaultOnGuid));
+            var defaultOn = _currentAcDevice.AvailableSettings?.SingleOrDefault(x => x.UniqueId.Equals(defaultOnGuid));
             _currentAcDevice.DefaultTurnOnSetting = defaultOn ?? throw new ItemNotFoundException($"ACSetting with specified Guid {defaultOnGuid} doesnt exist and therefore cannot be set as default!");
             return defaultOn;
         }
@@ -144,7 +144,7 @@ namespace ACCSApi.Services.Domain
             if (_currentAcDevice == null)
                 throw new CurrentACDeviceNotSetException();
 
-            var defaultOff = _currentAcDevice.AvailableSettings.SingleOrDefault(x => x.UniqueId.Equals(defaultOffGuid));
+            var defaultOff = _currentAcDevice.AvailableSettings?.SingleOrDefault(x => x.UniqueId.Equals(defaultOffGuid));
             _currentAcDevice.TurnOffSetting = defaultOff ?? throw new ItemNotFoundException($"ACSetting with specified Guid {defaultOffGuid} doesnt exist and therefore cannot be set as default!");
             return defaultOff;
         }

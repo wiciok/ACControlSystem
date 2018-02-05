@@ -35,6 +35,12 @@ namespace ACCSApi.Controllers.Controllers
                 return Ok(retState);
             }
 
+            catch (CurrentACDeviceNotSetException ex)
+            {
+                _logger.LogError(ex, "400: Bad request");
+                return BadRequest("Current ACDevice not set");
+            }
+
             catch (ACStateUndefinedException ex)
             {
                 return NoContent();

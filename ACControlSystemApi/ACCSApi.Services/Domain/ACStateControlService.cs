@@ -17,7 +17,7 @@ namespace ACCSApi.Services.Domain
         {
             _irControlService = irControlService;
             _acDeviceService = acDeviceService;
-            _currentAcDevice = _acDeviceService.GetCurrentDevice();      
+            _currentAcDevice = _acDeviceService.GetCurrentDevice();
         }
 
         public void SetCurrentState(IACState newState)
@@ -29,6 +29,9 @@ namespace ACCSApi.Services.Domain
 
         public IACState GetCurrentState()
         {
+            if(_currentAcDevice==null)
+                throw new CurrentACDeviceNotSetException();
+
             if (_currentState != null)
                 return _currentState;
             throw new ACStateUndefinedException();

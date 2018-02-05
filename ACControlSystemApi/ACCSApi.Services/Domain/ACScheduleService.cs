@@ -35,7 +35,7 @@ namespace ACCSApi.Services.Domain
                     RegisterAllSchedulesFromRepository();
                 _isFirstInstance = false;
             }
-            catch (CurrentACDeviceNotSetException) { }          
+            catch (CurrentACDeviceNotSetException) { }
         }
 
 
@@ -56,7 +56,7 @@ namespace ACCSApi.Services.Domain
 
         public IEnumerable<IACSchedule> GetAllCurrentDeviceSchedules()
         {
-            if (_currentAcDevice == null)
+            if (_currentAcDevice?.AvailableSettings == null)
                 return new List<IACSchedule>();
 
             var allCurrentDeviceSettingsGuidsStrings = _currentAcDevice.AvailableSettings.Select(x => x.UniqueId.ToString());

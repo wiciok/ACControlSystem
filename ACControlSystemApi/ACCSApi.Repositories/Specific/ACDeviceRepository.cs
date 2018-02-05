@@ -52,7 +52,7 @@ namespace ACCSApi.Repositories.Specific
                     Id = 1,
                     Brand = "Fujitsu",
                     Model = "",
-                    ModulationFrequencyInHz = 38,
+                    ModulationFrequencyInHz = 38000,
                     DutyCycle = 0.5,
                     NecCodeSettings = new NecCodeSettings(
                         leadingPulseDuration: 3200,
