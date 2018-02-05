@@ -24,5 +24,20 @@ namespace ACCSApi.Model
         public bool IsTurnOff { get; }
         public JObject Settings { get; }
         public ICode Code { get; }
+
+        public override int GetHashCode()
+        {
+            return UniqueId.GetHashCode() + IsTurnOff.GetHashCode() + Settings.GetHashCode() + Code.GetHashCode();
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (!(obj is ACSetting other))
+                return false;
+            return UniqueId.Equals(other.UniqueId)
+                   && IsTurnOff.Equals(other.IsTurnOff)
+                   && JToken.DeepEquals(Settings, other.Settings)
+                   && Code.Equals(other.Code);
+        }
     }
 }

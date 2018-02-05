@@ -34,12 +34,46 @@ namespace ACCSApi.Model
 
     public class NecCode : ICode
     {
-        public string Code { get; set; }
+        public NecCode(string code)
+        {
+            Code = code;
+        }
+
+        public string Code { get; }
+
+        public override bool Equals(object obj)
+        {
+            if (!(obj is NecCode other))
+                return false;
+            return Code.Equals(other.Code);
+        }
+
+        public override int GetHashCode()
+        {
+            return Code.GetHashCode();
+        }
     }
 
     public class RawCode : ICode
     {
-        public int[] Code { get; set; }
+        public RawCode(int[] code)
+        {
+            Code = code;
+        }
+
+        public int[] Code { get; }
+
+        public override bool Equals(object obj)
+        {
+            if (!(obj is RawCode other))
+                return false;
+            return Code.Equals(other.Code);
+        }
+
+        public override int GetHashCode()
+        {
+            return Code.GetHashCode();
+        }
     }
 }
 

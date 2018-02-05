@@ -106,9 +106,9 @@ class AcSettings extends Component {
 
         let successCallback = json => {
             if (!json || json && json.length === 0)
-                this.setState({ allAcSettings: null });
+                this.setState({ allAcSettings: null }, () => { this.getTurnOnOffSetting(); });
             else
-                this.setState({ allAcSettings: json });
+                this.setState({ allAcSettings: json }, () => { this.getTurnOnOffSetting(); });
         };
 
         this.doFetch(fetchObj, this.endpointAddress, successCallback, null, this.getAcSettings);

@@ -90,6 +90,13 @@ namespace ACCSApi.Services.Domain
             var acSetting = _currentAcDevice.AvailableSettings?.SingleOrDefault(x => x.UniqueId.Equals(guid));
             if (acSetting == null)
                 throw new ItemNotFoundException("Cannot remove - ACSetting with guid {guid} not found in current ACDevice available settings list");
+
+
+            if (_currentAcDevice.TurnOffSetting != null && _currentAcDevice.TurnOffSetting.Equals(acSetting))
+                _currentAcDevice.TurnOffSetting = null;
+            if (_currentAcDevice.DefaultTurnOnSetting != null && _currentAcDevice.DefaultTurnOnSetting.Equals(acSetting))
+                _currentAcDevice.DefaultTurnOnSetting = null;
+
             _currentAcDevice.AvailableSettings.Remove(acSetting);
         }
 
