@@ -20,5 +20,6 @@ namespace ACCSApi.Model.Interfaces
         IList<IACSetting> AvailableSettings { get; }
         IACSetting TurnOffSetting { get; set; }
         IACSetting DefaultTurnOnSetting { get; set; }
+        IACState CurrentState { get; set; }
     }
 }

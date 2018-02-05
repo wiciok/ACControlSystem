@@ -16,11 +16,12 @@ namespace ACCSApi.Model
         private ObservableCollection<IACSetting> _settingsList;
         private IACSetting _defaultTurnOn;
         private IACSetting _defaultTurnOff;
+        private IACState _currentState;
 
         public ACDevice()
         {
             TurnOffSetting = null;
-            DefaultTurnOnSetting = null;           
+            DefaultTurnOnSetting = null;
         }
 
         private void _settingsList_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
@@ -124,6 +125,17 @@ namespace ACCSApi.Model
             set
             {
                 _defaultTurnOn = value;
+                OnChanged?.Invoke();
+            }
+        }
+
+        //[JsonIgnore]
+        public IACState CurrentState
+        {
+            get => _currentState;
+            set
+            {
+                _currentState = value;
                 OnChanged?.Invoke();
             }
         }

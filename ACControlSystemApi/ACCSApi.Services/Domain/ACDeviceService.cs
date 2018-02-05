@@ -14,10 +14,27 @@ namespace ACCSApi.Services.Domain
     {
         private readonly IACDeviceRepository _acDeviceRepository;
         private IACDevice _currentDevice;
+        private static bool isFirstInstanceAfterAppStart = true;
 
         public ACDeviceService(IACDeviceRepository acDeviceRepository)
         {
             _acDeviceRepository = acDeviceRepository;
+            ResetAllDevicesStatesOnAppStart();
+        }
+
+        private void ResetAllDevicesStatesOnAppStart()
+        {
+            if (!isFirstInstanceAfterAppStart)
+                return;
+
+            var alldevices = _acDeviceRepository.GetAll().ToArray();
+            foreach (var device in alldevices)
+            {
+                device.CurrentState = null;
+                _acDeviceRepository.Update(device);
+            }
+
+            isFirstInstanceAfterAppStart = false;
         }
 
         public int AddDevice(AcDeviceDto deviceDto)
@@ -30,7 +47,7 @@ namespace ACCSApi.Services.Domain
 
                 //fixed values, because other devices are not supported at this moment 
                 DutyCycle = 0.5,
-                ModulationFrequencyInHz = 38000 
+                ModulationFrequencyInHz = 38000
             };
 
             return AddDevice(device);

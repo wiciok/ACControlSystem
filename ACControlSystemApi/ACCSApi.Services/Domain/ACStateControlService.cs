@@ -8,7 +8,6 @@ namespace ACCSApi.Services.Domain
 {
     public class ACStateControlService : IACStateControlService
     {
-        private IACState _currentState;
         private readonly IIRControlService _irControlService;
         private readonly IACDeviceService _acDeviceService;
         private readonly IACDevice _currentAcDevice;
@@ -23,7 +22,7 @@ namespace ACCSApi.Services.Domain
         public void SetCurrentState(IACState newState)
         {
             ChangeACState(newState);
-            _currentState = newState;
+            _currentAcDevice.CurrentState = newState;
         }
 
 
@@ -32,8 +31,8 @@ namespace ACCSApi.Services.Domain
             if(_currentAcDevice==null)
                 throw new CurrentACDeviceNotSetException();
 
-            if (_currentState != null)
-                return _currentState;
+            if (_currentAcDevice.CurrentState != null)
+                return _currentAcDevice.CurrentState;
             throw new ACStateUndefinedException();
         }
 
