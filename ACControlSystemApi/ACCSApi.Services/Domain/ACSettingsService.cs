@@ -34,6 +34,7 @@ namespace ACCSApi.Services.Domain
                 settings: settingDto.Settings,
                 isTurnOff: settingDto.IsTurnOff
             );
+
             _currentAcDevice.AvailableSettings.Add(acSetting);
             return acSetting.UniqueId;
         }
@@ -60,7 +61,7 @@ namespace ACCSApi.Services.Domain
             if (_currentAcDevice == null)
                 throw new CurrentACDeviceNotSetException();
 
-            var acSetting = _currentAcDevice.AvailableSettings?.SingleOrDefault(x => x.UniqueId.Equals(guid));
+            var acSetting = _currentAcDevice?.AvailableSettings?.SingleOrDefault(x => x.UniqueId.Equals(guid));
             if (acSetting == null)
                 throw new ItemNotFoundException("ACSetting with guid {guid} not found in current ACDevice available settings list");
             return acSetting;

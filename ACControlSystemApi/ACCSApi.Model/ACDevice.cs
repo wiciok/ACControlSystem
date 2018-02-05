@@ -22,6 +22,9 @@ namespace ACCSApi.Model
         {
             TurnOffSetting = null;
             DefaultTurnOnSetting = null;
+
+            _settingsList = new ObservableCollection<IACSetting>();
+            _settingsList.CollectionChanged += _settingsList_CollectionChanged;
         }
 
         private void _settingsList_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
