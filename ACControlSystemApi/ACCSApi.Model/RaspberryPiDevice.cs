@@ -8,6 +8,10 @@ namespace ACCSApi.Model
     [Serializable]
     public class RaspberryPiDevice : IRaspberryPiDevice
     {
+        private IDictionary<uint, uint> _validBoardAndBroadcomPins;
+        private uint _outBoardPin;
+        private uint _inBoardPin;
+
         public RaspberryPiDevice()
         {
         }
@@ -18,60 +22,24 @@ namespace ACCSApi.Model
             ValidBoardAndBroadcomPins = validPins;
         }
 
-        private IDictionary<uint, uint> _validBoardAndBroadcomPins;
-        private uint _outBoardPin;
-        private uint _inBoardPin;
-        private int _id;
-        private string _name;
-
-        public event Action OnChanged;
-
-        public int Id
-        {
-            get => _id;
-            set
-            {
-                _id = value;
-                OnChanged?.Invoke();
-            }
-        }
-        public string Name
-        {
-            get => _name;
-            set
-            {
-                _name = value;
-                OnChanged?.Invoke();                 
-            } 
-        }
+        public int Id { get; set; }
+        public string Name { get; set; }
 
         public IDictionary<uint, uint> ValidBoardAndBroadcomPins //key: XX - board number, value: GPIOXX - broadcom number
         {
             get => _validBoardAndBroadcomPins;
-            set
-            {
-                _validBoardAndBroadcomPins = value;
-                OnChanged?.Invoke();
-            }
+            set => _validBoardAndBroadcomPins = value;
         }
 
         public uint BoardOutPin
         {
             get => _outBoardPin;
-            set
-            {
-                _outBoardPin = value;
-                OnChanged?.Invoke();
-            } 
+            set => _outBoardPin = value;
         }
         public uint BoardInPin
         {
             get => _inBoardPin;
-            set
-            {
-                _inBoardPin = value;
-                OnChanged?.Invoke();
-            }
+            set => _inBoardPin = value;
         }
 
         public uint BroadcomOutPin
@@ -80,7 +48,6 @@ namespace ACCSApi.Model
             set
             {
                 _outBoardPin = _validBoardAndBroadcomPins.FirstOrDefault(x => x.Value == value).Key;
-                OnChanged?.Invoke();
             }
         }
         public uint BroadcomInPin
@@ -89,7 +56,6 @@ namespace ACCSApi.Model
             set
             {
                 _inBoardPin = _validBoardAndBroadcomPins.FirstOrDefault(x => x.Value == value).Key;
-                OnChanged?.Invoke();
             }
         }
     }
