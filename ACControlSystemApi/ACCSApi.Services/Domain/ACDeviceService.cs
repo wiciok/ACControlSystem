@@ -26,7 +26,11 @@ namespace ACCSApi.Services.Domain
             {
                 Id = deviceDto.Id,
                 Brand = deviceDto.Brand,
-                Model = deviceDto.Model
+                Model = deviceDto.Model,
+
+                //fixed values, because other devices are not supported at this moment 
+                DutyCycle = 0.5,
+                ModulationFrequencyInHz = 38000 
             };
 
             return AddDevice(device);
